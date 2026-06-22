@@ -1,25 +1,21 @@
+# Pengaturan standar
 * text=auto eol=lf
 
+# Agar file Blade dideteksi sebagai Blade
+*.blade.php linguist-language=Blade
+
+# Diff settings
 *.blade.php diff=html
 *.css diff=css
 *.html diff=html
 *.md diff=markdown
 *.php diff=php
 
+# Sembunyikan file sistem yang tidak perlu dihitung
 /.github export-ignore
 CHANGELOG.md export-ignore
 .styleci.yml export-ignore
 
-# 1. Sembunyikan CSS agar tidak mendominasi
-*.css linguist-vendored
-
-# 2. Paksa file .blade.php dideteksi sebagai Blade
-*.blade.php linguist-language=Blade
-
-# 3. Sembunyikan folder sistem PHP bawaan Laravel dari statistik
-# Ini akan membuat file controller, config, dll tidak dihitung, sehingga Blade jadi dominan
-app/**/* linguist-vendored
-config/**/* linguist-vendored
-database/**/* linguist-vendored
-routes/**/* linguist-vendored
+# Cukup vendored folder yang benar-benar bukan kode Anda
 bootstrap/**/* linguist-vendored
+storage/**/* linguist-vendored
