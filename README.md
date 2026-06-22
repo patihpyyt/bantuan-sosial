@@ -1,3 +1,4 @@
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
@@ -56,3 +57,7 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+# bantuan-sosial
+Aplikasi untuk petugas desa mendata warga penerima bansos (PKH, BLT, BPNT), status penyaluran, dan laporan per periode. Warga bisa cek status bantuan mereka via web.
+>>>>>>> a9eec64de1852b2a61b9cb662201a7374c8b30c8
