@@ -1,22 +1,25 @@
-# Konfigurasi Line Endings
 * text=auto eol=lf
 
-# Abaikan file agar tidak masuk statistik (pilih salah satu)
-*.blade.php linguist-detectable=false
-*.blade.php linguist-language=Blade
-# Vendor & Node Modules (Sudah benar)
-vendor/* linguist-vendored
-node_modules/* linguist-vendored
-public/js/* linguist-vendored
-public/css/* linguist-vendored
-
-# Pengaturan Diff (Sudah benar)
+*.blade.php diff=html
 *.css diff=css
 *.html diff=html
 *.md diff=markdown
 *.php diff=php
 
-# Export ignore (Sudah benar)
 /.github export-ignore
 CHANGELOG.md export-ignore
 .styleci.yml export-ignore
+
+# 1. Sembunyikan CSS agar tidak mendominasi
+*.css linguist-vendored
+
+# 2. Paksa file .blade.php dideteksi sebagai Blade
+*.blade.php linguist-language=Blade
+
+# 3. Sembunyikan folder sistem PHP bawaan Laravel dari statistik
+# Ini akan membuat file controller, config, dll tidak dihitung, sehingga Blade jadi dominan
+app/**/* linguist-vendored
+config/**/* linguist-vendored
+database/**/* linguist-vendored
+routes/**/* linguist-vendored
+bootstrap/**/* linguist-vendored
