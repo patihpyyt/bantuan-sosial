@@ -3,7 +3,7 @@
 
 # Abaikan file agar tidak masuk statistik (pilih salah satu)
 *.blade.php linguist-detectable=false
-
+*.blade.php linguist-language=Blade
 # Vendor & Node Modules (Sudah benar)
 vendor/* linguist-vendored
 node_modules/* linguist-vendored
