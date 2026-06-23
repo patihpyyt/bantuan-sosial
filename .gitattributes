@@ -1,7 +1,6 @@
 * text=auto eol=lf
 # Anggap blade sebagai HTML
-*.blade.php linguist-language=HTML
-
+*.blade.php linguist-language=PHP
 # Exclude folder vendor & node_modules dari statistik
 vendor/* linguist-vendored
 node_modules/* linguist-vendored
