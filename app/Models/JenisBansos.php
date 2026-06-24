@@ -13,4 +13,9 @@ class JenisBansos extends Model
         'deskripsi',
         'jumlah_bantuan'
     ];
+
+    public function penerimaBansos()
+{
+    return $this->hasMany(PenerimaBansos::class);
+}
 }

@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use Database\Seeders\AdminSeeder;
+use Database\Seeders\JenisBansosSeeder;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -14,10 +16,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-         $this->call([
+        $this->call([
         AdminSeeder::class,
-     ]);
-     
+        JenisBansosSeeder::class,
+    ]);
     }
 }

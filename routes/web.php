@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\JenisBansosController;
+use App\Http\Controllers\PenerimaBansosController;
+use App\Http\Controllers\WargaController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +35,17 @@ Route::resource(
     WargaController::class
 );
 
+Route::resource(
+    'penerima-bansos',
+    PenerimaBansosController::class
+);
+
+
+
+Route::resource(
+    'jenis-bansos',
+    JenisBansosController::class
+);
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

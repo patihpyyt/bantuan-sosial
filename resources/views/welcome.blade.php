@@ -6,6 +6,6 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>nabi jomok</h1>
+    <h1>nabil jomok</h1>
 </body>
 </html>
