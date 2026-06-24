@@ -27,4 +27,9 @@ class PenerimaBansos extends Model
     {
         return $this->belongsTo(JenisBansos::class);
     }
+
+    public function penyaluran()
+{
+    return $this->hasMany(Penyaluran::class, 'penerima_id');
+}
 }
