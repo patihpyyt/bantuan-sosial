@@ -130,7 +130,7 @@
 
                         <div>
                             <div class="flex justify-between text-xs text-gray-500 mb-1">
-                                <span>PKH (Program Keluarga Harapan)</span>
+                                <span>PKH (Program Keluarg Harapan)</span>
                                 <span class="font-medium text-gray-700">{{ $realisasiPKH ?? 0 }}%</span>
                             </div>
                             <div class="w-full bg-gray-100 rounded-full h-2">
