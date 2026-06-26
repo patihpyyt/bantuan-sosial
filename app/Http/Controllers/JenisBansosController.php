@@ -10,16 +10,13 @@ class JenisBansosController extends Controller
     public function index()
     {
         $jenisBansos = JenisBansos::all();
-
-        return view('jenis_bansos.index', compact('jenisBansos'));
+        return view('jenis-bansos.jenis', compact('jenisBansos'));
     }
-
 
     public function create()
     {
-        return view('jenis_bansos.create');
+        return view('jenis-bansos.create-jenis');
     }
-
 
     public function store(Request $request)
     {
@@ -29,29 +26,24 @@ class JenisBansosController extends Controller
             'jumlah_bantuan' => 'nullable|numeric'
         ]);
 
-
         JenisBansos::create($data);
 
-
-        return redirect()
-            ->route('jenis-bansos.index')
-            ->with('success','Jenis bansos berhasil ditambahkan');
+        return redirect('/jenis-bansos')->with('success', 'Jenis bansos berhasil ditambahkan');
     }
 
-
-    public function show(JenisBansos $jenisBansos)
+    public function show($id)
     {
-        return view('jenis_bansos.show', compact('jenisBansos'));
+        $jenisBansos = JenisBansos::findOrFail($id);
+        return view('jenis-bansos.jenis', compact('jenisBansos'));
     }
 
-
-    public function edit(JenisBansos $jenisBansos)
+    public function edit($id)
     {
-        return view('jenis_bansos.edit', compact('jenisBansos'));
+        $jenisBansos = JenisBansos::findOrFail($id);
+        return view('jenis-bansos.jenis-edit', compact('jenisBansos'));
     }
 
-
-    public function update(Request $request, JenisBansos $jenisBansos)
+    public function update(Request $request, $id)
     {
         $data = $request->validate([
             'nama_bansos' => 'required',
@@ -59,23 +51,17 @@ class JenisBansosController extends Controller
             'jumlah_bantuan' => 'nullable|numeric'
         ]);
 
-
+        $jenisBansos = JenisBansos::findOrFail($id);
         $jenisBansos->update($data);
 
-
-        return redirect()
-            ->route('jenis-bansos.index')
-            ->with('success','Jenis bansos berhasil diperbarui');
+        return redirect('/jenis-bansos')->with('success', 'Jenis bansos berhasil diperbarui');
     }
 
-
-    public function destroy(JenisBansos $jenisBansos)
+    public function destroy($id)
     {
+        $jenisBansos = JenisBansos::findOrFail($id);
         $jenisBansos->delete();
 
-
-        return redirect()
-            ->route('jenis-bansos.index')
-            ->with('success','Jenis bansos berhasil dihapus');
+        return redirect('/jenis-bansos')->with('success', 'Jenis bansos berhasil dihapus');
     }
 }

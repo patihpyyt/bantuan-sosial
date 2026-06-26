@@ -2,26 +2,66 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\LogAktivitas;
+use App\Models\JenisBansos;
 use Illuminate\Http\Request;
 
-class LogAktivitasController extends Controller
+class JenisBansosController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $log = LogAktivitas::with('user')
-            ->when($request->aksi,    fn($q) => $q->where('aksi', $request->aksi))
-            ->when($request->tabel,   fn($q) => $q->where('tabel_terdampak', $request->tabel))
-            ->when($request->tanggal, fn($q) => $q->whereDate('created_at', $request->tanggal))
-            ->latest('created_at')
-            ->paginate(20);
-
-        return view('log-aktivitas.index', compact('log'));
+        $jenisBansos = JenisBansos::all();
+        return view('jenis-bansos.jenis', compact('jenisBansos'));
     }
 
-    public function show(int $id)
+    public function create()
     {
-        $log = LogAktivitas::with('user')->findOrFail($id);
-        return view('log-aktivitas.show', compact('log'));
+        return view('jenis-bansos.create-jenis');
+    }
+
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'nama_bansos' => 'required',
+            'deskripsi' => 'nullable',
+            'jumlah_bantuan' => 'nullable|numeric'
+        ]);
+
+        JenisBansos::create($data);
+
+        return redirect('/jenis-bansos')->with('success', 'Jenis bansos berhasil ditambahkan');
+    }
+
+    public function show($id)
+    {
+        $jenisBansos = JenisBansos::findOrFail($id);
+        return view('jenis-bansos.jenis', compact('jenisBansos'));
+    }
+
+    public function edit($id)
+    {
+        $jenisBansos = JenisBansos::findOrFail($id);
+        return view('jenis-bansos.jenis-edit', compact('jenisBansos'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $data = $request->validate([
+            'nama_bansos' => 'required',
+            'deskripsi' => 'nullable',
+            'jumlah_bantuan' => 'nullable|numeric'
+        ]);
+
+        $jenisBansos = JenisBansos::findOrFail($id);
+        $jenisBansos->update($data);
+
+        return redirect('/jenis-bansos')->with('success', 'Jenis bansos berhasil diperbarui');
+    }
+
+    public function destroy($id)
+    {
+        $jenisBansos = JenisBansos::findOrFail($id);
+        $jenisBansos->delete();
+
+        return redirect('/jenis-bansos')->with('success', 'Jenis bansos berhasil dihapus');
     }
 }

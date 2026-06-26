@@ -13,7 +13,7 @@ return new class extends Migration
             $table->foreignId('penerima_id')
                 ->constrained('penerima_bansos')
                 ->onDelete('cascade');
-            $table->tinyInteger('periode_bulan');   // 1–12
+            $table->tinyInteger('periode_bulan');   
             $table->year('periode_tahun');
             $table->decimal('nominal', 12, 2);
             $table->enum('status', ['belum', 'proses', 'tersalur', 'gagal'])->default('belum');
