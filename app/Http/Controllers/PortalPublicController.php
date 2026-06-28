@@ -6,11 +6,11 @@ use App\Models\Warga;
 use App\Models\PortalCekNikLog;
 use Illuminate\Http\Request;
 
-class PortalPublikController extends Controller
+class PortalPublicController extends Controller
 {
     public function index()
     {
-        return view('portal.index');
+        return view('bansos');
     }
 
     public function cek(Request $request)
