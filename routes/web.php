@@ -6,7 +6,7 @@ use App\Http\Controllers\WargaController;
 use App\Http\Controllers\PenyaluranController;
 use App\Http\Controllers\LogAktivitasController;
 use App\Http\Controllers\LaporanController;
-use App\Http\Controllers\PortalPublikController;
+use App\Http\Controllers\PortalPublicController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
@@ -19,8 +19,8 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/cek-bansos', [PortalPublikController::class, 'index'])->name('portal.index');
-Route::post('/cek-bansos', [PortalPublikController::class, 'cek'])->name('portal.cek');
+Route::get('/cek-bansos', [PortalPublicController::class, 'index'])->name('portal.index');
+Route::post('/cek-bansos', [PortalPublicController::class, 'cek'])->name('portal.cek');
 
 Route::middleware('auth')->group(function () {
 
