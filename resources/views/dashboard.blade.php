@@ -28,7 +28,7 @@
                 </div>
             </div>
 
-            {{-- 2-COLUMN ASYMMETRIC LAYOUT (Kunci Desain Profesional) --}}
+            {{-- 2-COLUMN ASYMMETRIC LAYOUT --}}
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
                 
                 {{-- LEFT COLUMN: CORE CONTENT (2/3 Width) --}}
@@ -112,7 +112,7 @@
                             <div class="flex justify-between items-center py-3 px-2 rounded-xl hover:bg-slate-50/80 transition duration-150">
                                 <div class="flex items-center gap-3 truncate">
                                     <div class="w-8 h-8 bg-slate-100 text-slate-600 text-xs font-bold rounded-full flex items-center justify-center shrink-0">
-                                        {{ uppercase(substr($item->warga->nama_lengkap ?? 'W', 0, 2)) }}
+                                        {{ strtoupper(substr($item->warga->nama_lengkap ?? 'W', 0, 2)) }}
                                     </div>
                                     <div class="truncate">
                                         <p class="text-sm font-semibold text-slate-800 truncate">{{ $item->warga->nama_lengkap ?? '-' }}</p>
