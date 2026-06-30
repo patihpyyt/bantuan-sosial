@@ -84,6 +84,44 @@
                             @error('status') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                         </div>
 
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Salur</label>
+                            <input type="date"
+                                   name="tanggal_salur"
+                                   value="{{ old('tanggal_salur') }}"
+                                   class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-400 @error('tanggal_salur') border-red-400 @enderror">
+                            @error('tanggal_salur') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Metode</label>
+                            <select name="metode"
+                                    class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-400 @error('metode') border-red-400 @enderror">
+                                <option value="">- Pilih Metode -</option>
+                                <option value="transfer_bank" {{ old('metode') == 'transfer_bank' ? 'selected' : '' }}>Transfer Bank</option>
+                                <option value="tunai" {{ old('metode') == 'tunai' ? 'selected' : '' }}>Tunai</option>
+                                <option value="kantor_pos" {{ old('metode') == 'kantor_pos' ? 'selected' : '' }}>Kantor Pos</option>
+                            </select>
+                            @error('metode') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">No. Referensi</label>
+                            <input type="text"
+                                   name="no_referensi"
+                                   value="{{ old('no_referensi') }}"
+                                   class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-400 @error('no_referensi') border-red-400 @enderror">
+                            @error('no_referensi') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Catatan</label>
+                            <textarea name="catatan"
+                                      rows="3"
+                                      class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-400 @error('catatan') border-red-400 @enderror">{{ old('catatan') }}</textarea>
+                            @error('catatan') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                        </div>
+
                     </div>
 
                     <div class="flex gap-3 mt-8">

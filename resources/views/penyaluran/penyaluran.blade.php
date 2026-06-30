@@ -62,8 +62,10 @@
                                 <th class="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wide">Jenis Bantuan</th>
                                 <th class="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wide">Periode</th>
                                 <th class="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wide">Nominal</th>
+                                <th class="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wide">Metode</th>
                                 <th class="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wide">Status</th>
                                 <th class="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wide">Tgl Salur</th>
+                                <th class="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wide">No. Referensi</th>
                                 <th class="text-right px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wide">Aksi</th>
                             </tr>
                         </thead>
@@ -81,6 +83,17 @@
                                 </td>
                                 <td class="px-6 py-4 text-gray-900 font-medium tabular-nums">
                                     {{ $item->nominal ? 'Rp ' . number_format($item->nominal, 0, ',', '.') : '-' }}
+                                </td>
+                                <td class="px-6 py-4 text-gray-600">
+                                    @php
+                                        $metodeLabel = match($item->metode) {
+                                            'transfer_bank' => 'Transfer Bank',
+                                            'tunai'         => 'Tunai',
+                                            'kantor_pos'    => 'Kantor Pos',
+                                            default         => '-',
+                                        };
+                                    @endphp
+                                    {{ $metodeLabel }}
                                 </td>
                                 <td class="px-6 py-4">
                                     @php
@@ -104,6 +117,9 @@
                                 <td class="px-6 py-4 text-gray-500">
                                     {{ $item->tanggal_salur ? $item->tanggal_salur->format('d M Y') : '-' }}
                                 </td>
+                                <td class="px-6 py-4 text-gray-500">
+                                    {{ $item->no_referensi ?? '-' }}
+                                </td>
                                 <td class="px-6 py-4 text-right">
                                     <a href="/penyaluran/{{ $item->id }}/edit"
                                        class="inline-flex items-center gap-1.5 text-xs font-medium text-blue-600 border border-blue-200 px-3 py-1.5 rounded-lg hover:bg-blue-50 transition">
@@ -116,7 +132,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="7" class="px-6 py-16">
+                                <td colspan="9" class="px-6 py-16">
                                     <div class="flex flex-col items-center text-center">
                                         <svg class="w-10 h-10 text-gray-300 mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />

@@ -42,6 +42,10 @@ class PenyaluranController extends Controller
         'periode_tahun' => 'required|integer|min:2000',
         'nominal'       => 'nullable|numeric',
         'status'        => ['required', Rule::in(['belum', 'proses', 'tersalur', 'gagal'])],
+        'tanggal_salur' => 'nullable|date',
+        'metode'        => ['nullable', Rule::in(['transfer_bank', 'tunai', 'kantor_pos'])],
+        'no_referensi'  => 'nullable|string|max:50',
+        'catatan'       => 'nullable|string|max:500',
     ], [
         'periode_bulan.unique' => 'Penerima ini sudah memiliki data penyaluran untuk periode bulan/tahun tersebut.',
     ]);
