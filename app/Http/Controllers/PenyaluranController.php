@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Penyaluran;
+use App\Models\PenerimaBansos;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -17,13 +18,43 @@ class PenyaluranController extends Controller
             ->periode($bulan, $tahun)
             ->paginate(20);
 
-        return view('penyaluran.index', compact('penyaluran', 'bulan', 'tahun'));
+        return view('penyaluran.penyaluran', compact('penyaluran', 'bulan', 'tahun'));
     }
+
+    public function create()
+    {
+        $penerima = PenerimaBansos::with(['warga', 'jenisBansos'])->get();
+
+        return view('penyaluran.create-penyaluran', compact('penerima'));
+    }
+
+    public function store(Request $request)
+{
+    $validated = $request->validate([
+        'penerima_id'   => 'required|exists:penerima_bansos,id',
+        'periode_bulan' => [
+            'required', 'integer', 'min:1', 'max:12',
+            Rule::unique('penyaluran')->where(function ($query) use ($request) {
+                return $query->where('penerima_id', $request->penerima_id)
+                              ->where('periode_tahun', $request->periode_tahun);
+            }),
+        ],
+        'periode_tahun' => 'required|integer|min:2000',
+        'nominal'       => 'nullable|numeric',
+        'status'        => ['required', Rule::in(['belum', 'proses', 'tersalur', 'gagal'])],
+    ], [
+        'periode_bulan.unique' => 'Penerima ini sudah memiliki data penyaluran untuk periode bulan/tahun tersebut.',
+    ]);
+
+    Penyaluran::create($validated);
+
+    return redirect()->route('penyaluran.index')->with('success', 'Data penyaluran berhasil ditambahkan.');
+}
 
     public function edit(int $id)
     {
         $penyaluran = Penyaluran::with(['penerima.warga', 'penerima.jenisBansos'])->findOrFail($id);
-        return view('penyaluran.edit', compact('penyaluran'));
+        return view('penyaluran.edit-penyaluran', compact('penyaluran'));
     }
 
     public function update(Request $request, int $id)

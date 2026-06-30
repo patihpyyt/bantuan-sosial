@@ -36,9 +36,12 @@ Route::middleware('auth')->group(function () {
     Route::resource('jenis-bansos', JenisBansosController::class);
 
     Route::get('/penyaluran', [PenyaluranController::class, 'index'])->name('penyaluran.index');
+    Route::get('/penyaluran/create', [PenyaluranController::class, 'create'])->name('penyaluran.create');
+    Route::post('/penyaluran', [PenyaluranController::class, 'store'])->name('penyaluran.store');
     Route::get('/penyaluran/{id}/edit', [PenyaluranController::class, 'edit'])->name('penyaluran.edit');
     Route::put('/penyaluran/{id}', [PenyaluranController::class, 'update'])->name('penyaluran.update');
     Route::patch('/penyaluran/{id}', [PenyaluranController::class, 'update']);
+    Route::delete('/penyaluran/{id}', [PenyaluranController::class, 'destroy'])->name('penyaluran.destroy');
 
     Route::get('/log-aktivitas', [LogAktivitasController::class, 'index'])->name('log-aktivitas.index');
     Route::get('/log-aktivitas/{id}', [LogAktivitasController::class, 'show'])->name('log-aktivitas.show');
