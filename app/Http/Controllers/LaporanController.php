@@ -13,43 +13,51 @@ class LaporanController extends Controller
         $tahun = $request->tahun ?? date('Y');
 
 
-       $laporan = Penyaluran::with([
-    'penerima.warga',
-    'penerima.jenisBansos'
-])
-->where('periode_bulan', $bulan)
-->where('periode_tahun', $tahun)
-->get();
+        $laporan = Penyaluran::with([
+            'penerima.warga',
+            'penerima.jenisBansos'
+        ])
+        ->where('periode_bulan', $bulan)
+        ->where('periode_tahun', $tahun)
+        ->get();
 
 
 
+        // jumlah data
         $total = $laporan->count();
 
 
+        // status
         $tersalur = $laporan
-            ->where('status','tersalur')
+            ->where('status', 'tersalur')
             ->count();
 
 
         $proses = $laporan
-            ->where('status','proses')
+            ->where('status', 'proses')
             ->count();
 
 
         $gagal = $laporan
-            ->where('status','gagal')
+            ->where('status', 'gagal')
             ->count();
 
 
 
-       return view('laporan.laporan', compact(
-    'laporan',
-    'bulan',
-    'tahun',
-    'total',
-    'tersalur',
-    'proses',
-    'gagal'
-));
+        // total uang bantuan
+        $totalNominal = $laporan->sum('nominal');
+
+
+
+        return view('laporan.laporan', compact(
+            'laporan',
+            'bulan',
+            'tahun',
+            'total',
+            'tersalur',
+            'proses',
+            'gagal',
+            'totalNominal'
+        ));
     }
 }
