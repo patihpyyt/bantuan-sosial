@@ -1,35 +1,47 @@
 <x-app-layout>
     {{-- 1. HERO & SEARCH SECTION (Fokus Utama Warga Langsung di Atas) --}}
-    <section class="relative bg-gradient-to-b from-slate-50 to-white overflow-hidden pt-16 pb-24 sm:pt-24 sm:pb-32 border-b border-slate-100">
-        {{-- Ornamen Latar Belakang Estetik --}}
-        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-50/50 via-transparent to-transparent pointer-events-none"></div>
+    <section class="relative overflow-hidden min-h-screen sm:min-h-[80vh] flex items-center pt-16 pb-32">
 
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-            
+        {{-- Layer Gambar Background (tajam, sebagai latar penuh) --}}
+        <img
+    src="/img/pp.png"
+    alt=""
+    class="absolute inset-0 w-full h-full object-cover"
+>
+
+        {{-- Overlay Navy Gelap dengan Gradient --}}
+        <div class="absolute inset-0 bg-gradient-to-b from-slate-950/95 via-blue-950/85 to-blue-900/70"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-slate-950/60 via-transparent to-slate-950/60"></div>
+
+        {{-- Lengkungan Putih di Bawah (transisi ke section berikutnya) --}}
+        <div class="absolute bottom-0 left-0 right-0 h-24 sm:h-32 bg-white rounded-t-[50%] translate-y-1/2 z-10"></div>
+
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 text-center">
+
             {{-- Lencana Selamat Datang --}}
-            <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 tracking-wide uppercase mb-6 shadow-sm shadow-blue-500/5">
+            <span class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold bg-white text-blue-700 tracking-wide uppercase mb-6 shadow-lg">
                 <span class="w-1.5 h-1.5 bg-blue-600 rounded-full animate-pulse"></span>
                 Layanan Cek Mandiri Warga Desa
             </span>
-            
+
             {{-- Judul Utama --}}
-            <h1 class="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
+            <h1 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight drop-shadow-lg">
                 Pencarian Status Penerima <br>
-                <span class="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent font-black">
+                <span class="bg-gradient-to-r from-blue-400 to-indigo-300 bg-clip-text text-transparent font-black">
                     Bantuan Sosial Desa
                 </span>
             </h1>
 
             {{-- Deskripsi Pendek --}}
-            <p class="mt-4 text-base sm:text-lg text-slate-500 max-w-xl mx-auto leading-relaxed">
+            <p class="mt-4 text-sm sm:text-lg text-slate-200 max-w-xl mx-auto leading-relaxed">
                 Masukkan 16 digit Nomor Induk Kependudukan (NIK) Anda untuk memeriksa status penetapan dan riwayat penyaluran bantuan (PKH, BLT, BPNT) secara transparan.
             </p>
 
             {{-- FORM CEK BANSOS PREMIUM (Ditaruh di Atas) --}}
-            <div class="mt-10 max-w-2xl mx-auto bg-white border border-slate-200/80 shadow-2xl shadow-slate-200/60 rounded-2xl p-5 sm:p-6 transition-all duration-300 hover:border-slate-300">
+            <div class="mt-10 max-w-2xl mx-auto bg-white border border-slate-200/80 shadow-2xl shadow-black/40 rounded-2xl p-5 sm:p-6 transition-all duration-300 hover:border-slate-300">
                 <form action="{{ route('portal.cek') }}" method="POST" class="space-y-4 sm:space-y-0 sm:flex sm:gap-3">
                     @csrf {{-- Token Keamanan Laravel --}}
-                    
+
                     <div class="relative flex-1 text-left">
                         {{-- Icon KTP/ID di dalam Input --}}
                         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
@@ -37,19 +49,19 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 012-2v2M6 14h.01M6 10h.01M6 18h.01"></path>
                             </svg>
                         </div>
-                        <input 
-                            type="text" 
-                            name="nik" 
+                        <input
+                            type="text"
+                            name="nik"
                             id="nik"
                             maxlength="16"
                             required
-                            placeholder="Masukkan 16 Digit NIK Anda..." 
+                            placeholder="Masukkan 16 Digit NIK Anda..."
                             class="w-full bg-slate-50/50 border border-slate-200 focus:border-blue-500 focus:bg-white text-slate-800 rounded-xl pl-12 pr-4 py-4 text-sm font-semibold tracking-wider placeholder-slate-400 focus:ring-4 focus:ring-blue-500/10 transition-all duration-200 outline-none"
                         >
                     </div>
 
-                    <button 
-                        type="submit" 
+                    <button
+                        type="submit"
                         class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-xl shadow-md shadow-blue-500/10 hover:shadow-blue-500/20 active:scale-[0.98] transition-all duration-150 shrink-0 text-sm"
                     >
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -61,14 +73,15 @@
             </div>
 
             {{-- Teks Info Tambahan di Bawah Form --}}
-            <p class="mt-4 text-xs text-slate-400 font-medium flex items-center justify-center gap-1.5">
-                <svg class="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <p class="mt-4 text-xs text-slate-300 font-medium flex items-center justify-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 Data diperbarui secara berkala oleh operator jaring pengaman sosial desa.
             </p>
-{{-- 3. BLOK HASIL PENCARIAN (Hanya muncul jika variable $nik dikirim dari controller) --}}
+
+            {{-- 3. BLOK HASIL PENCARIAN (Hanya muncul jika variable $nik dikirim dari controller) --}}
             @if(isset($nik))
             <div class="mt-10 max-w-2xl mx-auto text-left border border-slate-200/60 bg-white shadow-xl rounded-2xl p-6 transition-all duration-300">
-                
+
                 @if(!$warga)
                     {{-- KONDISI 1: NIK Tidak Terdaftar --}}
                     <div class="bg-red-50/80 border border-red-200 rounded-xl p-5">
@@ -132,7 +145,7 @@
                         </div>
 
                         <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider pt-1">Daftar Bantuan Sosial Aktif:</h4>
-                        
+
                         {{-- Looping Jenis BANSOS --}}
                         @foreach($warga->penerimaBansos as $penerima)
                             <div class="border border-slate-100 rounded-xl p-4 bg-slate-50/40 hover:border-slate-200 transition">
@@ -141,7 +154,7 @@
                                     <span class="px-2 py-0.5 bg-emerald-50 border border-emerald-200 text-emerald-700 text-[9px] font-black rounded-md uppercase tracking-wider">Aktif</span>
                                 </div>
                                 <p class="text-[11px] text-slate-400 font-medium leading-relaxed mb-4">{{ $penerima->jenisBansos->deskripsi }}</p>
-                                
+
                                 {{-- Detail Penyaluran --}}
                                 <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2">Riwayat Log Penyaluran:</div>
                                 @if($penerima->penyaluran->isEmpty())
@@ -182,7 +195,7 @@
     {{-- 2. LAYANAN SISTEM SECTION (Informasi Alur/Edukasi Transparansi di Bawahnya) --}}
     <section class="bg-white py-16 sm:py-24">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            
+
             {{-- Judul Sekunder --}}
             <div class="text-center max-w-xl mx-auto space-y-2">
                 <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">
@@ -195,7 +208,7 @@
 
             {{-- Tiga Kolom Edukasi Informasi --}}
             <div class="grid md:grid-cols-3 gap-8 mt-14 text-slate-600">
-                
+
                 <div class="bg-white border border-slate-100 rounded-2xl p-6 shadow-sm shadow-slate-100/50 hover:shadow-md transition-all duration-200">
                     <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center mb-5 font-bold">01</div>
                     <h3 class="text-base font-bold text-slate-900 mb-1.5">Verifikasi Terintegrasi</h3>
