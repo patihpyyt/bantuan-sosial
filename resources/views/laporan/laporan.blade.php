@@ -8,13 +8,15 @@
                     <h2 class="font-bold text-2xl text-gray-900">Laporan Penyaluran Bansos</h2>
                     <p class="text-sm text-gray-500 mt-1">Ringkasan data penyaluran bantuan sosial per periode.</p>
                 </div>
-                <a href="{{ route('laporan.exportCsv', ['bulan' => $bulan, 'tahun' => $tahun]) }}"
-                   class="inline-flex items-center gap-2 border border-gray-200 text-gray-600 text-sm font-medium px-5 py-2.5 rounded-lg hover:bg-gray-100 transition shrink-0">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                    </svg>
-                    Export CSV
-                </a>
+             <a href="{{ route('laporan.exportExcel',[
+                'bulan'=>$bulan,
+                'tahun'=>$tahun
+            ]) }}"
+            class="bg-white border px-5 py-2.5 rounded-lg">
+
+                Export Excel
+
+            </a>
             </div>
 
             {{-- FILTER --}}
@@ -22,7 +24,8 @@
                 <form method="GET" action="{{ route('laporan.index') }}" class="flex flex-wrap gap-4 items-end">
                     <div>
                         <label class="block text-xs font-medium text-gray-500 mb-1.5">Bulan</label>
-                        <select name="bulan" class="border border-gray-200 rounded-lg px-4 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                        <select name="bulan"
+                            class="w-36 border border-gray-200 rounded-lg px-4 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300">
                             @for($i = 1; $i <= 12; $i++)
                                 <option value="{{ $i }}" {{ $bulan == $i ? 'selected' : '' }}>
                                     {{ \Carbon\Carbon::create()->month($i)->translatedFormat('F') }}
@@ -32,7 +35,9 @@
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-gray-500 mb-1.5">Tahun</label>
-                        <select name="tahun" class="border border-gray-200 rounded-lg px-4 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                         <select name="tahun"
+                            style="width:120px"
+                            class="border border-gray-200 rounded-lg px-4 py-2 text-sm text-gray-700">
                             @for($i = 2025; $i <= 2030; $i++)
                                 <option value="{{ $i }}" {{ $tahun == $i ? 'selected' : '' }}>{{ $i }}</option>
                             @endfor

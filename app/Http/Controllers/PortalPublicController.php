@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Warga;
-use App\Models\PortalCekNikLog;
 use Illuminate\Http\Request;
 
 class PortalPublicController extends Controller
@@ -13,32 +12,22 @@ class PortalPublicController extends Controller
         return view('bansos');
     }
 
+
     public function cek(Request $request)
     {
-        $request->validate([
-            'nik' => ['required', 'digits:16'],
-        ], [
-            'nik.required' => 'NIK wajib diisi.',
-            'nik.digits'   => 'NIK harus 16 digit angka.',
-        ]);
+        $nik = $request->nik;
 
-        $nik = $request->input('nik');
+        $warga = Warga::with([
+            'penerimaBansos.jenisBansos',
+            'penerimaBansos.penyaluran'
+        ])
+        ->where('nik',$nik)
+        ->first();
 
-        $warga = Warga::where('nik', $nik)
-            ->with([
-                'penerimaBansos.jenisBansos',
-                'penerimaBansos.penyaluran' => fn($q) => $q
-                    ->orderBy('periode_tahun', 'desc')
-                    ->orderBy('periode_bulan', 'desc'),
-            ])
-            ->first();
 
-        PortalCekNikLog::create([
-            'nik'        => $nik,
-            'ip_address' => $request->ip(),
-            'ditemukan'  => $warga !== null,
-        ]);
-
-        return view('portal.hasil', compact('warga', 'nik'));
+        return view('bansos', compact(
+            'nik',
+            'warga'
+        ));
     }
 }

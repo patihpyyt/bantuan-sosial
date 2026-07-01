@@ -19,8 +19,11 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/cek-bansos', [PortalPublicController::class, 'index'])->name('portal.index');
-Route::post('/cek-bansos', [PortalPublicController::class, 'cek'])->name('portal.cek');
+Route::get('/cek-bansos', [PortalPublicController::class, 'index'])
+->name('portal.index');
+
+Route::post('/cek-bansos', [PortalPublicController::class, 'cek'])
+->name('portal.cek');
 
 Route::middleware('auth')->group(function () {
 
@@ -48,6 +51,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
     Route::get('/laporan/export-csv', [LaporanController::class, 'exportCsv'])->name('laporan.exportCsv');
+    Route::get('/laporan/export-excel',
+    [LaporanController::class,'exportExcel'])
+    ->name('laporan.exportExcel');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

@@ -26,4 +26,5 @@ class Warga extends Model
 {
     return $this->hasMany(PenerimaBansos::class, 'warga_id');
 }
+
 }

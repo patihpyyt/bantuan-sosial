@@ -95,7 +95,7 @@
                             <div>
                                 <h3 class="text-sm font-bold text-amber-900">Identitas Terverifikasi (Bukan Penerima)</h3>
                                 <div class="mt-2 text-xs font-bold text-slate-700 space-y-0.5">
-                                    <p>Nama Lengkap: <span class="text-slate-900 font-extrabold">{{ $warga->nama }}</span></p>
+                                    <p>Nama Lengkap: <span class="text-slate-900 font-extrabold">{{ $warga->nama_lengkap }}</span></p>
                                     <p>Status: Warga Terdaftar</p>
                                 </div>
                                 <p class="mt-3 text-xs text-amber-700/90 leading-relaxed font-medium pt-2 border-t border-amber-200/60">
@@ -123,7 +123,7 @@
                         <div class="grid grid-cols-2 gap-3 bg-slate-50 border border-slate-100 rounded-xl p-3.5 text-xs font-bold text-slate-600">
                             <div>
                                 <span class="text-[10px] text-slate-400 font-medium block mb-0.5">NAMA PENERIMA</span>
-                                <span class="text-slate-900 font-black tracking-wide">{{ $warga->nama }}</span>
+                                <span class="text-slate-900 font-black tracking-wide">{{ $warga->nama_lengkap }}</span>
                             </div>
                             <div>
                                 <span class="text-[10px] text-slate-400 font-medium block mb-0.5">WILAYAH DOMISILI</span>

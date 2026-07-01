@@ -40,7 +40,9 @@
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-gray-500 mb-1.5">Tahun</label>
-                        <select name="tahun" class="border border-gray-200 rounded-lg px-4 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-400">
+                         <select name="tahun"
+                            style="width:120px"
+                            class="border border-gray-200 rounded-lg px-4 py-2 text-sm text-gray-700">
                             @foreach(range(now()->year - 2, now()->year + 1) as $t)
                                 <option value="{{ $t }}" {{ $tahun == $t ? 'selected' : '' }}>{{ $t }}</option>
                             @endforeach
