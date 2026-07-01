@@ -14,7 +14,7 @@
             {{-- Overlay dasar solid, gelap total --}}
             <div class="absolute inset-0 bg-emerald-950/85"></div>
 
-            {{-- Gradient kiri ke kanan pake style manual (ga pake tailwind arbitrary stop) --}}
+           
             <div
                 class="absolute inset-0"
                 style="background: linear-gradient(to right, rgba(7, 24, 52, 0.98) 0%, rgba(2, 5, 20, 0.9) 35%, rgba(4, 2, 20, 0.55) 65%, rgba(2,20,15,0.25) 100%);"
@@ -44,7 +44,7 @@
             {{-- Judul Utama --}}
             <h1 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight drop-shadow-lg">
                 Pencarian Status Penerima <br>
-                <span class="bg-gradient-to-r from-sky-300 to-indigo-200 bg-clip-text text-transparent font-black drop-shadow-md">
+                <span class="text-blue from-sky-300 to-indigo-200 bg-clip-text font-black drop-shadow-md">
                     Bantuan Sosial Desa
                 </span>
             </h1>
