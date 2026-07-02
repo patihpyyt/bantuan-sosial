@@ -26,8 +26,8 @@
             ></div>
         </div>
 
-        {{-- Overlay Hijau Gelap dengan Gradient --}}
-        <div class="absolute inset-0 bg-gradient-to-r from-emerald-950/95 via-green-900/80 to-green-700/40"></div>
+        {{-- Overlay biru Gelap dengan Gradient --}}
+        <div class="absolute inset-0 bg-gradient-to-r from-emerald-950/95 via-green-900/80 to-blue-700/40"></div>
         <div class="absolute inset-0 bg-gradient-to-b from-emerald-950/70 via-transparent to-emerald-950/60"></div>
 
         {{-- Lengkungan Putih di Bawah (transisi ke section berikutnya) --}}
