@@ -22,7 +22,7 @@
 
             <div
                 class="absolute inset-0"
-                style="background: linear-gradient(to top, rgba(74, 113, 158, 0.9) 0%, rgba(2,20,15,0.2) 40%, rgba(2, 2, 20, 0) 70%);"
+                style="background: linear-gradient(to top, rgba(20, 28, 37, 0.9) 0%, rgba(2,20,15,0.2) 40%, rgba(2, 2, 20, 0) 70%);"
             ></div>
         </div>
 
@@ -250,6 +250,190 @@
                     </p>
                 </div>
 
+            </div>
+        </div>
+    </section>
+
+      {{-- . STATISTIK RINGKAS DESA --}}
+    <section class="bg-slate-50 py-14 sm:py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-xl mx-auto space-y-2 mb-12">
+                <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">
+                    Statistik Bantuan Sosial Desa
+                </h2>
+                <p class="text-sm text-slate-500 font-medium">
+                    Ringkasan data penyaluran bantuan sosial tahun berjalan.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+                <div class="bg-white rounded-2xl p-5 text-center shadow-[0_4px_30px_rgba(0,0,0,0.06)]">
+                    <p class="text-2xl sm:text-3xl font-black text-blue-600">{{ $totalPenerima ?? '0' }}</p>
+                    <p class="text-[11px] sm:text-xs font-bold text-slate-500 mt-1 uppercase tracking-wide">Total Penerima</p>
+                </div>
+                <div class="bg-white rounded-2xl p-5 text-center shadow-[0_4px_30px_rgba(0,0,0,0.06)]">
+                    <p class="text-2xl sm:text-3xl font-black text-emerald-600">{{ $totalProgram ?? '0' }}</p>
+                    <p class="text-[11px] sm:text-xs font-bold text-slate-500 mt-1 uppercase tracking-wide">Program Aktif</p>
+                </div>
+                <div class="bg-white rounded-2xl p-5 text-center shadow-[0_4px_30px_rgba(0,0,0,0.06)]">
+                    <p class="text-xl sm:text-2xl font-black text-indigo-600">Rp {{ number_format($totalAnggaran ?? 0, 0, ',', '.') }}</p>
+                    <p class="text-[11px] sm:text-xs font-bold text-slate-500 mt-1 uppercase tracking-wide">Total Anggaran Tersalur</p>
+                </div>
+                <div class="bg-white rounded-2xl p-5 text-center shadow-[0_4px_30px_rgba(0,0,0,0.06)]">
+                    <p class="text-2xl sm:text-3xl font-black text-amber-600">{{ $totalRTRW ?? '0' }}</p>
+                    <p class="text-[11px] sm:text-xs font-bold text-slate-500 mt-1 uppercase tracking-wide">RT/RW Terjangkau</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+  
+    {{-- 4. PENJELASAN JENIS PROGRAM BANSOS --}}
+    <section class="bg-slate-50 py-16 sm:py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-xl mx-auto space-y-2 mb-14">
+                <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">
+                    Jenis Program Bantuan Sosial
+                </h2>
+                <p class="text-sm text-slate-500 font-medium">
+                    Program bantuan yang dipantau melalui portal ini.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-2xl p-6 shadow-[0_4px_30px_rgba(0,0,0,0.06)]">
+                    <span class="inline-block px-3 py-1 bg-blue-50 text-blue-700 text-[10px] font-black rounded-full uppercase tracking-wider mb-4">PKH</span>
+                    <h3 class="text-base font-bold text-slate-900 mb-2">Program Keluarga Harapan</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed">
+                        Bantuan tunai bersyarat bagi keluarga kurang mampu dengan komponen kesehatan, pendidikan, dan kesejahteraan sosial. Disalurkan bertahap setiap triwulan.
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 shadow-[0_4px_30px_rgba(0,0,0,0.06)]">
+                    <span class="inline-block px-3 py-1 bg-emerald-50 text-emerald-700 text-[10px] font-black rounded-full uppercase tracking-wider mb-4">BLT</span>
+                    <h3 class="text-base font-bold text-slate-900 mb-2">BLT Dana Desa</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed">
+                        Bantuan langsung tunai yang bersumber dari Dana Desa, diperuntukkan bagi keluarga miskin dan rentan yang belum menerima bantuan sosial lain.
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 shadow-[0_4px_30px_rgba(0,0,0,0.06)]">
+                    <span class="inline-block px-3 py-1 bg-amber-50 text-amber-700 text-[10px] font-black rounded-full uppercase tracking-wider mb-4">BPNT</span>
+                    <h3 class="text-base font-bold text-slate-900 mb-2">Bantuan Pangan Non Tunai</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed">
+                        Bantuan berupa saldo elektronik untuk pembelian bahan pangan pokok melalui e-warong atau agen resmi yang ditunjuk pemerintah.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+           {{-- 5. ALUR PENGAJUAN / VERIFIKASI --}}
+<section class="bg-slate-50/50 py-16 sm:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {{-- Header Section --}}
+        <div class="text-center max-w-xl mx-auto mb-12">
+            <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                Alur Pengajuan & Verifikasi
+            </h2>
+            <p class="text-sm text-slate-500 font-medium mt-2">
+                Tahapan keterbukaan warga menjadi calon penerima bantuan sosial desa.
+            </p>
+        </div>
+
+        {{-- Grid Langkah (Step Cards) --}}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            @foreach([
+                ['no' => '01', 'judul' => 'Pendaftaran Mandiri', 'desc' => 'Warga mengisi formulir usulan calon penerima di kantor desa atau via operator setempat.'],
+                ['no' => '02', 'judul' => 'Verifikasi Faktual', 'desc' => 'Tim verifikator melakukan kunjungan lapangan untuk survei riil kondisi rumah tangga.'],
+                ['no' => '03', 'judul' => 'Musyawarah Desa', 'desc' => 'Hasil verifikasi dibahas bersama dalam Musdes untuk menetapkan kelayakan secara adil.'],
+                ['no' => '04', 'judul' => 'Penetapan & Penyaluran', 'desc' => 'Data disahkan ke sistem pusat dan bantuan mulai disalurkan sesuai jadwal program.'],
+            ] as $step)
+            <div class="bg-white border border-slate-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-slate-200 transition duration-300 flex flex-col justify-between">
+                <div>
+                    {{-- Header Kartu: Nomor + Judul --}}
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xs font-black tracking-widest text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md uppercase">
+                            Langkah {{ $step['no'] }}
+                        </span>
+                        <div class="w-1.5 h-1.5 rounded-full bg-slate-300"></div>
+                    </div>
+                    
+                    <h3 class="text-base font-bold text-slate-900 tracking-tight">
+                        {{ $step['judul'] }}
+                    </h3>
+                    <p class="text-xs sm:text-sm text-slate-500 leading-relaxed mt-2">
+                        {{ $step['desc'] }}
+                    </p>
+                </div>
+            </div>
+            @endforeach
+        </div>
+
+    </div>
+</section>
+
+    {{-- 6. FAQ --}}
+    <section class="bg-slate-50 py-16 sm:py-24">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center space-y-2 mb-12">
+                <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">
+                    Pertanyaan yang Sering Diajukan
+                </h2>
+            </div>
+
+            <div class="space-y-3" x-data="{ open: null }">
+                @foreach([
+                    ['q' => 'Apakah data NIK saya aman jika dicek di sini?', 'a' => 'Ya. Sistem hanya menampilkan status penetapan dan riwayat penyaluran, tanpa menampilkan data pribadi sensitif lain seperti alamat lengkap atau nomor rekening.'],
+                    ['q' => 'Kenapa NIK saya terdaftar sebagai warga tapi belum menerima bansos?', 'a' => 'Penetapan penerima bansos ditentukan berdasarkan hasil verifikasi dan musyawarah desa, bukan otomatis dari status kependudukan. Anda tetap bisa mengajukan diri sebagai calon penerima.'],
+                    ['q' => 'Berapa lama proses verifikasi setelah pendaftaran?', 'a' => 'Umumnya proses verifikasi faktual dan musyawarah desa memakan waktu 2-4 minggu, tergantung jadwal tim verifikator dan agenda musyawarah desa setempat.'],
+                    ['q' => 'Ke mana saya harus melapor jika ada dugaan kesalahan data?', 'a' => 'Silakan hubungi kantor desa atau gunakan kontak pengaduan yang tersedia di bagian bawah halaman ini.'],
+                ] as $i => $faq)
+                <div class="bg-white rounded-xl shadow-[0_2px_20px_rgba(0,0,0,0.05)] overflow-hidden">
+                    <button
+                        type="button"
+                        @click="open = open === {{ $i }} ? null : {{ $i }}"
+                        class="w-full flex justify-between items-center gap-4 p-4 sm:p-5 text-left"
+                    >
+                        <span class="text-sm font-bold text-slate-800">{{ $faq['q'] }}</span>
+                        <svg class="w-4 h-4 shrink-0 text-slate-400 transition-transform" :class="open === {{ $i }} ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div x-show="open === {{ $i }}" x-collapse class="px-4 sm:px-5 pb-4 sm:pb-5">
+                        <p class="text-xs text-slate-500 leading-relaxed">{{ $faq['a'] }}</p>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    {{-- 7. KONTAK PENGADUAN --}}
+    <section class="bg-white py-16 sm:py-24">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-3xl p-8 sm:p-12 text-center shadow-xl shadow-blue-500/20">
+                <h2 class="text-xl sm:text-2xl font-extrabold text-white mb-3">
+                    Ada Pertanyaan atau Ingin Melapor?
+                </h2>
+                <p class="text-sm text-blue-100 max-w-lg mx-auto mb-8 leading-relaxed">
+                    Sampaikan keluhan, pertanyaan, atau laporan dugaan penyalahgunaan bantuan sosial melalui kanal resmi berikut.
+                </p>
+                <div class="grid sm:grid-cols-3 gap-4 max-w-2xl mx-auto text-left">
+                    <div class="bg-white/10 rounded-xl p-4 backdrop-blur-sm">
+                        <p class="text-[10px] font-bold text-blue-200 uppercase tracking-wide mb-1">Kantor Desa</p>
+                        <p class="text-xs font-bold text-white">Senin - Jumat, 08.00 - 15.00</p>
+                    </div>
+                    <div class="bg-white/10 rounded-xl p-4 backdrop-blur-sm">
+                        <p class="text-[10px] font-bold text-blue-200 uppercase tracking-wide mb-1">WhatsApp Pengaduan</p>
+                        <p class="text-xs font-bold text-white">{{ $kontakWA ?? '0838936115' }}</p>
+                    </div>
+                    <div class="bg-white/10 rounded-xl p-4 backdrop-blur-sm">
+                        <p class="text-[10px] font-bold text-blue-200 uppercase tracking-wide mb-1">Email Resmi</p>
+                        <p class="text-xs font-bold text-white">{{ $kontakEmail ?? 'bansos@desa.go.id' }}</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
