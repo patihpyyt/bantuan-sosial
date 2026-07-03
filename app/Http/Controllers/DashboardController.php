@@ -14,7 +14,7 @@ class DashboardController extends Controller
         $data = [
             'totalWarga'       => Warga::count(),
             'totalJenisBansos' => JenisBansos::count(),
-            'totalPenerima'    => PenerimaBansos::where('status', 'aktif')->count(),
+            'totalPenerima' => PenerimaBansos::count(),
             'totalPenyaluran'  => Penyaluran::whereMonth('created_at', now()->month)
                                             ->whereYear('created_at', now()->year)
                                             ->count(),

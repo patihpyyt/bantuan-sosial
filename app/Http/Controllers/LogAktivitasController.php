@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\JenisBansos;
 use Illuminate\Http\Request;
 
-class JenisBansosController extends Controller
+class LogAktivitasController extends Controller
 {
     public function index()
     {
