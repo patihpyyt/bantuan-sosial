@@ -170,10 +170,12 @@
                                     <h5 class="text-sm font-black text-blue-600 tracking-tight">{{ $penerima->jenisBansos->nama_bansos }}</h5>
                                     <span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 text-[9px] font-black rounded-md uppercase tracking-wider shadow-[0_0_10px_rgba(16,185,129,0.2)]">Aktif</span>
                                 </div>
-                                <p class="text-[11px] text-slate-500 leading-relaxed mb-4">{{ $penerima->jenisBansos->deskripsi }}</p>
+                                <p class="text-[11px] text-slate-500 leading-relaxed mb-4">
+                                    {{ $penerima->jenisBansos->deskripsi }}
+                                </p>
 
                                 {{-- Detail Penyaluran --}}
-                                <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-2">Riwayat Log Penyaluran:</div>
+                                <div class="text-[10px] text-white font-bold text-slate-500 uppercase tracking-wide mb-2">Riwayat Log Penyaluran:</div>
                                 @if($penerima->penyaluran->isEmpty())
                                     <p class="text-xs text-slate-500 italic font-medium">Belum ada catatan log riwayat penyaluran untuk tahun ini.</p>
                                 @else

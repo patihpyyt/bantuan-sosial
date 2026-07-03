@@ -1,32 +1,52 @@
 <nav class="bg-white/80 backdrop-blur-md border-b border-slate-100 sticky top-0 z-50 transition-all duration-300">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-20 items-center">
-            
-          {{-- Sisi Kiri: Identitas Aplikasi / Brand Logo Modern --}}
-<div class="flex items-center gap-3">
-    <div class="w-11 h-11 flex items-center justify-center rounded-xl overflow-hidden">
-        <img src="/img/bansos.png" alt="Logo Bansos Desa" class="w-full h-full object-contain">
-    </div>
-    <div>
-        <h1 class="text-base font-bold text-slate-900 tracking-tight leading-tight">
-            Sistem <span class="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent font-extrabold">Bansos Desa</span>
-        </h1>
-        <p class="text-[11px] text-slate-400 font-medium hidden sm:block">Pendataan & Monitoring Transparan</p>
-    </div>
-</div>
+   <div class="max-w-7xl mx-auto pl-0 pr-4 sm:pr-6 lg:pr-8">
+    <div class="flex justify-between h-20 items-center">
+        
+      {{-- Sisi Kiri: Identitas Aplikasi / Brand Logo Modern --}}
+      <div class="flex items-center gap-3 pl-0 ml-0">
+          <div class="w-11 h-11 flex items-center justify-center rounded-xl overflow-hidden">
+              <img src="/img/bansos.png" alt="Logo Bansos Desa" class="w-full h-full object-contain">
+          </div>
+          <div>
+              <h1 class="text-base font-bold text-slate-900 tracking-tight leading-tight">
+                  Sistem <span class="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent font-extrabold">Bansos Desa</span>
+              </h1>
+              <p class="text-[11px] text-slate-400 font-medium hidden sm:block">Pendataan & Monitoring Transparan</p>
+          </div>
+      </div>
 
             {{-- Sisi Kanan: Navigasi Menu & Status Login --}}
             <div class="flex items-center gap-8 text-sm font-semibold text-slate-600">
                 
                 {{-- Menu Beranda --}}
-                <a href="/" class="hover:text-blue-600 transition-all duration-200 relative group py-2">
-                    Beranda
-                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
-                </a>
 
                 {{-- Menu Cek Bantuan (Disesuaikan ke /cek-bansos sesuai web.php kamu) --}}
-                <a href="/cek-bansos" class="hover:text-blue-600 transition-all duration-200 relative group py-2">
+                <a href="/" class="hover:text-blue-600 transition-all duration-200 relative group py-2">
                     Cek Bantuan
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="/cek-bansos" class="hover:text-blue-600 transition-all duration-200 relative group py-2">
+                     Transparansi Desa
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="/cek-bansos" class="hover:text-blue-600 transition-all duration-200 relative group py-2">
+                    Statistik Bantuan
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="/cek-bansos" class="hover:text-blue-600 transition-all duration-200 relative group py-2">
+                    Jenis Program
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="/cek-bansos" class="hover:text-blue-600 transition-all duration-200 relative group py-2">
+                    Alur Pengajuan
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="/cek-bansos" class="hover:text-blue-600 transition-all duration-200 relative group py-2">
+                   Pertanyaan
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="/cek-bansos" class="hover:text-blue-600 transition-all duration-200 relative group py-2">
+                   Lapor
                     <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
                 </a>
 
