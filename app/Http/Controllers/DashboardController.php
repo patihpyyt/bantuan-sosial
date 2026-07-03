@@ -19,6 +19,10 @@ class DashboardController extends Controller
                                             ->whereYear('created_at', now()->year)
                                             ->count(),
             'tersalur'         => Penyaluran::where('status', 'tersalur')->count(),
+            'penyaluranTerbaru' => Penyaluran::with(['penerima.warga', 'penerima.jenisBansos'])
+                        ->latest()
+                        ->take(5)
+                        ->get(),
             'belumTersalur'    => Penyaluran::whereIn('status', ['belum', 'proses'])->count(),
             'gagal'            => Penyaluran::where('status', 'gagal')->count(),
         ];

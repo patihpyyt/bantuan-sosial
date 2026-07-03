@@ -112,12 +112,12 @@
                             <div class="flex justify-between items-center py-3 px-2 rounded-xl hover:bg-slate-50/80 transition duration-150">
                                 <div class="flex items-center gap-3 truncate">
                                     <div class="w-8 h-8 bg-slate-100 text-slate-600 text-xs font-bold rounded-full flex items-center justify-center shrink-0">
-                                        {{ strtoupper(substr($item->warga->nama_lengkap ?? 'W', 0, 2)) }}
+                                        {{ strtoupper(substr($item->penerima->warga->nama_lengkap ?? 'W', 0, 2)) }}
                                     </div>
                                     <div class="truncate">
-                                        <p class="text-sm font-semibold text-slate-800 truncate">{{ $item->warga->nama_lengkap ?? '-' }}</p>
+                                       <p class="text-sm font-semibold text-slate-800 truncate">{{ $item->penerima->warga->nama_lengkap ?? '-' }}</p>
                                         <p class="text-xs text-slate-400 flex items-center gap-1.5 mt-0.5">
-                                            <span class="font-medium text-slate-500">{{ $item->jenisBansos->nama_bansos ?? '-' }}</span>
+                                           <span class="font-medium text-slate-500">{{ $item->penerima->jenisBansos->nama_bansos ?? '-' }}</span>
                                             <span class="text-slate-300">·</span>
                                             <span>{{ $item->created_at->format('d M Y') }}</span>
                                         </p>
