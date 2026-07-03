@@ -42,8 +42,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/penyaluran/create', [PenyaluranController::class, 'create'])->name('penyaluran.create');
     Route::post('/penyaluran', [PenyaluranController::class, 'store'])->name('penyaluran.store');
     
-    Route::put('/penyaluran/{id}', [PenyaluranController::class, 'update'])->name('penyaluran.update');
-    Route::patch('/penyaluran/{id}', [PenyaluranController::class, 'update']);
+    Route::get('/penyaluran/{id}/edit', [PenyaluranController::class, 'edit'])->name('penyaluran.edit');
+    Route::match(['put', 'patch'], '/penyaluran/{id}', [PenyaluranController::class, 'update'])->name('penyaluran.update');
     Route::delete('/penyaluran/{id}', [PenyaluranController::class, 'destroy'])->name('penyaluran.destroy');
 
     Route::get('/log-aktivitas', [LogAktivitasController::class, 'index'])->name('log-aktivitas.index');

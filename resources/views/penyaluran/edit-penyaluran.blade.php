@@ -28,7 +28,7 @@
 
                 <form method="POST" action="/penyaluran/{{ $penyaluran->id }}">
                     @csrf
-                    @method('PUT')
+                    @method('PATCH')
 
                     <div class="space-y-5">
 
