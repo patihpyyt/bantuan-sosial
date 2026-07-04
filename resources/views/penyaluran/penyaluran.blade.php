@@ -68,6 +68,7 @@
                                 <th class="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wide">Status</th>
                                 <th class="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wide">Tgl Salur</th>
                                 <th class="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wide">No. Referensi</th>
+                                 <th class="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wide">keterangan</th>
                                 <th class="text-right px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wide">Aksi</th>
                             </tr>
                         </thead>
@@ -121,6 +122,9 @@
                                 </td>
                                 <td class="px-6 py-4 text-gray-500">
                                     {{ $item->no_referensi ?? '-' }}
+                                </td>
+                                <td class="px-6 py-4 text-gray-500">
+                                    {{ $item->catatan ?? '-' }}
                                 </td>
                                 <td class="px-6 py-4 text-right">
                                     <a href="/penyaluran/{{ $item->id }}/edit"

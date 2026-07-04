@@ -25,27 +25,27 @@
                     Cek Bantuan
                     <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
                 </a>
-                <a href="/cek-bansos" class="hover:text-blue-600 transition-all duration-200 relative group py-2">
+                <a href="#komitmen" class="hover:text-blue-600 transition-all duration-200 relative group py-2">
                      Transparansi Desa
                     <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
                 </a>
-                <a href="/cek-bansos" class="hover:text-blue-600 transition-all duration-200 relative group py-2">
+                <a href="#statistik" class="hover:text-blue-600 transition-all duration-200 relative group py-2">
                     Statistik Bantuan
                     <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
                 </a>
-                <a href="/cek-bansos" class="hover:text-blue-600 transition-all duration-200 relative group py-2">
+                <a href="#jenis" class="hover:text-blue-600 transition-all duration-200 relative group py-2">
                     Jenis Program
                     <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
                 </a>
-                <a href="/cek-bansos" class="hover:text-blue-600 transition-all duration-200 relative group py-2">
+                <a href="#alur" class="hover:text-blue-600 transition-all duration-200 relative group py-2">
                     Alur Pengajuan
                     <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
                 </a>
-                <a href="/cek-bansos" class="hover:text-blue-600 transition-all duration-200 relative group py-2">
+                <a href="#faq" class="hover:text-blue-600 transition-all duration-200 relative group py-2">
                    Pertanyaan
                     <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
                 </a>
-                <a href="/cek-bansos" class="hover:text-blue-600 transition-all duration-200 relative group py-2">
+                <a href="#lapor" class="hover:text-blue-600 transition-all duration-200 relative group py-2">
                    Lapor
                     <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
                 </a>

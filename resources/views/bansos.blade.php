@@ -212,7 +212,7 @@
     </section>
 
     {{-- 2. LAYANAN SISTEM SECTION (Informasi Alur/Edukasi Transparansi di Bawahnya) --}}
-    <section class="bg-white py-16 sm:py-24">
+    <section class="bg-white py-16 sm:py-24" id="komitmen">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
             {{-- Judul Sekunder --}}
@@ -256,8 +256,8 @@
         </div>
     </section>
 
-      {{-- . STATISTIK RINGKAS DESA --}}
-    <section class="bg-slate-50 py-14 sm:py-20">
+      {{-- 3. STATISTIK RINGKAS DESA --}}
+    <section class="bg-slate-50 py-14 sm:py-20" id="statistik">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-xl mx-auto space-y-2 mb-12">
                 <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">
@@ -291,7 +291,7 @@
 
   
     {{-- 4. PENJELASAN JENIS PROGRAM BANSOS --}}
-    <section class="bg-slate-50 py-16 sm:py-24">
+    <section class="bg-slate-50 py-16 sm:py-24" id="jenis">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-xl mx-auto space-y-2 mb-14">
                 <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">
@@ -331,7 +331,7 @@
     </section>
 
            {{-- 5. ALUR PENGAJUAN / VERIFIKASI --}}
-<section class="bg-slate-50/50 py-16 sm:py-24">
+<section class="bg-slate-50/50 py-16 sm:py-24" id="alur">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {{-- Header Section --}}
@@ -377,7 +377,7 @@
 </section>
 
     {{-- 6. FAQ --}}
-    <section class="bg-slate-50 py-16 sm:py-24">
+    <section class="bg-slate-50 py-16 sm:py-24" id="faq">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center space-y-2 mb-12">
                 <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">
@@ -413,7 +413,7 @@
     </section>
 
     {{-- 7. KONTAK PENGADUAN --}}
-    <section class="bg-white py-16 sm:py-24">
+    <section class="bg-white py-16 sm:py-24" id="lapor">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-3xl p-8 sm:p-12 text-center shadow-xl shadow-blue-500/20">
                 <h2 class="text-xl sm:text-2xl font-extrabold text-white mb-3">

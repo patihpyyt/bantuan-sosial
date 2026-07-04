@@ -96,7 +96,9 @@
 
                             </td>
 
-
+                              <td class="px-3">
+                                {{ $item->keterangan ?? '-' }}
+                            </td>
                             <td class="px-3">
 
                                 <a href="{{ route('penerima-bansos.edit', $item->id) }}"
