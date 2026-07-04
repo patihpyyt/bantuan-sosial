@@ -12,7 +12,12 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('bansos');
+    return view('bansos', [
+        'totalPenerima' => \App\Models\PenerimaBansos::count(),
+        'totalProgram'  => \App\Models\JenisBansos::count(),
+        'totalAnggaran' => \App\Models\Penyaluran::where('status', 'tersalur')->sum('nominal'),
+        'totalRTRW'     => \App\Models\Warga::distinct('desa')->count('desa'),
+    ]);
 });
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');

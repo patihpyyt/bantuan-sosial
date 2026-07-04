@@ -30,7 +30,7 @@
         <div class="absolute inset-0 bg-gradient-to-r from-emerald-950/95 via-green-900/80 to-blue-700/40"></div>
         <div class="absolute inset-0 bg-gradient-to-b from-emerald-950/70 via-transparent to-emerald-950/60"></div>
 
-        {{-- Lengkungan Putih di Bawah (transisi ke section berikutnya) --}}
+        {{-- (transisi ke section berikutnya) --}}
         <div class="absolute bottom-0 left-0 right-0 h-24 sm:h-32 bg-white rounded-t-[50%] translate-y-1/2 z-10"></div>
 
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 text-center">
@@ -44,7 +44,7 @@
             {{-- Judul Utama --}}
             <h1 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight drop-shadow-lg">
                 Pencarian Status Penerima <br>
-                <span class="text-blue from-sky-300 to-indigo-200 bg-clip-text font-black drop-shadow-md">
+                <span class="text-blue from-sky-300 to-indigo-200 bg-clip-text  drop-shadow-md">
                     Bantuan Sosial Desa
                 </span>
             </h1>
@@ -166,18 +166,69 @@
                         {{-- Looping Jenis BANSOS --}}
                         @foreach($warga->penerimaBansos as $penerima)
                             <div class="rounded-xl p-4 bg-slate-50/40 shadow-[0_2px_20px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_25px_rgba(0,0,0,0.08)] transition">
-                                <div class="flex justify-between items-start mb-1">
-                                    <h5 class="text-sm font-black text-blue-600 tracking-tight">{{ $penerima->jenisBansos->nama_bansos }}</h5>
-                                    <span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 text-[9px] font-black rounded-md uppercase tracking-wider shadow-[0_0_10px_rgba(16,185,129,0.2)]">Aktif</span>
-                                </div>
-                                <p class="text-[11px] text-slate-500 leading-relaxed mb-4">
-                                    {{ $penerima->jenisBansos->deskripsi }}
-                                </p>
+                                <div class="rounded-xl overflow-hidden border border-slate-200 bg-white mt-4">
+    <table class="w-full text-sm">
+        <tbody class="divide-y divide-slate-200">
+            <tr>
+                <td class="w-52 bg-slate-50 px-4 py-3 font-semibold text-slate-600">
+                    Jenis Bantuan
+                </td>
+                <td class="px-4 py-3 font-bold text-blue-600">
+                    {{ $penerima->jenisBansos->nama_bansos ?? '-' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td class="bg-slate-50 px-4 py-3 font-semibold text-slate-600">
+                    Status Kelayakan
+                </td>
+                <td class="px-4 py-3">
+                    @if($penerima->status === 'layak')
+                        <span class="inline-flex px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-bold">
+                            Layak
+                        </span>
+                    @elseif($penerima->status === 'tidak_layak')
+                        <span class="inline-flex px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-bold">
+                            Tidak Layak
+                        </span>
+                    @else
+                        <span class="inline-flex px-3 py-1 rounded-full bg-slate-100 text-slate-500 text-xs font-bold">
+                            Belum Ditentukan
+                        </span>
+                    @endif
+                </td>
+            </tr>
+
+            <tr>
+                <td class="bg-slate-50 px-4 py-3 font-semibold text-slate-600">
+                    Besaran Dana
+                </td>
+                <td class="px-4 py-3 font-bold">
+                    Rp {{ number_format($penerima->jenisBansos->jumlah_bantuan ?? 0, 0, ',', '.') }}
+                </td>
+            </tr>
+
+            <tr>
+                <td class="bg-slate-50 px-4 py-3 font-semibold text-slate-600">
+                    Periode Distribusi
+                </td>
+                <td class="px-4 py-3">
+                    @if($penerima->penyaluran->isEmpty())
+                        <span class="text-slate-400 italic">Belum Ditentukan</span>
+                    @else
+                        {{ \Carbon\Carbon::create()->month($penerima->penyaluran->first()->periode_bulan)->translatedFormat('F') }}
+                        {{ $penerima->penyaluran->first()->periode_tahun }}
+                    @endif
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
                                 {{-- Detail Penyaluran --}}
                                 <div class="text-[10px] text-white font-bold text-slate-500 uppercase tracking-wide mb-2">Riwayat Log Penyaluran:</div>
                                 @if($penerima->penyaluran->isEmpty())
-                                    <p class="text-xs text-slate-500 italic font-medium">Belum ada catatan log riwayat penyaluran untuk tahun ini.</p>
+                                    <p class="text-white text-xs text-slate-500 italic font-medium">Belum ada catatan log riwayat penyaluran untuk tahun ini.</p>
                                 @else
                                     <div class="rounded-xl overflow-hidden bg-white text-[11px] shadow-[0_2px_20px_rgba(0,0,0,0.06)]">
                                         <table class="w-full text-left border-collapse">
