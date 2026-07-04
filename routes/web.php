@@ -16,7 +16,7 @@ Route::get('/', function () {
         'totalPenerima' => \App\Models\PenerimaBansos::count(),
         'totalProgram'  => \App\Models\JenisBansos::count(),
         'totalAnggaran' => \App\Models\Penyaluran::where('status', 'tersalur')->sum('nominal'),
-        'totalRTRW'     => \App\Models\Warga::distinct('desa')->count('desa'),
+       'totalRTRW' => \App\Models\Warga::distinct('alamat')->count('alamat'),
     ]);
 });
 
