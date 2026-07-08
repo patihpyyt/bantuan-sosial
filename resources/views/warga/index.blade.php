@@ -65,6 +65,10 @@ Alamat
 </th>
 
 <th class="border p-3">
+RT/RW
+</th>
+
+<th class="border p-3">
 Aksi
 </th>
 
@@ -100,6 +104,14 @@ Aksi
 
 <td class="border p-3">
 {{$data->alamat}}
+</td>
+
+<td class="border p-3 text-center">
+    @if($data->rt && $data->rw)
+        {{ $data->rt }}/{{ $data->rw }}
+    @else
+        <span class="text-gray-400 italic">Belum diisi</span>
+    @endif
 </td>
 
 

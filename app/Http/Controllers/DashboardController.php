@@ -11,13 +11,12 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
 
-        // Kalau yang login warga, tampilkan dashboard search-only
         if ($user->role === 'warga') {
-            return view('dashboard-warga');
+            return $this->dashboardWarga($request);
         }
 
         // ============================
@@ -49,32 +48,52 @@ class DashboardController extends Controller
     }
 
     /**
-     * Pencarian warga (nama atau NIK) untuk halaman dashboard warga.
+     * Dashboard warga: otomatis tampilkan tetangga satu RT/RW,
+     * plus search bar untuk mempersempit hasil.
      */
-    public function cariWarga(Request $request)
+    private function dashboardWarga(Request $request)
     {
-        $request->validate([
-            'keyword' => ['required', 'string', 'min:3'],
-        ]);
+        $user = Auth::user();
 
-        $keyword = $request->keyword;
+        // Cari data diri sendiri di tabel warga (data master yang diinput petugas)
+        $dataDiri = Warga::where('nik', $user->nik)->first();
 
-        $hasil = Warga::where('nama_lengkap', 'like', "%{$keyword}%")
-            ->orWhere('nik', 'like', "%{$keyword}%")
-            ->limit(10)
-            ->get();
+        // Kalau petugas belum pernah input data warga ini, tidak bisa filter RT/RW
+        if (! $dataDiri || ! $dataDiri->rt || ! $dataDiri->rw) {
+            return view('dashboard-warga', [
+                'dataDiri' => $dataDiri,
+                'tetangga' => collect(),
+                'belumTerdaftar' => true,
+                'keyword' => $request->keyword,
+            ]);
+        }
 
-        $hasil = $hasil->map(function ($warga) {
+        $query = Warga::where('rt', $dataDiri->rt)
+            ->where('rw', $dataDiri->rw)
+            ->where('nik', '!=', $user->nik); // exclude diri sendiri dari daftar tetangga
+
+        if ($request->filled('keyword')) {
+            $keyword = $request->keyword;
+            $query->where(function ($q) use ($keyword) {
+                $q->where('nama_lengkap', 'like', "%{$keyword}%")
+                  ->orWhere('nik', 'like', "%{$keyword}%");
+            });
+        }
+
+        $tetangga = $query->orderBy('nama_lengkap')->get();
+
+        // Tambahkan status bansos untuk tiap tetangga
+        $tetangga = $tetangga->map(function ($warga) {
             $penerima = PenerimaBansos::where('nik', $warga->nik)->first();
-
             $warga->status_bansos = $penerima ? 'Terdaftar sebagai penerima bansos' : 'Belum terdaftar';
-
             return $warga;
         });
 
         return view('dashboard-warga', [
-            'hasil' => $hasil,
-            'keyword' => $keyword,
+            'dataDiri' => $dataDiri,
+            'tetangga' => $tetangga,
+            'belumTerdaftar' => false,
+            'keyword' => $request->keyword,
         ]);
     }
 

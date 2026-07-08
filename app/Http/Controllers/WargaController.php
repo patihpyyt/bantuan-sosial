@@ -29,7 +29,9 @@ class WargaController extends Controller
             'no_kk'=>'required',
             'nama_lengkap'=>'required',
             'jenis_kelamin'=>'required',
-            'alamat'=>'required'
+            'alamat'=>'required',
+            'rt'=>'required|string|max:5',
+            'rw'=>'required|string|max:5',
         ]);
 
 
@@ -61,7 +63,9 @@ class WargaController extends Controller
             'no_kk'=>'required',
             'nama_lengkap'=>'required',
             'jenis_kelamin'=>'required',
-            'alamat'=>'required'
+            'alamat'=>'required',
+            'rt'=>'required|string|max:5',
+            'rw'=>'required|string|max:5',
         ]);
 
 

@@ -19,7 +19,9 @@ class Warga extends Model
         'kecamatan',
         'kabupaten',
         'pekerjaan',
-        'penghasilan'
+        'penghasilan',
+        'rt',
+        'rw'
     ];
 
     public function penerimaBansos()

@@ -87,6 +87,30 @@
                             @error('alamat') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                         </div>
 
+                        {{-- RT & RW --}}
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">RT <span class="text-red-500">*</span></label>
+                                <input type="text"
+                                       name="rt"
+                                       value="{{ old('rt') }}"
+                                       placeholder="Contoh: 002"
+                                       maxlength="5"
+                                       class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-400 @error('rt') border-red-400 @enderror">
+                                @error('rt') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">RW <span class="text-red-500">*</span></label>
+                                <input type="text"
+                                       name="rw"
+                                       value="{{ old('rw') }}"
+                                       placeholder="Contoh: 005"
+                                       maxlength="5"
+                                       class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-400 @error('rw') border-red-400 @enderror">
+                                @error('rw') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                            </div>
+                        </div>
+
                     </div>
 
                     {{-- TOMBOL --}}
