@@ -24,6 +24,9 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::get('/dashboard/cari-warga', [App\Http\Controllers\DashboardController::class, 'cariWarga'])
+    ->name('dashboard.cari-warga');
+
 Route::get('/login-warga', [AuthController::class, 'showLoginWarga'])->name('login.warga');
 Route::post('/login-warga', [AuthController::class, 'loginWarga']);
 
@@ -36,7 +39,7 @@ Route::post('/cek-bansos', [PortalPublicController::class, 'cek'])
 Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])
-    ->middleware(['auth', 'verified'])
+    ->middleware(['auth'])
     ->name('dashboard');
 
     Route::resource('warga', WargaController::class);
