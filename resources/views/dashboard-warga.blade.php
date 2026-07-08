@@ -118,10 +118,14 @@
                             </td>
 
                             <td class="px-5 py-4 text-right">
-                                <button type="button"
-                                    class="px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 font-bold text-xs rounded-lg border border-red-200 transition cursor-pointer">
-                                    Sanggah
-                                </button>
+                     <button
+                        type="button"
+                        onclick="bukaModal('{{ $warga->id }}','{{ $warga->nama_lengkap }}')"
+                        class="px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 font-bold text-xs rounded-lg border border-red-200 transition cursor-pointer">
+
+                        Sanggah
+
+                    </button>
                             </td>
 
                         </tr>
@@ -143,4 +147,130 @@
         @endif
 
     </div>
+
+    {{-- Modal Sanggah --}}
+<div id="modalSanggah"
+    class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-xl mx-4">
+
+        {{-- Header --}}
+        <div class="px-6 py-4 border-b flex items-center justify-between">
+            <div>
+                <h2 class="text-xl font-bold text-slate-800">
+                    Laporkan Sanggahan
+                </h2>
+                <p class="text-sm text-slate-500">
+                    Laporkan apabila terdapat penerima bansos yang tidak sesuai.
+                </p>
+            </div>
+
+            <button type="button"
+                onclick="tutupModal()"
+                class="text-slate-400 hover:text-red-500 text-2xl font-bold">
+                &times;
+            </button>
+        </div>
+
+        {{-- Form --}}
+        <form action="{{ route('laporan-sanggahan.store') }}"
+            method="POST"
+            enctype="multipart/form-data">
+
+            @csrf
+
+            <input type="hidden"
+                name="warga_id"
+                id="warga_id">
+
+            <div class="p-6 space-y-5">
+
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">
+                        Warga yang Disanggah
+                    </label>
+
+                    <input type="text"
+                        id="nama_warga"
+                        class="w-full rounded-xl border-slate-300 bg-slate-100"
+                        readonly>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">
+                        Alasan Sanggahan
+                    </label>
+
+                    <textarea
+                        name="alasan"
+                        rows="5"
+                        required
+                        class="w-full rounded-xl border-slate-300 focus:border-red-500 focus:ring-red-500"
+                        placeholder="Jelaskan alasan mengapa warga ini dianggap tidak layak menerima bansos..."></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">
+                        Upload Bukti (Opsional)
+                    </label>
+
+                    <input
+                        type="file"
+                        name="bukti"
+                        accept="image/*"
+                        class="block w-full rounded-xl border border-slate-300 p-2">
+                </div>
+
+            </div>
+
+            <div class="px-6 py-4 border-t flex justify-end gap-3">
+
+                <button
+                    type="button"
+                    onclick="tutupModal()"
+                    class="px-5 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 font-semibold">
+
+                    Batal
+
+                </button>
+
+                <button
+                    type="submit"
+                    class="px-5 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold">
+
+                    Kirim Sanggahan
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
 </x-app-layout>
+
+  <script>
+
+    function bukaModal(id,nama){
+
+        document.getElementById('warga_id').value=id;
+
+        document.getElementById('nama_warga').value=nama;
+
+        document.getElementById('modalSanggah').classList.remove('hidden');
+
+        document.getElementById('modalSanggah').classList.add('flex');
+
+    }
+
+    function tutupModal(){
+
+        document.getElementById('modalSanggah').classList.remove('flex');
+
+        document.getElementById('modalSanggah').classList.add('hidden');
+
+    }
+
+    </script>

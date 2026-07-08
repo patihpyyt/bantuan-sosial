@@ -90,9 +90,45 @@
                                     <span class="text-xs text-slate-400 block mt-0.5 truncate">Ekspor data</span>
                                 </div>
                             </a>
-                            <a href="{{ route('laporan-sanggahan.index') }}">
-                                Laporan Sanggahan
-                            </a>
+                            <a href="{{ route('laporan-sanggahan.index') }}"
+    class="group flex items-center gap-4 border border-slate-100 rounded-xl p-4 hover:bg-slate-50 hover:border-slate-300/80 active:scale-[0.98] transition-all duration-200">
+
+    <div class="w-10 h-10 bg-slate-50 text-slate-700 rounded-lg flex items-center justify-center group-hover:bg-red-600 group-hover:text-white transition duration-200 shrink-0 shadow-sm border border-slate-100">
+
+        <svg class="w-5 h-5 stroke-[1.5]"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24">
+
+            <path stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+
+            <path stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M13.73 21a2 2 0 01-3.46 0"/>
+
+        </svg>
+
+    </div>
+
+    <div class="truncate">
+
+        <span class="block text-sm font-semibold text-slate-800 group-hover:text-red-600 transition truncate">
+
+            Laporan Sanggahan
+
+        </span>
+
+        <span class="text-xs text-slate-400 block mt-0.5 truncate">
+
+            Aduan warga
+
+        </span>
+
+    </div>
+
+</a>
                         </div>
                     </div>
 
