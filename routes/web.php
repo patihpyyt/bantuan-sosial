@@ -24,6 +24,9 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::get('/login-warga', [AuthController::class, 'showLoginWarga'])->name('login.warga');
+Route::post('/login-warga', [AuthController::class, 'loginWarga']);
+
 Route::get('/cek-bansos', [PortalPublicController::class, 'index'])
 ->name('portal.index');
 
