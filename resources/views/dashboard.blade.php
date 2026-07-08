@@ -90,6 +90,9 @@
                                     <span class="text-xs text-slate-400 block mt-0.5 truncate">Ekspor data</span>
                                 </div>
                             </a>
+                            <a href="{{ route('laporan-sanggahan.index') }}">
+                                Laporan Sanggahan
+                            </a>
                         </div>
                     </div>
 

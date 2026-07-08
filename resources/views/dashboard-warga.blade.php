@@ -79,37 +79,54 @@
                 @if($tetangga->count() > 0)
                     <table class="w-full text-sm">
                         <thead>
-                            <tr class="bg-slate-50 border-b border-slate-200 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">
-                                <th class="px-5 py-3">Nama</th>
-                                <th class="px-5 py-3">NIK</th>
-                                <th class="px-5 py-3">Alamat</th>
-                                <th class="px-5 py-3">Status Bansos</th>
-                                <th class="px-5 py-3 text-right">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-100">
-                            @foreach($tetangga as $warga)
-                                <tr class="hover:bg-slate-50/60 transition">
-                                    <td class="px-5 py-4 font-semibold text-slate-800">{{ $warga->nama_lengkap }}</td>
-                                    <td class="px-5 py-4 text-slate-500">{{ $warga->nik }}</td>
-                                    <td class="px-5 py-4 text-slate-500">{{ $warga->alamat }}</td>
-                                    <td class="px-5 py-4">
-                                        <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg
-                                            {{ $warga->status_bansos === 'Terdaftar sebagai penerima bansos'
-                                                ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                                                : 'bg-slate-100 text-slate-500 border border-slate-200' }}">
-                                            {{ $warga->status_bansos }}
-                                        </span>
-                                    </td>
-                                    <td class="px-5 py-4 text-right">
-                                        <button type="button"
-                                            class="px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 font-bold text-xs rounded-lg border border-red-200 transition cursor-pointer">
-                                            Sanggah
-                                        </button>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
+                        <tr class="bg-slate-50 border-b border-slate-200 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">
+                            <th class="px-5 py-3">Nama</th>
+                            <th class="px-5 py-3">NIK</th>
+                            <th class="px-5 py-3">RT/RW</th>
+                            <th class="px-5 py-3">Alamat</th>
+                            <th class="px-5 py-3">Status Bansos</th>
+                            <th class="px-5 py-3 text-right">Aksi</th>
+                        </tr>
+                    </thead>
+                                        <tbody class="divide-y divide-slate-100">
+                    @foreach($tetangga as $warga)
+                        <tr class="hover:bg-slate-50/60 transition">
+
+                            <td class="px-5 py-4 font-semibold text-slate-800">
+                                {{ $warga->nama_lengkap }}
+                            </td>
+
+                            <td class="px-5 py-4 text-slate-500">
+                                {{ $warga->nik }}
+                            </td>
+
+                            <td class="px-5 py-4 text-slate-500 font-medium">
+                                RT {{ $warga->rt }} / RW {{ $warga->rw }}
+                            </td>
+
+                            <td class="px-5 py-4 text-slate-500">
+                                {{ $warga->alamat }}
+                            </td>
+
+                            <td class="px-5 py-4">
+                                <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg
+                                    {{ $warga->status_bansos === 'Terdaftar sebagai penerima bansos'
+                                        ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                                        : 'bg-slate-100 text-slate-500 border border-slate-200' }}">
+                                    {{ $warga->status_bansos }}
+                                </span>
+                            </td>
+
+                            <td class="px-5 py-4 text-right">
+                                <button type="button"
+                                    class="px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 font-bold text-xs rounded-lg border border-red-200 transition cursor-pointer">
+                                    Sanggah
+                                </button>
+                            </td>
+
+                        </tr>
+                    @endforeach
+                </tbody>
                     </table>
                 @else
                     <div class="text-center py-12">

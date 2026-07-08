@@ -9,6 +9,7 @@ use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PortalPublicController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LaporanSanggahanController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -53,6 +54,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/penyaluran/create', [PenyaluranController::class, 'create'])->name('penyaluran.create');
     Route::post('/penyaluran', [PenyaluranController::class, 'store'])->name('penyaluran.store');
     
+    Route::get('/laporan-sanggahan', [LaporanSanggahanController::class, 'index'])
+        ->name('laporan-sanggahan.index');
+
+    Route::post('/laporan-sanggahan', [LaporanSanggahanController::class, 'store'])
+        ->name('laporan-sanggahan.store');
+
+    Route::put('/laporan-sanggahan/{id}', [LaporanSanggahanController::class, 'update'])
+        ->name('laporan-sanggahan.update');
+
     Route::get('/penyaluran/{id}/edit', [PenyaluranController::class, 'edit'])->name('penyaluran.edit');
     Route::match(['put', 'patch'], '/penyaluran/{id}', [PenyaluranController::class, 'update'])->name('penyaluran.update');
     Route::delete('/penyaluran/{id}', [PenyaluranController::class, 'destroy'])->name('penyaluran.destroy');
