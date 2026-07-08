@@ -33,6 +33,10 @@
                             </th>
 
                             <th class="text-left px-3">
+                                RT/RW
+                            </th>
+
+                            <th class="text-left px-3">
                                 Jenis Bansos
                             </th>
 
@@ -42,6 +46,10 @@
 
                             <th class="text-left px-3">
                                 Status
+                            </th>
+
+                            <th class="text-left px-3">
+                                Keterangan
                             </th>
 
                             <th class="text-left px-3">
@@ -65,6 +73,14 @@
 
                             <td class="px-3">
                                 {{ $item->warga->nama_lengkap ?? '-' }}
+                            </td>
+
+                            <td class="px-3">
+                                @if(($item->warga->rt ?? null) && ($item->warga->rw ?? null))
+                                    {{ $item->warga->rt }}/{{ $item->warga->rw }}
+                                @else
+                                    <span class="text-gray-400 italic">Belum diisi</span>
+                                @endif
                             </td>
 
 
@@ -133,7 +149,7 @@
 
                         <tr>
 
-                            <td colspan="6"
+                            <td colspan="8"
                                 class="text-center py-5 text-gray-500">
 
                                 Belum ada data penerima

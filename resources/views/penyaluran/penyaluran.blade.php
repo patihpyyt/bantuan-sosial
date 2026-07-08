@@ -61,6 +61,7 @@
                         <thead class="bg-gray-50 border-b border-gray-100">
                             <tr>
                                 <th class="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wide">Nama Warga</th>
+                                <th class="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wide">RT/RW</th>
                                 <th class="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wide">Jenis Bantuan</th>
                                 <th class="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wide">Periode</th>
                                 <th class="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wide">Nominal</th>
@@ -77,6 +78,13 @@
                             <tr class="hover:bg-gray-50/80 transition">
                                 <td class="px-6 py-4">
                                     <div class="font-medium text-gray-900">{{ $item->penerima->warga->nama_lengkap ?? '-' }}</div>
+                                </td>
+                                <td class="px-6 py-4 text-gray-600">
+                                    @if(($item->penerima->warga->rt ?? null) && ($item->penerima->warga->rw ?? null))
+                                        {{ $item->penerima->warga->rt }}/{{ $item->penerima->warga->rw }}
+                                    @else
+                                        <span class="text-gray-400 italic">-</span>
+                                    @endif
                                 </td>
                                 <td class="px-6 py-4 text-gray-600">
                                     {{ $item->penerima->jenisBansos->nama_bansos ?? '-' }}
@@ -138,7 +146,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="9" class="px-6 py-16">
+                                <td colspan="10" class="px-6 py-16">
                                     <div class="flex flex-col items-center text-center">
                                         <svg class="w-10 h-10 text-gray-300 mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />

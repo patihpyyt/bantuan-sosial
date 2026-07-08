@@ -33,6 +33,9 @@
                                 @foreach($penerima as $p)
                                     <option value="{{ $p->id }}" {{ old('penerima_id') == $p->id ? 'selected' : '' }}>
                                         {{ $p->warga->nama_lengkap ?? '-' }} — {{ $p->jenisBansos->nama_bansos ?? '-' }}
+                                        @if(($p->warga->rt ?? null) && ($p->warga->rw ?? null))
+                                            (RT {{ $p->warga->rt }}/RW {{ $p->warga->rw }})
+                                        @endif
                                     </option>
                                 @endforeach
                             </select>

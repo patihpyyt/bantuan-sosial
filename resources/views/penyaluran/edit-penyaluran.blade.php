@@ -22,6 +22,16 @@
 
                 <div class="bg-gray-50 rounded-xl p-4 mb-6 text-sm space-y-1">
                     <p><span class="text-gray-500">Nama Warga:</span> <span class="font-medium text-gray-800">{{ $penyaluran->penerima->warga->nama_lengkap ?? '-' }}</span></p>
+                    <p>
+                        <span class="text-gray-500">RT/RW:</span>
+                        <span class="font-medium text-gray-800">
+                            @if(($penyaluran->penerima->warga->rt ?? null) && ($penyaluran->penerima->warga->rw ?? null))
+                                {{ $penyaluran->penerima->warga->rt }}/{{ $penyaluran->penerima->warga->rw }}
+                            @else
+                                -
+                            @endif
+                        </span>
+                    </p>
                     <p><span class="text-gray-500">Jenis Bantuan:</span> <span class="font-medium text-gray-800">{{ $penyaluran->penerima->jenisBansos->nama_bansos ?? '-' }}</span></p>
                     <p><span class="text-gray-500">Periode:</span> <span class="font-medium text-gray-800">{{ \Carbon\Carbon::create()->month($penyaluran->periode_bulan)->translatedFormat('F') }} {{ $penyaluran->periode_tahun }}</span></p>
                 </div>

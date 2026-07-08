@@ -19,9 +19,7 @@ class DashboardController extends Controller
             return $this->dashboardWarga($request);
         }
 
-        // ============================
-        // Dashboard petugas/admin (logic lama)
-        // ============================
+     
         $data = [
             'totalWarga'       => Warga::count(),
             'totalJenisBansos' => JenisBansos::count(),
@@ -83,11 +81,14 @@ class DashboardController extends Controller
         $tetangga = $query->orderBy('nama_lengkap')->get();
 
         // Tambahkan status bansos untuk tiap tetangga
-        $tetangga = $tetangga->map(function ($warga) {
-            $penerima = PenerimaBansos::where('nik', $warga->nik)->first();
-            $warga->status_bansos = $penerima ? 'Terdaftar sebagai penerima bansos' : 'Belum terdaftar';
-            return $warga;
-        });
+       $tetangga = $tetangga->map(function ($warga) {
+
+    $warga->status_bansos = $warga->penerimaBansos()->exists()
+        ? 'Terdaftar sebagai penerima bansos'
+        : 'Belum terdaftar';
+
+    return $warga;
+});
 
         return view('dashboard-warga', [
             'dataDiri' => $dataDiri,

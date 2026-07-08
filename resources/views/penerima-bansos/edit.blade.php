@@ -41,6 +41,11 @@
 
                                     {{ $item->nama_lengkap }}
                                     - NIK: {{ $item->nik }}
+                                    @if($item->rt && $item->rw)
+                                        (RT {{ $item->rt }}/RW {{ $item->rw }})
+                                    @else
+                                        (RT/RW belum diisi)
+                                    @endif
 
                                 </option>
 

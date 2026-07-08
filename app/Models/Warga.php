@@ -29,4 +29,8 @@ class Warga extends Model
     return $this->hasMany(PenerimaBansos::class, 'warga_id');
 }
 
+public function laporanSanggahan()
+{
+    return $this->hasMany(LaporanSanggahan::class,'warga_id');
+}
 }

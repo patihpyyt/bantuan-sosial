@@ -36,4 +36,8 @@ class User extends Authenticatable
         return $this->role === 'admin';
     }
 
+    public function laporanSanggahan()
+{
+    return $this->hasMany(LaporanSanggahan::class,'pelapor_id');
+}
 }
