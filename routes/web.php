@@ -81,4 +81,28 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::middleware('auth')->group(function () {
+
+    Route::get('/dashboard/provinsi', function () {
+        return view('dashboard-provinsi');
+    })->name('dashboard.provinsi');
+
+    Route::get('/dashboard/kabupaten', function () {
+        return view('dashboard-kabupaten');
+    })->name('dashboard.kabupaten');
+
+    Route::get('/dashboard/kecamatan', function () {
+        return view('dashboard-kecamatan');
+    })->name('dashboard.kecamatan');
+
+    Route::get('/dashboard/kelurahan', function () {
+        return view('dashboard-kelurahan');
+    })->name('dashboard.kelurahan');
+
+    Route::get('/dashboard/warga', function () {
+        return redirect()->route('dashboard');
+    })->name('dashboard.warga');
+
+});
+
 require __DIR__.'/auth.php';

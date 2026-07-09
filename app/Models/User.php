@@ -40,4 +40,29 @@ class User extends Authenticatable
 {
     return $this->hasMany(LaporanSanggahan::class,'pelapor_id');
 }
+
+public function isProvinsi()
+{
+    return $this->role == 'provinsi';
+}
+
+public function isKabupaten()
+{
+    return $this->role == 'kabupaten';
+}
+
+public function isKecamatan()
+{
+    return $this->role == 'kecamatan';
+}
+
+public function isKelurahan()
+{
+    return $this->role == 'kelurahan';
+}
+
+public function isWarga()
+{
+    return $this->role == 'warga';
+}
 }

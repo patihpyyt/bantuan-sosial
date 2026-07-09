@@ -12,16 +12,15 @@ class AdminSeeder extends Seeder
 
     public function run(): void
     {
-
-       User::updateOrCreate(
-    ['username' => 'petugas'],
+        User::updateOrCreate(
+    ['username' => 'kelurahan'],
     [
-        'nama_lengkap' => 'Petugas Desa',
-        'username'     => 'petugas',  
-        'password'     => Hash::make('123456'),
-        'role'         => 'petugas',
-        'kode_desa'    => 'DESA01',
-        'aktif'        => true,
+        'nama_lengkap' => 'Admin Kelurahan',
+        'username' => 'kelurahan',
+        'password' => Hash::make('12345678'),
+        'role' => 'kelurahan',
+        'kode_desa' => 'KEL001',
+        'aktif' => 1,
     ]
 );
 

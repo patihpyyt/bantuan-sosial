@@ -19,26 +19,49 @@ class AuthController extends Controller
      * Proses login petugas/admin (pakai username).
      */
     public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'username' => ['required', 'string'],
-            'password' => ['required', 'string'],
-        ]);
+{
+    $credentials = $request->validate([
+        'username' => ['required'],
+        'password' => ['required'],
+    ]);
 
-        if (Auth::attempt([
-            'username' => $credentials['username'],
-            'password' => $credentials['password'],
-        ], $request->boolean('remember'))) {
-            $request->session()->regenerate();
+    if (Auth::attempt([
+        'username' => $credentials['username'],
+        'password' => $credentials['password'],
+    ])) {
 
-            return redirect()->intended(route('dashboard'));
+        $request->session()->regenerate();
+
+        switch (auth()->user()->role) {
+
+            case 'provinsi':
+                return redirect()->route('dashboard.provinsi');
+
+            case 'kabupaten':
+                return redirect()->route('dashboard.kabupaten');
+
+            case 'kecamatan':
+                return redirect()->route('dashboard.kecamatan');
+
+            case 'kelurahan':
+                return redirect()->route('dashboard.kelurahan');
+
+            case 'warga':
+                return redirect()->route('dashboard.warga');
+
+            default:
+                Auth::logout();
+
+                return back()->withErrors([
+                    'username'=>'Role tidak dikenali.'
+                ]);
         }
-
-        return back()->withErrors([
-            'username' => 'Username atau password salah.',
-        ])->onlyInput('username');
     }
 
+    return back()->withErrors([
+        'username'=>'Username atau Password salah.'
+    ]);
+}
     /**
      * Tampilkan form login warga.
      */
