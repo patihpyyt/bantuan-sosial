@@ -1,7 +1,9 @@
 <x-guest-layout>
     {{-- HEADER PORTAL LOGIN (Logo bawaan sudah bersih total) --}}
     <div class="mb-6 border-b border-slate-100 pb-4">
-        <h2 class="text-xl font-extrabold text-slate-900 tracking-tight">Portal Login kelurahan</h2>
+        <h2 class="text-xl font-extrabold text-slate-900 tracking-tight">
+    Portal Login Kabupaten
+</h2>
         <p class="text-xs text-slate-400 mt-0.5">Sistem Informasi Jaring Pengaman Sosial Desa</p>
     </div>
 
@@ -62,22 +64,22 @@
 
     <div class="grid grid-cols-2 gap-3">
 
-        <a href="{{ route('login.provinsi') }}"
+        <a href="{{ route('login') }}"
             class="text-center py-2 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-sm font-semibold transition">
             🏛 Provinsi
         </a>
 
-        <a href="{{ route('login.kabupaten') }}"
+        <a href="{{ route('login') }}"
             class="text-center py-2 rounded-lg bg-cyan-50 hover:bg-cyan-100 text-cyan-700 text-sm font-semibold transition">
             🏙 Kabupaten / Kota
         </a>
 
-        <a href="{{ route('login.kecamatan') }}"
+        <a href="{{ route('login') }}"
             class="text-center py-2 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-700 text-sm font-semibold transition">
             🏢 Kecamatan
         </a>
 
-        <a href="{{ route('login.kelurahan') }}"
+        <a href="{{ route('login') }}"
             class="text-center py-2 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-sm font-semibold transition">
             🏠 Kelurahan
         </a>

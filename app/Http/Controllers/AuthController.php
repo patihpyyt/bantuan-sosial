@@ -25,42 +25,42 @@ class AuthController extends Controller
         'password' => ['required'],
     ]);
 
-    if (Auth::attempt([
-        'username' => $credentials['username'],
-        'password' => $credentials['password'],
-    ])) {
+if (Auth::attempt([
+    'username' => $credentials['username'],
+    'password' => $credentials['password'],
+], $request->boolean('remember'))) {
 
-        $request->session()->regenerate();
+    $request->session()->regenerate();
 
-        switch (auth()->user()->role) {
+    switch (auth()->user()->role) {
 
-            case 'provinsi':
-                return redirect()->route('dashboard.provinsi');
+        case 'provinsi':
+            return redirect()->route('dashboard.provinsi');
 
-            case 'kabupaten':
-                return redirect()->route('dashboard.kabupaten');
+        case 'kabupaten':
+            return redirect()->route('dashboard.kabupaten');
 
-            case 'kecamatan':
-                return redirect()->route('dashboard.kecamatan');
+        case 'kecamatan':
+            return redirect()->route('dashboard.kecamatan');
 
-            case 'kelurahan':
-                return redirect()->route('dashboard.kelurahan');
+        case 'kelurahan':
+            return redirect()->route('dashboard.kelurahan');
 
-            case 'warga':
-                return redirect()->route('dashboard.warga');
+        case 'warga':
+            return redirect()->route('dashboard.warga');
 
-            default:
-                Auth::logout();
+        default:
+            Auth::logout();
 
-                return back()->withErrors([
-                    'username'=>'Role tidak dikenali.'
-                ]);
-        }
+            return back()->withErrors([
+                'username' => 'Role tidak dikenali.'
+            ]);
     }
+}
 
-    return back()->withErrors([
-        'username'=>'Username atau Password salah.'
-    ]);
+return back()->withErrors([
+    'username' => 'Username atau Password salah.'
+]);
 }
     /**
      * Tampilkan form login warga.
