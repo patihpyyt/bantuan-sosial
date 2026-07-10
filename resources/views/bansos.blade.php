@@ -12,23 +12,23 @@
             >
 
             {{-- Overlay dasar solid, gelap total --}}
-            <div class="absolute inset-0 bg-emerald-950/85"></div>
+            <div class="absolute inset-0 bg-slate-950/85"></div>
 
            
             <div
                 class="absolute inset-0"
-                style="background: linear-gradient(to right, rgba(7, 24, 52, 0.98) 0%, rgba(2, 5, 20, 0.9) 35%, rgba(4, 2, 20, 0.55) 65%, rgba(2,20,15,0.25) 100%);"
+                style="background: linear-gradient(to right, rgba(7, 24, 52, 0.98) 0%, rgba(2, 5, 20, 0.9) 35%, rgba(4, 2, 20, 0.55) 65%, rgba(2,15,35,0.25) 100%);"
             ></div>
 
             <div
                 class="absolute inset-0"
-                style="background: linear-gradient(to top, rgba(20, 28, 37, 0.9) 0%, rgba(2,20,15,0.2) 40%, rgba(2, 2, 20, 0) 70%);"
+                style="background: linear-gradient(to top, rgba(20, 28, 37, 0.9) 0%, rgba(2,15,35,0.2) 40%, rgba(2, 2, 20, 0) 70%);"
             ></div>
         </div>
 
         {{-- Overlay biru Gelap dengan Gradient --}}
-        <div class="absolute inset-0 bg-gradient-to-r from-emerald-950/95 via-green-900/80 to-blue-700/40"></div>
-        <div class="absolute inset-0 bg-gradient-to-b from-emerald-950/70 via-transparent to-emerald-950/60"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-blue-900/80 to-blue-700/40"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-slate-950/70 via-transparent to-slate-950/60"></div>
 
         {{-- (transisi ke section berikutnya) --}}
         <div class="absolute bottom-0 left-0 right-0 h-24 sm:h-32 bg-white rounded-t-[50%] translate-y-1/2 z-10"></div>
@@ -176,7 +176,7 @@
                     <div class="space-y-5">
                         {{-- Header Banner Sukses --}}
                         <div class="flex items-center gap-3 pb-4 shadow-[0_1px_0_0_rgba(0,0,0,0.05)]">
-                            <span class="p-2 bg-emerald-50 text-emerald-600 rounded-xl shadow-[0_0_15px_rgba(16,185,129,0.2)]">
+                            <span class="p-2 bg-blue-50 text-blue-600 rounded-xl shadow-[0_0_15px_rgba(37,99,235,0.2)]">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             </span>
                             <div>
@@ -220,7 +220,7 @@
                 </td>
                 <td class="px-4 py-3">
                     @if($penerima->status === 'layak')
-                        <span class="inline-flex px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-bold">
+                        <span class="inline-flex px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-bold">
                             Layak
                         </span>
                     @elseif($penerima->status === 'tidak_layak')
@@ -281,7 +281,7 @@
                                                     <td class="p-2.5 text-slate-800">{{ $log->periode_bulan }} {{ $log->periode_tahun }}</td>
                                                     <td class="p-2.5 text-right font-bold text-slate-900">Rp {{ number_format($penerima->jenisBansos->jumlah_bantuan, 0, ',', '.') }}</td>
                                                     <td class="p-2.5 text-center">
-                                                        <span class="inline-block px-2 py-0.5 bg-emerald-50 text-emerald-700 font-bold rounded-full text-[10px]">Tersalurkan</span>
+                                                        <span class="inline-block px-2 py-0.5 bg-blue-50 text-blue-700 font-bold rounded-full text-[10px]">Tersalurkan</span>
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -362,7 +362,7 @@
                     <p class="text-[11px] sm:text-xs font-bold text-slate-500 mt-1 uppercase tracking-wide">Total Penerima</p>
                 </div>
                 <div class="bg-white rounded-2xl p-5 text-center shadow-[0_4px_30px_rgba(0,0,0,0.06)]">
-                    <p class="text-2xl sm:text-3xl font-black text-emerald-600">{{ $totalProgram ?? '0' }}</p>
+                    <p class="text-2xl sm:text-3xl font-black text-blue-600">{{ $totalProgram ?? '0' }}</p>
                     <p class="text-[11px] sm:text-xs font-bold text-slate-500 mt-1 uppercase tracking-wide">Program Aktif</p>
                 </div>
                 <div class="bg-white rounded-2xl p-5 text-center shadow-[0_4px_30px_rgba(0,0,0,0.06)]">
@@ -400,7 +400,7 @@
                 </div>
 
                 <div class="bg-white rounded-2xl p-6 shadow-[0_4px_30px_rgba(0,0,0,0.06)]">
-                    <span class="inline-block px-3 py-1 bg-emerald-50 text-emerald-700 text-[10px] font-black rounded-full uppercase tracking-wider mb-4">BLT</span>
+                    <span class="inline-block px-3 py-1 bg-blue-50 text-blue-700 text-[10px] font-black rounded-full uppercase tracking-wider mb-4">BLT</span>
                     <h3 class="text-base font-bold text-slate-900 mb-2">BLT Dana Desa</h3>
                     <p class="text-xs text-slate-500 leading-relaxed">
                         Bantuan langsung tunai yang bersumber dari Dana Desa, diperuntukkan bagi keluarga miskin dan rentan yang belum menerima bantuan sosial lain.
