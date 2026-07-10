@@ -2,36 +2,25 @@
     {{-- 1. HERO & SEARCH SECTION (Fokus Utama Warga Langsung di Atas) --}}
     <section class="relative overflow-hidden min-h-screen sm:min-h-[80vh] flex items-center pt-16 pb-32">
 
-        {{-- Layer Gambar Background --}}
-        <div class="absolute inset-0 z-0 overflow-hidden">
-            <img
-                src="/img/pp.png"
-                alt=""
-                class="absolute inset-0 w-full h-full object-cover object-[80%_top] md:w-[55%] md:left-auto md:right-0"
-                style="filter: brightness(0.6) saturate(0.85);"
-            >
+   {{-- Layer Gambar Background --}}
+<div class="absolute inset-0 z-0 overflow-hidden bg-slate-950">
 
-            {{-- Overlay dasar solid, gelap total --}}
-            <div class="absolute inset-0 bg-slate-950/85"></div>
+    <img
+        src="{{ asset('img/pp.png') }}"
+        alt="Background"
+        class="absolute inset-0 w-full h-full object-cover object-[70%_15%] brightness-75"
+    >
 
-           
-            <div
-                class="absolute inset-0"
-                style="background: linear-gradient(to right, rgba(7, 24, 52, 0.98) 0%, rgba(2, 5, 20, 0.9) 35%, rgba(4, 2, 20, 0.55) 65%, rgba(2,15,35,0.25) 100%);"
-            ></div>
+    {{-- Overlay gelap --}}
+    <div class="absolute inset-0 bg-black/40"></div>
 
-            <div
-                class="absolute inset-0"
-                style="background: linear-gradient(to top, rgba(20, 28, 37, 0.9) 0%, rgba(2,15,35,0.2) 40%, rgba(2, 2, 20, 0) 70%);"
-            ></div>
-        </div>
+    {{-- Gradient kiri --}}
+    <div class="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/60 to-transparent"></div>
+
+</div>
 
         {{-- Overlay biru Gelap dengan Gradient --}}
-        <div class="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-blue-900/80 to-blue-700/40"></div>
-        <div class="absolute inset-0 bg-gradient-to-b from-slate-950/70 via-transparent to-slate-950/60"></div>
-
-        {{-- (transisi ke section berikutnya) --}}
-        <div class="absolute bottom-0 left-0 right-0 h-24 sm:h-32 bg-white rounded-t-[50%] translate-y-1/2 z-10"></div>
+        <div class="absolute inset-0 bg-slate-950/40"></div>
 
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 text-center">
 
@@ -42,87 +31,83 @@
             </span>
 
             {{-- Judul Utama --}}
-            <h1 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight drop-shadow-lg">
+            <h1 class="mb-6 text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight drop-shadow-lg">
                 Pencarian Status Penerima <br>
-                <span class="text-blue from-sky-300 to-indigo-200 bg-clip-text  drop-shadow-md">
+                <span class="text-blue-400 drop-shadow-md">
                     Bantuan Sosial Desa
                 </span>
             </h1>
 
             {{-- Deskripsi Pendek --}}
-            <p class="mt-4 text-sm sm:text-lg text-white max-w-xl mx-auto leading-relaxed drop-shadow-md">
+            <p class="mb-15 text-sm sm:text-lg text-white max-w-xl mx-auto leading-relaxed drop-shadow-md">
                 Masukkan 16 digit Nomor Induk Kependudukan (NIK) Anda untuk memeriksa status penetapan dan riwayat penyaluran bantuan (PKH, BLT, BPNT) secara transparan.
             </p>
 
-            {{-- FORM CEK BANSOS PREMIUM (Ditaruh di Atas) --}}
-            <div class="mt-10 max-w-2xl mx-auto bg-white/95 backdrop-blur-md shadow-2xl shadow-black/40 rounded-2xl p-5 sm:p-6 transition-all duration-300">
+         <div class="mt-10 max-w-3xl mx-auto bg-slate-900/35 backdrop-blur-md shadow-[0_20px_60px_rgba(0,0,0,.45)] rounded-3xl p-6 sm:p-7 transition-all duration-300">
 
-                @auth
-                    {{-- User SUDAH LOGIN → tampilkan form pencarian NIK --}}
-                    <form action="{{ route('portal.cek') }}" method="POST" class="space-y-4 sm:space-y-0 sm:flex sm:gap-3">
-                        @csrf {{-- Token Keamanan Laravel --}}
+    @auth
+    <form action="{{ route('portal.cek') }}" method="POST" class="m-20 space-y-4 sm:space-y-0 sm:flex sm:gap-3">
+        @csrf
 
-                        <div class="relative flex-1 text-left">
-                            {{-- Icon KTP/ID di dalam Input --}}
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 012-2v2M6 14h.01M6 10h.01M6 18h.01"></path>
-                                </svg>
-                            </div>
-                            <input
-                                type="text"
-                                name="nik"
-                                id="nik"
-                                maxlength="16"
-                                required
-                                value="{{ old('nik', $nik ?? '') }}"
-                                placeholder="Masukkan 16 Digit NIK Anda..."
-                                class="w-full backdrop-filter-blur shadow-inner shadow-slate-200/40 focus:bg-white text-slate-900 rounded-xl pl-12 pr-4 py-4 text-sm font-semibold tracking-wider placeholder-slate-400 focus:ring-4 focus:ring-blue-500/10 transition-all duration-200 outline-none"
-                            >
-                        </div>
-
-                        <button
-                            type="submit"
-                            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-xl shadow-md shadow-blue-500/10 hover:shadow-blue-500/20 active:scale-[0.98] transition-all duration-150 shrink-0 text-sm"
-                        >
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                            </svg>
-                            Cari Data Bansos
-                        </button>
-                    </form>
-                @else
-                    {{-- User BELUM LOGIN → input tetap tampil (disabled) + tombol login di bawahnya --}}
-                    <div class="space-y-4 sm:space-y-0 sm:flex sm:gap-3">
-
-                        <div class="relative flex-1 text-left">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                                </svg>
-                            </div>
-                            <input
-                                type="text"
-                                disabled
-                                value="{{ old('nik', $nik ?? '') }}"
-                                placeholder="Login untuk mencari data bansos..."
-                                class="w-full backdrop-filter-blur shadow-inner shadow-slate-200/40 bg-slate-100 text-slate-400 rounded-xl pl-12 pr-4 py-4 text-sm font-semibold tracking-wider placeholder-slate-400 outline-none cursor-not-allowed"
-                            >
-                        </div>
-
-                        <a href="{{ route('login') }}"
-                           class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-xl shadow-md shadow-blue-500/10 hover:shadow-blue-500/20 active:scale-[0.98] transition-all duration-150 shrink-0 text-sm">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
-                            </svg>
-                            Login untuk Mencari
-                        </a>
-                    </div>
-                    <p class="mt-3 text-xs text-slate-500 text-left">
-                        Untuk menjaga keamanan data warga, pencarian status bansos hanya bisa dilakukan setelah Anda login.
-                    </p>
-                @endauth
+        <div class="relative flex-1 text-left">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-white/50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 012-2v2M6 14h.01M6 10h.01M6 18h.01"></path>
+                </svg>
             </div>
+            <input
+                type="text"
+                name="nik"
+                id="nik"
+                maxlength="16"
+                required
+                value="{{ old('nik', $nik ?? '') }}"
+                placeholder="Masukkan 16 Digit NIK Anda..."
+                class="w-full bg-white/10 border border-white/20 backdrop-blur-sm text-white rounded-xl pl-12 pr-4 py-4 text-sm font-semibold tracking-wider placeholder-white/50 focus:bg-white/20 focus:ring-4 focus:ring-white/20 transition-all duration-200 outline-none"
+            >
+        </div>
+
+        <button
+            type="submit"
+            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-xl shadow-md shadow-blue-500/20 hover:shadow-blue-500/30 active:scale-[0.98] transition-all duration-150 shrink-0 text-sm"
+        >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            Cari Data Bansos
+        </button>
+    </form>
+    @else
+    <div class="space-y-4 sm:space-y-0 sm:flex sm:gap-3">
+
+        <div class="relative flex-1 text-left">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-white/40">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                </svg>
+            </div>
+            <input
+                type="text"
+                disabled
+                value="{{ old('nik', $nik ?? '') }}"
+                placeholder="Login untuk mencari data bansos..."
+                class="w-full bg-white/5 border border-white/10 text-white/40 rounded-xl pl-12 pr-4 py-4 text-sm font-semibold tracking-wider placeholder-white/40 outline-none cursor-not-allowed"
+            >
+        </div>
+
+        <a href="{{ route('login') }}"
+           class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-xl shadow-md shadow-blue-500/20 hover:shadow-blue-500/30 active:scale-[0.98] transition-all duration-150 shrink-0 text-sm">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+                </svg>
+            Login untuk Mencari
+        </a>
+    </div>
+    <p class="mt-3 text-xs text-white/70 text-left">
+        Untuk menjaga keamanan data warga, pencarian status bansos hanya bisa dilakukan setelah Anda login.
+    </p>
+    @endauth
+</div>
 
             {{-- Teks Info Tambahan di Bawah Form --}}
             <p class="mt-4 text-xs text-white font-medium flex items-center justify-center gap-1.5 drop-shadow-md">
