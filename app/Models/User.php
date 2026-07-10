@@ -65,4 +65,9 @@ public function isWarga()
 {
     return $this->role == 'warga';
 }
+
+public function anggaran()
+{
+    return $this->hasMany(Anggaran::class,'kabupaten_id');
+}
 }

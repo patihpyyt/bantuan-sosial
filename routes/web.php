@@ -10,7 +10,8 @@ use App\Http\Controllers\PortalPublicController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LaporanSanggahanController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Provinsi\DashboardController as DashboardProvinsiController;
+use App\Http\Controllers\Provinsi\MonitoringController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -55,21 +56,27 @@ Route::post('/cek-bansos', [PortalPublicController::class, 'cek'])->name('portal
 Route::middleware('auth')->group(function () {
 
     // Dashboard generic (bisa dipakai untuk role yang tidak punya dashboard khusus,
-    // atau sebagai fallback / redirect logic sebelum diarahkan ke dashboard per-role)
-    Route::get('/dashboard', [DashboardController::class, 'index'])
-        ->name('dashboard');
+    
+          Route::get('monitoring', [MonitoringController::class, 'index'])
+        ->name('monitoring.index');
+
+    Route::get('monitoring/export', [MonitoringController::class, 'export'])
+        ->name('monitoring.export');
+
+    Route::get('monitoring/grafik', [MonitoringController::class, 'grafikTren'])
+        ->name('monitoring.grafik');
 
     Route::get('/dashboard/cari-warga', [DashboardController::class, 'cariWarga'])
         ->name('dashboard.cari-warga');
 
     // Dashboard per-role
-    Route::get('/dashboard/provinsi', function () {
-        return view('dashboard-provinsi');
-    })->name('dashboard.provinsi');
+        Route::get('/dashboard', [DashboardProvinsiController::class,'index'])
+    ->name('dashboard');
 
-    Route::get('/dashboard/kabupaten', function () {
-        return view('dashboard-kabupaten');
-    })->name('dashboard.kabupaten');
+   Route::get('/dashboard/kabupaten',[
+    DashboardKabupatenController::class,
+    'index'
+])->name('dashboard.kabupaten');
 
     Route::get('/dashboard/kecamatan', function () {
         return view('dashboard-kecamatan');

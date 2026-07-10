@@ -7,6 +7,7 @@ use App\Models\JenisBansos;
 use App\Models\PenerimaBansos;
 use App\Models\Penyaluran;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -20,6 +21,7 @@ class DashboardController extends Controller
             return $this->dashboardWarga($request);
         }
 
+    
         // Data agregat untuk role petugas/admin (provinsi, kabupaten, kecamatan, kelurahan)
         $data = [
             'totalWarga'        => Warga::count(),
@@ -39,7 +41,7 @@ class DashboardController extends Controller
             'belumTersalur'     => Penyaluran::whereIn('status', ['belum', 'proses'])->count(),
             'gagal'             => Penyaluran::where('status', 'gagal')->count(),
         ];
-
+            
         $data['realisasiTotal'] = round((
             $data['realisasiPKH'] + $data['realisasiBLT'] + $data['realisasiBPNT']
         ) / 3);
