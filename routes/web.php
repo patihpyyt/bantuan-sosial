@@ -10,11 +10,11 @@ use App\Http\Controllers\PortalPublicController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LaporanSanggahanController;
+use App\Http\Controllers\Provinsi\AnggaranController;
 use App\Http\Controllers\Provinsi\DashboardController as DashboardProvinsiController;
 use App\Http\Controllers\Provinsi\MonitoringController;
+use App\Http\Controllers\Provinsi\DistribusiController;
 use Illuminate\Support\Facades\Route;
-
-
 
 Route::get('/', function () {
     return view('bansos', [
@@ -52,45 +52,79 @@ Route::get('/cek-bansos', [PortalPublicController::class, 'index'])->name('porta
 Route::post('/cek-bansos', [PortalPublicController::class, 'cek'])->name('portal.cek');
 
 
-
 Route::middleware('auth')->group(function () {
 
-    // Dashboard generic (bisa dipakai untuk role yang tidak punya dashboard khusus,
-    
-          Route::get('monitoring', [MonitoringController::class, 'index'])
-        ->name('monitoring.index');
+    // ================= DASHBOARD REDIRECTOR =================
+    // /dashboard otomatis mengarahkan ke dashboard sesuai role user yang login
+    Route::get('/dashboard', function () {
+        return match (auth()->user()->role) {
+            'provinsi'  => redirect()->route('dashboard.provinsi'),
+            'kecamatan' => redirect()->route('dashboard.kecamatan'),
+            'kelurahan' => redirect()->route('dashboard.kelurahan'),
+            default     => redirect()->route('dashboard.warga'),
+        };
+    })->name('dashboard');
 
-    Route::get('monitoring/export', [MonitoringController::class, 'export'])
-        ->name('monitoring.export');
 
-    Route::get('monitoring/grafik', [MonitoringController::class, 'grafikTren'])
-        ->name('monitoring.grafik');
+    // ================= PROVINSI (khusus role: provinsi) =================
+    Route::middleware('role:provinsi')->group(function () {
 
-    Route::get('/dashboard/cari-warga', [DashboardController::class, 'cariWarga'])
-        ->name('dashboard.cari-warga');
+        Route::get('/dashboard/provinsi', [DashboardProvinsiController::class, 'index'])
+            ->name('dashboard.provinsi');
 
-    // Dashboard per-role
-        Route::get('/dashboard', [DashboardProvinsiController::class,'index'])
-    ->name('dashboard');
+        Route::get('/dashboard/cari-warga', [DashboardProvinsiController::class, 'cariWarga'])
+            ->name('dashboard.cari-warga');
 
-   Route::get('/dashboard/kabupaten',[
-    DashboardKabupatenController::class,
-    'index'
-])->name('dashboard.kabupaten');
+        Route::resource('anggaran', AnggaranController::class);
 
+        Route::prefix('provinsi')->name('provinsi.')->group(function () {
+
+            // Monitoring
+            Route::get('monitoring', [MonitoringController::class, 'index'])
+                ->name('monitoring.index');
+            Route::get('monitoring/export', [MonitoringController::class, 'export'])
+                ->name('monitoring.export');
+            Route::get('monitoring/grafik', [MonitoringController::class, 'grafikTren'])
+                ->name('monitoring.grafik');
+            Route::get('monitoring/{kabupatenId}', [MonitoringController::class, 'show'])
+                ->name('monitoring.show');
+
+            // Distribusi
+            Route::get('distribusi', [DistribusiController::class, 'index'])
+                ->name('distribusi.index');
+            Route::get('distribusi/create', [DistribusiController::class, 'create'])
+                ->name('distribusi.create');
+            Route::post('distribusi', [DistribusiController::class, 'store'])
+                ->name('distribusi.store');
+            Route::patch('distribusi/{id}/cancel', [DistribusiController::class, 'cancel'])
+                ->name('distribusi.cancel');
+            Route::get('distribusi/{kabupatenId}', [DistribusiController::class, 'show'])
+                ->name('distribusi.show');
+
+        });
+
+    });
+
+
+    // ================= KECAMATAN =================
     Route::get('/dashboard/kecamatan', function () {
         return view('dashboard-kecamatan');
     })->name('dashboard.kecamatan');
 
+
+    // ================= KELURAHAN =================
     Route::get('/dashboard/kelurahan', function () {
         return view('dashboard-kelurahan');
     })->name('dashboard.kelurahan');
 
+
+    // ================= WARGA =================
     Route::get('/dashboard/warga', function () {
-        return redirect()->route('dashboard');
+        return view('dashboard-warga');
     })->name('dashboard.warga');
 
-    // Resource routes
+
+    // ================= RESOURCE ROUTES (dipakai lintas role, sesuaikan nanti) =================
     Route::resource('warga', WargaController::class);
 
     Route::resource('penerima-bansos', PenerimaBansosController::class)

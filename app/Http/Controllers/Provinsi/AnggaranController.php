@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Provinsi;
 
+use App\Http\Controllers\Controller;
 use App\Models\Anggaran;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -11,23 +12,17 @@ class AnggaranController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+  public function index()
 {
-    $anggaran=Anggaran::with('kabupaten')->latest()->get();
-
-    return view('anggaran.index',compact('anggaran'));
+    $anggaran = Anggaran::with('kabupaten')->latest()->get();
+    return view('provinsi.anggaran.index', compact('anggaran'));
 }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-     public function create()
+public function create()
 {
-    $kabupaten=User::where('role','kabupaten')->get();
-
-    return view('anggaran.create',compact('kabupaten'));
+    $kabupaten = User::where('role', 'kabupaten')->get();
+    return view('provinsi.anggaran.create', compact('kabupaten'));
 }
-
     /**
      * Store a newly created resource in storage.
      */

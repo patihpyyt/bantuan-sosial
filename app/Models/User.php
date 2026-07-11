@@ -70,4 +70,10 @@ public function anggaran()
 {
     return $this->hasMany(Anggaran::class,'kabupaten_id');
 }
+
+
+public function distribusiDiterima()
+{
+    return $this->hasMany(DistribusiAnggaran::class, 'kabupaten_id');
+}
 }

@@ -45,7 +45,7 @@ class DashboardController extends Controller
             ->orderByDesc('total_dana')
             ->get();
 
-        return view('dashboard-provinsi', [
+      return view('provinsi.dashboard-provinsi', [
             'totalKabupaten' => User::where('role', 'kabupaten')->count(),
             'totalKecamatan' => User::where('role', 'kecamatan')->count(),
             'totalKelurahan' => User::where('role', 'kelurahan')->count(),
