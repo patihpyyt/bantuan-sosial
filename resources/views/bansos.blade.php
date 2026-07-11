@@ -12,15 +12,15 @@
     >
 
     {{-- Overlay gelap --}}
-    <div class="absolute inset-0 bg-black/40"></div>
+    <div class="absolute inset-0 bg-black/20"></div>
 
     {{-- Gradient kiri --}}
-    <div class="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/60 to-transparent"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-slate-900/95 via-slate-900/60 to-transparent"></div>
 
 </div>
 
         {{-- Overlay biru Gelap dengan Gradient --}}
-        <div class="absolute inset-0 bg-slate-950/40"></div>
+        <div class="absolute inset-0 bg-slate-800/20"></div>
 
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 text-center">
 

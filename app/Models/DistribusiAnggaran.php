@@ -13,6 +13,7 @@ class DistribusiAnggaran extends Model
         'tahun',
         'jumlah',
         'tanggal_distribusi',
+        'tanggal_diterima',
         'keterangan',
         'status',
         'created_by',
@@ -20,6 +21,7 @@ class DistribusiAnggaran extends Model
 
     protected $casts = [
         'tanggal_distribusi' => 'date',
+        'tanggal_diterima'   => 'date',
     ];
 
     public function kabupaten()

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Kelurahan;
 
 use App\Models\Warga;
 use App\Models\JenisBansos;

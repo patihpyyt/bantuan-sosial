@@ -14,6 +14,11 @@ use App\Http\Controllers\Provinsi\AnggaranController;
 use App\Http\Controllers\Provinsi\DashboardController as DashboardProvinsiController;
 use App\Http\Controllers\Provinsi\MonitoringController;
 use App\Http\Controllers\Provinsi\DistribusiController;
+use App\Http\Controllers\Kabupaten\PenerimaanDanaController;
+use App\Http\Controllers\Kabupaten\MonitoringController as MonitoringKabupatenController;
+use App\Http\Controllers\Kabupaten\DashboardController as DashboardKabupatenController;
+use App\Http\Controllers\Kabupaten\DistribusiController as DistribusiKabupatenController;
+use App\Models\Warga;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -55,11 +60,11 @@ Route::post('/cek-bansos', [PortalPublicController::class, 'cek'])->name('portal
 Route::middleware('auth')->group(function () {
 
     // ================= DASHBOARD REDIRECTOR =================
-    // /dashboard otomatis mengarahkan ke dashboard sesuai role user yang login
     Route::get('/dashboard', function () {
         return match (auth()->user()->role) {
             'provinsi'  => redirect()->route('dashboard.provinsi'),
             'kecamatan' => redirect()->route('dashboard.kecamatan'),
+            'kabupaten' => redirect()->route('dashboard.kabupaten'),
             'kelurahan' => redirect()->route('dashboard.kelurahan'),
             default     => redirect()->route('dashboard.warga'),
         };
@@ -100,7 +105,7 @@ Route::middleware('auth')->group(function () {
                 ->name('distribusi.cancel');
             Route::get('distribusi/{kabupatenId}', [DistribusiController::class, 'show'])
                 ->name('distribusi.show');
-                Route::get('distribusi/{id}/edit', [DistribusiController::class, 'edit'])
+            Route::get('distribusi/{id}/edit', [DistribusiController::class, 'edit'])
                 ->name('distribusi.edit');
             Route::put('distribusi/{id}', [DistribusiController::class, 'update'])
                 ->name('distribusi.update');
@@ -116,6 +121,50 @@ Route::middleware('auth')->group(function () {
     })->name('dashboard.kecamatan');
 
 
+    // ================= KABUPATEN (khusus role: kabupaten) =================
+    Route::middleware('role:kabupaten')->group(function () {
+
+        Route::get('/dashboard/kabupaten', [DashboardKabupatenController::class, 'index'])
+            ->name('dashboard.kabupaten');
+
+        Route::get('/dashboard/kabupaten/distribusi/{id}', [DashboardKabupatenController::class, 'show'])
+            ->name('dashboard.kabupaten.distribusi.show');
+
+        // SEMUA route "kabupaten.xxx" WAJIB ada DI DALAM prefix ini
+        Route::prefix('kabupaten')->name('kabupaten.')->group(function () {
+
+            Route::get('dana', [PenerimaanDanaController::class, 'index'])
+                ->name('dana.index');
+
+            Route::patch('dana/{id}', [PenerimaanDanaController::class, 'terima'])
+                ->name('dana.terima');
+
+            Route::get('monitoring', [MonitoringKabupatenController::class, 'index'])
+                ->name('monitoring.index');
+
+            Route::get('monitoring/{id}', [MonitoringKabupatenController::class, 'show'])
+                ->name('monitoring.show');
+
+            Route::get('distribusi', [DistribusiKabupatenController::class, 'index'])
+                ->name('distribusi.index');
+            Route::get('distribusi/create', [DistribusiKabupatenController::class, 'create'])
+                ->name('distribusi.create');
+            Route::post('distribusi', [DistribusiKabupatenController::class, 'store'])
+                ->name('distribusi.store');
+            Route::get('distribusi/{kecamatanId}', [DistribusiKabupatenController::class, 'show'])
+                ->name('distribusi.show');
+            Route::get('distribusi/{id}/edit', [DistribusiKabupatenController::class, 'edit'])
+                ->name('distribusi.edit');
+            Route::put('distribusi/{id}', [DistribusiKabupatenController::class, 'update'])
+                ->name('distribusi.update');
+            Route::patch('distribusi/{id}/cancel', [DistribusiKabupatenController::class, 'cancel'])
+                ->name('distribusi.cancel');
+
+        });
+
+    });
+
+
     // ================= KELURAHAN =================
     Route::get('/dashboard/kelurahan', function () {
         return view('dashboard-kelurahan');
@@ -124,7 +173,16 @@ Route::middleware('auth')->group(function () {
 
     // ================= WARGA =================
     Route::get('/dashboard/warga', function () {
-        return view('dashboard-warga');
+        $user = auth()->user();
+
+        $warga = Warga::where('nik', $user->nik)->first();
+
+        $belumTerdaftar = is_null($warga);
+
+        return view('dashboard-warga', [
+            'belumTerdaftar' => $belumTerdaftar,
+            'warga'          => $warga,
+        ]);
     })->name('dashboard.warga');
 
 

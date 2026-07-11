@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class KabupatenSeeder extends Seeder
 {
@@ -52,11 +53,11 @@ class KabupatenSeeder extends Seeder
 
         foreach ($kabupaten as $i => $nama) {
             User::updateOrCreate(
-                ['username' => \Str::slug($nama)],
+                ['username' => Str::slug($nama)],
                 [
                     'nama_lengkap' => $nama,
                     'nik'          => '17' . str_pad($i + 1, 14, '0', STR_PAD_LEFT),
-                    'password'     => Hash::make('password'),
+                    'password'     => Hash::make('12345678'),
                     'role'         => 'kabupaten',
                     'kode_desa'    => null,
                     'aktif'        => 1,

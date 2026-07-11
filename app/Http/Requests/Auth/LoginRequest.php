@@ -17,13 +17,13 @@ class LoginRequest extends FormRequest
         return true;
     }
 
-    public function rules(): array
-    {
-        return [
-            'username' => ['required', 'string'],  // ganti dari email
-            'password' => ['required', 'string'],
-        ];
-    }
+  public function rules(): array
+{
+    return [
+        'username' => ['required', 'string'],
+        'password' => ['required', 'string'],
+    ];
+}
 
     public function authenticate(): void
     {
@@ -58,9 +58,8 @@ class LoginRequest extends FormRequest
         ]);
     }
 
-    public function throttleKey(): string
-    {
-        return Str::transliterate(Str::lower($this->string('username')).'|'.$this->ip());
-        // ganti dari email ke username
-    }
+   public function throttleKey(): string
+{
+    return Str::transliterate(Str::lower($this->string('username')).'|'.$this->ip());
+}
 }
