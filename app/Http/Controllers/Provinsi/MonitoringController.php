@@ -13,9 +13,6 @@ use Illuminate\Support\Facades\DB;
 
 class MonitoringController extends Controller
 {
-    /**
-     * Halaman utama: ringkasan monitoring seluruh Kabupaten/Kota.
-     */
     public function index(Request $request)
     {
         $tahun = $request->input('tahun', now()->year);
@@ -31,7 +28,6 @@ class MonitoringController extends Controller
             return $this->hitungDataKabupaten($kab, $tahun);
         });
 
-        // Ringkasan total seluruh provinsi
         $summary = [
             'total_anggaran'   => $monitoring->sum('total_anggaran'),
             'total_terpakai'   => $monitoring->sum('anggaran_terpakai'),
@@ -49,9 +45,6 @@ class MonitoringController extends Controller
         ]);
     }
 
-    /**
-     * Drill-down: detail monitoring per Kecamatan dalam satu Kabupaten/Kota.
-     */
     public function show(Request $request, $kabupatenId)
     {
         $tahun     = $request->input('tahun', now()->year);
@@ -59,7 +52,7 @@ class MonitoringController extends Controller
 
         $dataKabupaten = $this->hitungDataKabupaten($kabupaten, $tahun);
 
-        $kecamatanList = Warga::where('kabupaten', $kabupaten->name)
+        $kecamatanList = Warga::where('kabupaten', $kabupaten->nama_lengkap)
             ->whereNotNull('kecamatan')
             ->select('kecamatan')
             ->distinct()
@@ -67,22 +60,22 @@ class MonitoringController extends Controller
 
         $monitoringKecamatan = $kecamatanList->map(function ($kecamatan) use ($kabupaten) {
 
-            $totalWarga = Warga::where('kabupaten', $kabupaten->name)
+            $totalWarga = Warga::where('kabupaten', $kabupaten->nama_lengkap)
                 ->where('kecamatan', $kecamatan)
                 ->count();
 
             $totalPenerima = PenerimaBansos::whereHas('warga', function ($q) use ($kabupaten, $kecamatan) {
-                $q->where('kabupaten', $kabupaten->name)
+                $q->where('kabupaten', $kabupaten->nama_lengkap)
                   ->where('kecamatan', $kecamatan);
             })->count();
 
             $totalPenyaluran = Penyaluran::whereHas('penerima.warga', function ($q) use ($kabupaten, $kecamatan) {
-                $q->where('kabupaten', $kabupaten->name)
+                $q->where('kabupaten', $kabupaten->nama_lengkap)
                   ->where('kecamatan', $kecamatan);
             })->sum('nominal');
 
             $jumlahTransaksi = Penyaluran::whereHas('penerima.warga', function ($q) use ($kabupaten, $kecamatan) {
-                $q->where('kabupaten', $kabupaten->name)
+                $q->where('kabupaten', $kabupaten->nama_lengkap)
                   ->where('kecamatan', $kecamatan);
             })->count();
 
@@ -103,9 +96,6 @@ class MonitoringController extends Controller
         ]);
     }
 
-    /**
-     * Data grafik tren penyaluran per bulan (dipakai via AJAX/fetch di view).
-     */
     public function grafikTren(Request $request)
     {
         $tahun = $request->input('tahun', now()->year);
@@ -119,7 +109,6 @@ class MonitoringController extends Controller
             ->orderBy(DB::raw('MONTH(tanggal_salur)'))
             ->get();
 
-        // Isi bulan yang kosong dengan 0 supaya grafik tetap 12 titik
         $hasil = collect(range(1, 12))->map(function ($bulan) use ($data) {
             $item = $data->firstWhere('bulan', $bulan);
             return [
@@ -131,9 +120,6 @@ class MonitoringController extends Controller
         return response()->json($hasil);
     }
 
-    /**
-     * Export data monitoring ke CSV sederhana.
-     */
     public function export(Request $request)
     {
         $tahun = $request->input('tahun', now()->year);
@@ -173,9 +159,6 @@ class MonitoringController extends Controller
         return response()->stream($callback, 200, $headers);
     }
 
-    /**
-     * Helper: hitung semua metrik monitoring untuk satu kabupaten.
-     */
     private function hitungDataKabupaten(User $kab, $tahun)
     {
         $anggaran = Anggaran::where('kabupaten_id', $kab->id)
@@ -190,18 +173,18 @@ class MonitoringController extends Controller
             ? round(($terpakai / $totalAnggaran) * 100, 1)
             : 0;
 
-        $totalWarga = Warga::where('kabupaten', $kab->name)->count();
+        $totalWarga = Warga::where('kabupaten', $kab->nama_lengkap)->count();
 
         $totalPenerima = PenerimaBansos::whereHas('warga', function ($q) use ($kab) {
-            $q->where('kabupaten', $kab->name);
+            $q->where('kabupaten', $kab->nama_lengkap);
         })->count();
 
         $totalPenyaluran = Penyaluran::whereHas('penerima.warga', function ($q) use ($kab) {
-            $q->where('kabupaten', $kab->name);
+            $q->where('kabupaten', $kab->nama_lengkap);
         })->sum('nominal');
 
         $jumlahPenyaluran = Penyaluran::whereHas('penerima.warga', function ($q) use ($kab) {
-            $q->where('kabupaten', $kab->name);
+            $q->where('kabupaten', $kab->nama_lengkap);
         })->count();
 
         if ($totalAnggaran == 0) {
@@ -216,7 +199,7 @@ class MonitoringController extends Controller
 
         return [
             'kabupaten_id'       => $kab->id,
-            'nama_kabupaten'     => $kab->name,
+            'nama_kabupaten'     => $kab->nama_lengkap,
             'total_anggaran'     => $totalAnggaran,
             'anggaran_terpakai'  => $terpakai,
             'sisa_anggaran'      => $sisa,

@@ -63,16 +63,16 @@
                     <tbody>
                         @forelse($monitoring as $m)
                         <tr>
-                            <td>{{ $m->kabupaten->name ?? $m->name ?? 'Data terhapus' }}</td>
-                            <td class="text-end">{{ number_format($m->total_warga ?? 0) }}</td>
-                            <td class="text-end">{{ number_format($m->total_penerima ?? 0) }}</td>
-                            <td class="text-end">{{ number_format($m->total_penyaluran ?? 0) }}</td>
-                            <td class="text-center">
-                                <a href="{{ route('provinsi.monitoring.show', ['kabupatenId' => $m->kabupaten_id ?? $m->id, 'tahun' => $tahun]) }}"
-                                   class="btn btn-sm btn-outline-primary" title="Lihat rincian per kecamatan">
-                                    Detail per Kecamatan
-                                </a>
-                            </td>
+                                                <td>{{ $m['nama_kabupaten'] ?? 'Data terhapus' }}</td>
+                        <td class="text-end">{{ number_format($m['total_warga'] ?? 0) }}</td>
+                        <td class="text-end">{{ number_format($m['total_penerima'] ?? 0) }}</td>
+                        <td class="text-end">{{ number_format($m['total_penyaluran'] ?? 0) }}</td>
+                        <td class="text-center">
+                            <a href="{{ route('provinsi.monitoring.show', ['kabupatenId' => $m['kabupaten_id'], 'tahun' => $tahun]) }}"
+                            class="btn btn-sm btn-outline-primary" title="Lihat rincian per kecamatan">
+                                Detail per Kecamatan
+                            </a>
+                        </td>
                         </tr>
                         @empty
                         <tr>

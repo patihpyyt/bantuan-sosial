@@ -87,6 +87,32 @@
                             @error('alamat') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                         </div>
 
+                        {{-- KABUPATEN --}}
+<div>
+    <label class="block text-sm font-medium text-gray-700 mb-1">Kabupaten/Kota <span class="text-red-500">*</span></label>
+    <select name="kabupaten"
+            class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-400 @error('kabupaten') border-red-400 @enderror">
+        <option value="">-- Pilih Kabupaten/Kota --</option>
+        @foreach($kabupatenList as $kab)
+            <option value="{{ $kab->nama_lengkap }}" {{ old('kabupaten') == $kab->nama_lengkap ? 'selected' : '' }}>
+                {{ $kab->nama_lengkap }}
+            </option>
+        @endforeach
+    </select>
+    @error('kabupaten') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+</div>
+
+{{-- KECAMATAN --}}
+<div>
+    <label class="block text-sm font-medium text-gray-700 mb-1">Kecamatan <span class="text-red-500">*</span></label>
+    <input type="text"
+           name="kecamatan"
+           value="{{ old('kecamatan') }}"
+           placeholder="Contoh: Sungailiat"
+           class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-400 @error('kecamatan') border-red-400 @enderror">
+    @error('kecamatan') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+</div>
+
                         {{-- RT & RW --}}
                         <div class="grid grid-cols-2 gap-4">
                             <div>

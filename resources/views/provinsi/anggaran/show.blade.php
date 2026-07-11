@@ -37,13 +37,13 @@
             <div class="col-md-4">
                 <div class="card p-3 h-100 border-start border-primary border-4">
                     <small class="text-muted">Kabupaten/Kota Tujuan</small>
-                    <h5 class="mb-0">{{ $anggaran->kabupaten->name ?? 'Data terhapus' }}</h5>
+                    <h5 class="mb-0">{{ $anggaran->kabupaten->nama_lengkap ?? 'Data terhapus' }}</h5>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card p-3 h-100 border-start border-success border-4">
                     <small class="text-muted">Jumlah Anggaran</small>
-                    <h5 class="mb-0">Rp {{ number_format($anggaran->jumlah, 0, ',', '.') }}</h5>
+                    <h5 class="mb-0">Rp {{ number_format($anggaran->total_anggaran, 0, ',', '.') }}</h5>
                 </div>
             </div>
             <div class="col-md-4">
@@ -60,8 +60,12 @@
                         <table class="table table-borderless mb-0">
                             <tbody>
                                 <tr>
-                                    <td class="text-muted" style="width: 220px;">Keterangan</td>
-                                    <td>{{ $anggaran->keterangan ?? '-' }}</td>
+                                    <td class="text-muted" style="width: 220px;">Anggaran Terpakai</td>
+                                    <td>Rp {{ number_format($anggaran->anggaran_terpakai, 0, ',', '.') }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Sisa Anggaran</td>
+                                    <td>Rp {{ number_format($anggaran->sisa_anggaran, 0, ',', '.') }}</td>
                                 </tr>
                                 <tr>
                                     <td class="text-muted">Tanggal Dibuat</td>

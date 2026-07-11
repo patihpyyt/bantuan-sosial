@@ -83,14 +83,12 @@ public function create()
      */
     public function edit(Anggaran $anggaran)
 {
+    $kabupaten = User::where('role', 'kabupaten')->get();
 
-    $kabupaten=User::where('role','kabupaten')->get();
-
-    return view('anggaran.edit',compact(
+    return view('provinsi.anggaran.edit', compact(
         'anggaran',
         'kabupaten'
     ));
-
 }
 
     /**

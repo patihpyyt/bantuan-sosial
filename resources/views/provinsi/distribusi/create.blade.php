@@ -26,11 +26,11 @@
                         <label class="form-label">Kabupaten/Kota</label>
                         <select name="kabupaten_id" class="form-select" required>
                             <option value="">-- Pilih Kabupaten/Kota --</option>
-                            @foreach($kabupatenList as $kab)
-                                <option value="{{ $kab->id }}" {{ old('kabupaten_id') == $kab->id ? 'selected' : '' }}>
-                                    {{ $kab->name }}
-                                </option>
-                            @endforeach
+                           @foreach($kabupatenList as $kab)
+                        <option value="{{ $kab->id }}" {{ old('kabupaten_id') == $kab->id ? 'selected' : '' }}>
+                            {{ $kab->nama_lengkap }}
+                        </option>
+                    @endforeach
                         </select>
                     </div>
 
@@ -48,6 +48,14 @@
                         <label class="form-label">Tanggal Distribusi</label>
                         <input type="date" name="tanggal_distribusi" class="form-control" value="{{ old('tanggal_distribusi', now()->format('Y-m-d')) }}" required>
                     </div>
+
+                    <div class="mb-3">
+    <label class="form-label">Status</label>
+    <select name="status" class="form-select">
+        <option value="terkirim" selected>Terkirim</option>
+        <option value="dibatalkan">Dibatalkan</option>
+    </select>
+</div>
 
                     <div class="mb-3">
                         <label class="form-label">Keterangan (opsional)</label>

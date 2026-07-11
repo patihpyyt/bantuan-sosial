@@ -15,35 +15,40 @@ class DistribusiController extends Controller
      * Daftar seluruh riwayat distribusi dana ke Kabupaten/Kota.
      */
     public function index(Request $request)
-    {
-        $tahun     = $request->input('tahun', now()->year);
-        $kabupaten = $request->input('kabupaten_id');
+{
+    $tahun     = $request->input('tahun', now()->year);
+    $kabupaten = $request->input('kabupaten_id');
+    $status    = $request->input('status');
 
-        $query = DistribusiAnggaran::with('kabupaten')
-            ->where('tahun', $tahun)
-            ->latest('tanggal_distribusi');
+    $query = DistribusiAnggaran::with('kabupaten')
+        ->where('tahun', $tahun)
+        ->latest('tanggal_distribusi');
 
-        if ($kabupaten) {
-            $query->where('kabupaten_id', $kabupaten);
-        }
-
-        $distribusi = $query->get();
-
-        $kabupatenList = User::where('role', 'kabupaten')->get();
-
-        $tahunTersedia = DistribusiAnggaran::select('tahun')
-            ->distinct()
-            ->orderByDesc('tahun')
-            ->pluck('tahun');
-
-        return view('provinsi.distribusi.index', [
-            'distribusi'     => $distribusi,
-            'kabupatenList'  => $kabupatenList,
-            'tahun'          => $tahun,
-            'tahunTersedia'  => $tahunTersedia,
-            'filterKabupaten'=> $kabupaten,
-        ]);
+    if ($kabupaten) {
+        $query->where('kabupaten_id', $kabupaten);
     }
+
+    if ($status) {
+        $query->where('status', $status);
+    }
+
+    $distribusi = $query->get();
+
+    $kabupatenList = User::where('role', 'kabupaten')->get();
+
+    $tahunTersedia = DistribusiAnggaran::select('tahun')
+        ->distinct()
+        ->orderByDesc('tahun')
+        ->pluck('tahun');
+
+    return view('provinsi.distribusi.index', [
+        'distribusi'     => $distribusi,
+        'kabupatenList'  => $kabupatenList,
+        'tahun'          => $tahun,
+        'tahunTersedia'  => $tahunTersedia,
+        'filterKabupaten'=> $kabupaten,
+    ]);
+}
 
     /**
      * Form input distribusi baru.
@@ -58,50 +63,49 @@ class DistribusiController extends Controller
     /**
      * Simpan distribusi baru + update/tambah Anggaran kabupaten terkait.
      */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'kabupaten_id'       => 'required|exists:users,id',
-            'tahun'              => 'required|digits:4',
-            'jumlah'             => 'required|numeric|min:1',
-            'tanggal_distribusi' => 'required|date',
-            'keterangan'         => 'nullable|string|max:255',
+        public function store(Request $request)
+{
+    $request->validate([
+        'kabupaten_id'       => 'required|exists:users,id',
+        'tahun'              => 'required|digits:4',
+        'jumlah'             => 'required|numeric|min:1',
+        'tanggal_distribusi' => 'required|date',
+        'keterangan'         => 'nullable|string|max:255',
+        'status'             => 'nullable|in:terkirim,dibatalkan',
+    ]);
+
+    DB::transaction(function () use ($request) {
+
+        DistribusiAnggaran::create([
+            'kabupaten_id'       => $request->kabupaten_id,
+            'tahun'              => $request->tahun,
+            'jumlah'             => $request->jumlah,
+            'tanggal_distribusi' => $request->tanggal_distribusi,
+            'keterangan'         => $request->keterangan,
+            'status'             => $request->status ?? 'terkirim',
+            'created_by'         => auth()->id(),
         ]);
 
-        DB::transaction(function () use ($request) {
+        $anggaran = Anggaran::firstOrNew([
+            'kabupaten_id' => $request->kabupaten_id,
+            'tahun'        => $request->tahun,
+        ]);
 
-            // 1. Catat transaksi distribusi
-            DistribusiAnggaran::create([
-                'kabupaten_id'       => $request->kabupaten_id,
-                'tahun'              => $request->tahun,
-                'jumlah'             => $request->jumlah,
-                'tanggal_distribusi' => $request->tanggal_distribusi,
-                'keterangan'         => $request->keterangan,
-                'status'             => 'terkirim',
-                'created_by'         => auth()->id(),
-            ]);
+        if (!$anggaran->exists) {
+            $anggaran->anggaran_terpakai = 0;
+            $anggaran->total_anggaran    = 0;
+            $anggaran->sisa_anggaran     = 0;
+        }
 
-            // 2. Update atau buat baru Anggaran kabupaten untuk tahun ini
-            $anggaran = Anggaran::firstOrNew([
-                'kabupaten_id' => $request->kabupaten_id,
-                'tahun'        => $request->tahun,
-            ]);
+        $anggaran->total_anggaran += $request->jumlah;
+        $anggaran->sisa_anggaran  += $request->jumlah;
+        $anggaran->save();
+    });
 
-            if (!$anggaran->exists) {
-                $anggaran->anggaran_terpakai = 0;
-                $anggaran->total_anggaran    = 0;
-                $anggaran->sisa_anggaran     = 0;
-            }
-
-            $anggaran->total_anggaran += $request->jumlah;
-            $anggaran->sisa_anggaran  += $request->jumlah;
-            $anggaran->save();
-        });
-
-        return redirect()
-            ->route('provinsi.distribusi.index', ['tahun' => $request->tahun])
-            ->with('success', 'Dana berhasil didistribusikan ke Kabupaten/Kota.');
-    }
+    return redirect()
+        ->route('provinsi.distribusi.index', ['tahun' => $request->tahun])
+        ->with('success', 'Dana berhasil didistribusikan ke Kabupaten/Kota.');
+}
 
     /**
      * Detail riwayat distribusi untuk satu Kabupaten/Kota tertentu.
@@ -162,4 +166,74 @@ class DistribusiController extends Controller
 
         return back()->with('success', 'Distribusi berhasil dibatalkan.');
     }
+
+    public function edit($id)
+{
+    $distribusi   = DistribusiAnggaran::findOrFail($id);
+    $kabupatenList = User::where('role', 'kabupaten')->get();
+
+    return view('provinsi.distribusi.edit', compact('distribusi', 'kabupatenList'));
+}
+
+public function update(Request $request, $id)
+{
+    $distribusi = DistribusiAnggaran::findOrFail($id);
+
+    $request->validate([
+        'kabupaten_id'       => 'required|exists:users,id',
+        'tahun'              => 'required|digits:4',
+        'jumlah'             => 'required|numeric|min:1',
+        'tanggal_distribusi' => 'required|date',
+        'keterangan'         => 'nullable|string|max:255',
+        'status'             => 'required|in:terkirim,dibatalkan',
+    ]);
+
+    DB::transaction(function () use ($request, $distribusi) {
+
+        $jumlahLama       = $distribusi->jumlah;
+        $kabupatenIdLama  = $distribusi->kabupaten_id;
+        $tahunLama        = $distribusi->tahun;
+
+        // Kurangi anggaran lama dulu
+        $anggaranLama = Anggaran::where('kabupaten_id', $kabupatenIdLama)
+            ->where('tahun', $tahunLama)
+            ->first();
+
+        if ($anggaranLama) {
+            $anggaranLama->total_anggaran -= $jumlahLama;
+            $anggaranLama->sisa_anggaran  -= $jumlahLama;
+            $anggaranLama->save();
+        }
+
+        // Update data distribusi
+        $distribusi->update([
+            'kabupaten_id'       => $request->kabupaten_id,
+            'tahun'              => $request->tahun,
+            'jumlah'             => $request->jumlah,
+            'tanggal_distribusi' => $request->tanggal_distribusi,
+            'keterangan'         => $request->keterangan,
+            'status'             => $request->status,
+        ]);
+
+        // Tambahkan lagi ke anggaran yang baru (kabupaten/tahun bisa beda)
+        $anggaranBaru = Anggaran::firstOrNew([
+            'kabupaten_id' => $request->kabupaten_id,
+            'tahun'        => $request->tahun,
+        ]);
+
+        if (!$anggaranBaru->exists) {
+            $anggaranBaru->anggaran_terpakai = 0;
+            $anggaranBaru->total_anggaran    = 0;
+            $anggaranBaru->sisa_anggaran     = 0;
+        }
+
+        $anggaranBaru->total_anggaran += $request->jumlah;
+        $anggaranBaru->sisa_anggaran  += $request->jumlah;
+        $anggaranBaru->save();
+    });
+
+    return redirect()
+        ->route('provinsi.distribusi.index', ['tahun' => $request->tahun])
+        ->with('success', 'Distribusi berhasil diperbarui.');
+}
 }

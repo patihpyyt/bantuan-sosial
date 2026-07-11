@@ -32,6 +32,13 @@
                     <h5>{{ number_format($dataKabupaten['total_warga']) }}</h5>
                 </div>
             </div>
+            <td class="text-center">
+    @if($item->status === 'terkirim')
+        <span class="badge bg-success">Terkirim</span>
+    @else
+        <span class="badge bg-secondary">Dibatalkan</span>
+    @endif
+</td>
             <div class="col-md-3">
                 <div class="card p-3">
                     <small class="text-muted">Total Penerima</small>

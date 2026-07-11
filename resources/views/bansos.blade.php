@@ -46,7 +46,7 @@
          <div class="mt-10 max-w-3xl mx-auto bg-slate-900/35 backdrop-blur-md shadow-[0_20px_60px_rgba(0,0,0,.45)] rounded-3xl p-6 sm:p-7 transition-all duration-300">
 
     @auth
-    <form action="{{ route('portal.cek') }}" method="POST" class="m-20 space-y-4 sm:space-y-0 sm:flex sm:gap-3">
+    <form action="{{ route('portal.cek') }}" method="POST" class="space-y-4 sm:space-y-0 sm:flex sm:gap-3">
         @csrf
 
         <div class="relative flex-1 text-left">

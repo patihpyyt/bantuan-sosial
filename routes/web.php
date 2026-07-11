@@ -100,6 +100,10 @@ Route::middleware('auth')->group(function () {
                 ->name('distribusi.cancel');
             Route::get('distribusi/{kabupatenId}', [DistribusiController::class, 'show'])
                 ->name('distribusi.show');
+                Route::get('distribusi/{id}/edit', [DistribusiController::class, 'edit'])
+                ->name('distribusi.edit');
+            Route::put('distribusi/{id}', [DistribusiController::class, 'update'])
+                ->name('distribusi.update');
 
         });
 

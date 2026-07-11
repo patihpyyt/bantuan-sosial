@@ -2,158 +2,94 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Anggaran;
-use App\Models\User;
+use App\Models\Penyaluran;
+use App\Models\PenerimaBansos;
 use Illuminate\Http\Request;
 
-class AnggaranController extends Controller
+class PenyaluranController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $anggaran = Anggaran::with('kabupaten')
-            ->latest()
+        $penyaluran = Penyaluran::with('penerima.warga')
+            ->latest('tanggal_salur')
             ->get();
 
-        return view('anggaran.index', compact('anggaran'));
+        return view('penyaluran.index', compact('penyaluran'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        $kabupaten = User::where('role', 'kabupaten')->get();
+        $penerima = PenerimaBansos::with('warga')->get();
 
-        return view('anggaran.create', compact('kabupaten'));
+        return view('penyaluran.create', compact('penerima'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'kabupaten_id'    => 'required|exists:users,id',
-            'tahun'           => 'required|digits:4',
-            'total_anggaran'  => 'required|numeric|min:1',
-        ]);
+   public function store(Request $request)
+{
+    $request->validate([
+        'penerima_id'   => 'required|exists:penerima_bansos,id',
+        'periode_bulan' => 'required|integer|min:1|max:12',
+        'periode_tahun' => 'required|digits:4',
+        'nominal'       => 'required|numeric|min:1',
+        'tanggal_salur' => 'required|date',
+        'status'        => 'required|in:tersalur,tertunda,gagal',
+        'metode'        => 'nullable|string',
+        'no_referensi'  => 'nullable|string|max:100',
+        'catatan'       => 'nullable|string|max:255',
+    ]);
 
-        $cek = Anggaran::where('kabupaten_id', $request->kabupaten_id)
-            ->where('tahun', $request->tahun)
-            ->exists();
+    Penyaluran::create($request->only([
+        'penerima_id', 'periode_bulan', 'periode_tahun', 'nominal',
+        'tanggal_salur', 'status', 'metode', 'no_referensi', 'catatan',
+    ]));
 
-        if ($cek) {
-            return back()
-                ->withInput()
-                ->withErrors([
-                    'tahun' => 'Kabupaten ini sudah memiliki anggaran pada tahun tersebut.'
-                ]);
-        }
+    return redirect()
+        ->route('penyaluran.index')
+        ->with('success', 'Data penyaluran berhasil ditambahkan.');
+}
 
-        Anggaran::create([
-            'kabupaten_id'      => $request->kabupaten_id,
-            'tahun'             => $request->tahun,
-            'total_anggaran'    => $request->total_anggaran,
-            'anggaran_terpakai' => 0,
-            'sisa_anggaran'     => $request->total_anggaran,
-        ]);
+public function update(Request $request, $id)
+{
+    $penyaluran = Penyaluran::findOrFail($id);
 
-        return redirect()
-            ->route('anggaran.index')
-            ->with('success', 'Anggaran berhasil ditambahkan.');
-    }
+    $request->validate([
+        'penerima_id'   => 'required|exists:penerima_bansos,id',
+        'periode_bulan' => 'required|integer|min:1|max:12',
+        'periode_tahun' => 'required|digits:4',
+        'nominal'       => 'required|numeric|min:1',
+        'tanggal_salur' => 'required|date',
+        'status'        => 'required|in:tersalur,tertunda,gagal',
+        'metode'        => 'nullable|string',
+        'no_referensi'  => 'nullable|string|max:100',
+        'catatan'       => 'nullable|string|max:255',
+    ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show($id)
-    {
-        $anggaran = Anggaran::with('kabupaten')->findOrFail($id);
+    $penyaluran->update($request->only([
+        'penerima_id', 'periode_bulan', 'periode_tahun', 'nominal',
+        'tanggal_salur', 'status', 'metode', 'no_referensi', 'catatan',
+    ]));
 
-        return view('anggaran.show', compact('anggaran'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
+    return redirect()
+        ->route('penyaluran.index')
+        ->with('success', 'Data penyaluran berhasil diubah.');
+}
     public function edit($id)
     {
-        $anggaran = Anggaran::findOrFail($id);
+        $penyaluran = Penyaluran::findOrFail($id);
+        $penerima   = PenerimaBansos::with('warga')->get();
 
-        $kabupaten = User::where('role', 'kabupaten')->get();
-
-        return view('anggaran.edit', compact(
-            'anggaran',
-            'kabupaten'
-        ));
+        return view('penyaluran.edit', compact('penyaluran', 'penerima'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id)
-    {
-        $anggaran = Anggaran::findOrFail($id);
+   
 
-        $request->validate([
-            'kabupaten_id'    => 'required|exists:users,id',
-            'tahun'           => 'required|digits:4',
-            'total_anggaran'  => 'required|numeric|min:1',
-        ]);
-
-        $cek = Anggaran::where('kabupaten_id', $request->kabupaten_id)
-            ->where('tahun', $request->tahun)
-            ->where('id', '!=', $anggaran->id)
-            ->exists();
-
-        if ($cek) {
-            return back()
-                ->withInput()
-                ->withErrors([
-                    'tahun' => 'Data anggaran untuk kabupaten dan tahun tersebut sudah ada.'
-                ]);
-        }
-
-        if ($request->total_anggaran < $anggaran->anggaran_terpakai) {
-            return back()
-                ->withInput()
-                ->withErrors([
-                    'total_anggaran' => 'Total anggaran tidak boleh lebih kecil dari anggaran yang sudah terpakai.'
-                ]);
-        }
-
-        $anggaran->update([
-            'kabupaten_id'      => $request->kabupaten_id,
-            'tahun'             => $request->tahun,
-            'total_anggaran'    => $request->total_anggaran,
-            'sisa_anggaran'     => $request->total_anggaran - $anggaran->anggaran_terpakai,
-        ]);
-
-        return redirect()
-            ->route('anggaran.index')
-            ->with('success', 'Data anggaran berhasil diubah.');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
-        $anggaran = Anggaran::findOrFail($id);
-
-        if ($anggaran->anggaran_terpakai > 0) {
-            return redirect()
-                ->route('anggaran.index')
-                ->with('error', 'Anggaran sudah digunakan sehingga tidak dapat dihapus.');
-        }
-
-        $anggaran->delete();
+        $penyaluran = Penyaluran::findOrFail($id);
+        $penyaluran->delete();
 
         return redirect()
-            ->route('anggaran.index')
-            ->with('success', 'Data anggaran berhasil dihapus.');
+            ->route('penyaluran.index')
+            ->with('success', 'Data penyaluran berhasil dihapus.');
     }
 }

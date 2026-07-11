@@ -9,17 +9,15 @@ class Anggaran extends Model
     protected $table='anggaran';
 
 protected $fillable = [
-
-    'kabupaten',
+    'kabupaten_id',
     'tahun',
     'total_anggaran',
     'anggaran_terpakai',
-    'sisa_anggaran'
-
+    'sisa_anggaran',
 ];
 
     public function kabupaten()
-    {
-        return $this->belongsTo(User::class,'kabupaten_id');
-    }
+{
+    return $this->belongsTo(User::class, 'kabupaten_id');
+}
 }

@@ -26,7 +26,6 @@
             </div>
         @endif
 
-        {{-- ================= RINGKASAN / SUMMARY CARDS (dihitung dari koleksi $distribusi) ================= --}}
         @php
             $totalDistribusiAktif = $distribusi->where('status', 'terkirim')->sum('jumlah');
             $totalDistribusiBatal = $distribusi->where('status', 'dibatalkan')->sum('jumlah');
@@ -75,12 +74,18 @@
                 <option value="">Semua Kabupaten/Kota</option>
                 @foreach($kabupatenList as $kab)
                     <option value="{{ $kab->id }}" {{ (string) $filterKabupaten === (string) $kab->id ? 'selected' : '' }}>
-                        {{ $kab->name }}
+                        {{ $kab->nama_lengkap }}
                     </option>
                 @endforeach
             </select>
 
-            @if($filterKabupaten)
+            <select name="status" class="form-select w-auto" onchange="this.form.submit()">
+                <option value="">Semua Status</option>
+                <option value="terkirim" {{ request('status') === 'terkirim' ? 'selected' : '' }}>Terkirim</option>
+                <option value="dibatalkan" {{ request('status') === 'dibatalkan' ? 'selected' : '' }}>Dibatalkan</option>
+            </select>
+
+            @if($filterKabupaten || request('status'))
                 <a href="{{ route('provinsi.distribusi.index', ['tahun' => $tahun]) }}" class="btn btn-sm btn-outline-secondary">
                     Reset Filter
                 </a>
@@ -105,7 +110,7 @@
                         @forelse($distribusi as $d)
                         <tr class="{{ $d->status === 'dibatalkan' ? 'table-secondary text-muted' : '' }}">
                             <td>{{ optional($d->tanggal_distribusi)->format('d-m-Y') ?? '-' }}</td>
-                            <td>{{ $d->kabupaten->name ?? 'Data terhapus' }}</td>
+                            <td>{{ $d->kabupaten->nama_lengkap ?? 'Data terhapus' }}</td>
                             <td class="text-end">Rp {{ number_format($d->jumlah, 0, ',', '.') }}</td>
                             <td>{{ $d->keterangan ?? '-' }}</td>
                             <td class="text-center">
@@ -116,13 +121,17 @@
                                 @endif
                             </td>
                             <td class="text-center">
+                                <a href="{{ route('provinsi.distribusi.edit', $d->id) }}"
+                                   class="btn btn-sm btn-outline-warning" title="Edit distribusi">
+                                    Edit
+                                </a>
                                 <a href="{{ route('provinsi.distribusi.show', $d->kabupaten_id) }}"
                                    class="btn btn-sm btn-outline-primary" title="Lihat riwayat kabupaten ini">
                                     Riwayat
                                 </a>
                                 @if($d->status === 'terkirim')
                                 <form action="{{ route('provinsi.distribusi.cancel', $d->id) }}" method="POST" class="d-inline"
-                                      onsubmit="return confirm('Yakin batalkan distribusi Rp {{ number_format($d->jumlah, 0, ',', '.') }} ke {{ $d->kabupaten->name ?? '' }}?')">
+                                      onsubmit="return confirm('Yakin batalkan distribusi Rp {{ number_format($d->jumlah, 0, ',', '.') }} ke {{ $d->kabupaten->nama_lengkap ?? '' }}?')">
                                     @csrf
                                     @method('PATCH')
                                     <button class="btn btn-sm btn-outline-danger">Batalkan</button>

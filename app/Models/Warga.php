@@ -8,21 +8,10 @@ class Warga extends Model
 {
     protected $table = 'warga';
 
-    protected $fillable = [
-        'nik',
-        'no_kk',
-        'nama_lengkap',
-        'jenis_kelamin',
-        'tanggal_lahir',
-        'alamat',
-        'desa',
-        'kecamatan',
-        'kabupaten',
-        'pekerjaan',
-        'penghasilan',
-        'rt',
-        'rw'
-    ];
+ protected $fillable = [
+    'nik', 'no_kk', 'nama_lengkap', 'jenis_kelamin',
+    'alamat', 'rt', 'rw', 'kabupaten', 'kecamatan',
+];
 
     public function penerimaBansos()
 {

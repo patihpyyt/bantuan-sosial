@@ -28,7 +28,7 @@
 
         {{-- ================= RINGKASAN / SUMMARY CARDS ================= --}}
         @php
-            $totalAnggaran       = $anggaran->sum('jumlah');
+            $totalAnggaran       = $anggaran->sum('total_anggaran');
             $jumlahTransaksi     = $anggaran->count();
             $jumlahKabupatenUnik = $anggaran->pluck('kabupaten_id')->unique()->count();
             $tahunAktif          = $anggaran->pluck('tahun')->unique()->count();
@@ -71,7 +71,6 @@
                             <th>Kabupaten/Kota</th>
                             <th>Tahun</th>
                             <th class="text-end">Jumlah Anggaran</th>
-                            <th>Keterangan</th>
                             <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -79,17 +78,16 @@
                         @forelse($anggaran as $item)
                         <tr>
                             <td>{{ optional($item->created_at)->format('d-m-Y') ?? '-' }}</td>
-                            <td>{{ $item->kabupaten->name ?? 'Data terhapus' }}</td>
+                            <td>{{ $item->kabupaten->nama_lengkap ?? 'Data terhapus' }}</td>
                             <td>{{ $item->tahun ?? '-' }}</td>
-                            <td class="text-end">Rp {{ number_format($item->jumlah, 0, ',', '.') }}</td>
-                            <td>{{ $item->keterangan ?? '-' }}</td>
+                            <td class="text-end">Rp {{ number_format($item->total_anggaran, 0, ',', '.') }}</td>
                             <td class="text-center">
                                 <a href="{{ route('anggaran.edit', $item->id) }}"
                                    class="btn btn-sm btn-outline-primary" title="Edit anggaran">
                                     Edit
                                 </a>
                                 <form action="{{ route('anggaran.destroy', $item->id) }}" method="POST" class="d-inline"
-                                      onsubmit="return confirm('Yakin hapus alokasi anggaran Rp {{ number_format($item->jumlah, 0, ',', '.') }} untuk {{ $item->kabupaten->name ?? '' }}?')">
+                                      onsubmit="return confirm('Yakin hapus alokasi anggaran Rp {{ number_format($item->total_anggaran, 0, ',', '.') }} untuk {{ $item->kabupaten->nama_lengkap ?? '' }}?')">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-sm btn-outline-danger">Hapus</button>
@@ -98,7 +96,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="6" class="text-center text-muted py-4">
+                            <td colspan="5" class="text-center text-muted py-4">
                                 Belum ada data anggaran yang tercatat.
                             </td>
                         </tr>
@@ -109,7 +107,7 @@
                         <tr class="fw-bold table-light">
                             <td colspan="3" class="text-end">Total Anggaran:</td>
                             <td class="text-end">Rp {{ number_format($totalAnggaran, 0, ',', '.') }}</td>
-                            <td colspan="2"></td>
+                            <td></td>
                         </tr>
                     </tfoot>
                     @endif
