@@ -15,10 +15,7 @@ class PenerimaanDanaController extends Controller
 
 public function index()
 {
-    $distribusi = DistribusiAnggaran::whereNull('kabupaten_id')
-        ->orderBy('created_at', 'desc')
-        ->get();
-
+    $distribusi = DistribusiAnggaran::orderBy('created_at', 'desc')->get();
     $totalDana = $distribusi->sum('jumlah'); // sesuaikan nama kolom
     $totalDistribusi = $distribusi->count();
 

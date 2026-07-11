@@ -57,16 +57,10 @@ class DistribusiController extends Controller
      * Form input distribusi baru ke Kecamatan.
      */
     public function create()
-    {
-        $kecamatanList = User::where('role', 'kecamatan')->get();
-
-        $anggaranKabupaten = \App\Models\Anggaran::where('kabupaten_id', auth()->id())
-            ->where('tahun', now()->year)
-            ->first();
-
-        return view('kabupaten.distribusi.create', compact('kecamatanList', 'anggaranKabupaten'));
-    }
-
+{
+    $kecamatan = User::where('role', 'kecamatan')->get();
+    return view('kabupaten.distribusi.create', compact('kecamatan'));
+}
     /**
      * Simpan distribusi baru + update/tambah AnggaranKecamatan terkait.
      * Sekaligus mengurangi sisa anggaran Kabupaten yang login (karena dana diteruskan).
@@ -88,11 +82,11 @@ class DistribusiController extends Controller
             ->where('tahun', $request->tahun)
             ->first();
 
-        if (!$anggaranKabupaten || $anggaranKabupaten->sisa_anggaran < $request->jumlah) {
-            return back()
-                ->withInput()
-                ->with('error', 'Sisa anggaran Kabupaten tidak mencukupi untuk distribusi ini.');
-        }
+         if (!$anggaranKabupaten || $anggaranKabupaten->sisa_anggaran < $request->jumlah) {   // 👈 ini baris yang bikin "refresh"
+        return back()
+            ->withInput()
+            ->with('error', 'Sisa anggaran Kabupaten tidak mencukupi untuk distribusi ini.');
+    }
 
         DB::transaction(function () use ($request, $kabupatenId, $anggaranKabupaten) {
 

@@ -2,10 +2,8 @@
     <x-slot name="header">
         Monitoring Kecamatan
     </x-slot>
-
     <div class="p-6">
         <h1 class="text-xl font-semibold mb-4">Monitoring Kecamatan</h1>
-
         <table class="w-full border-collapse">
             <thead>
                 <tr class="border-b">
@@ -19,11 +17,11 @@
             <tbody>
                 @forelse ($monitoring as $item)
                     <tr class="border-b">
-                        <td class="py-2">{{ $item['kecamatan']->name }}</td>
-                        <td class="py-2">Rp {{ number_format($item['total_anggaran'], 0, ',', '.') }}</td>
-                        <td class="py-2">Rp {{ number_format($item['anggaran_terpakai'], 0, ',', '.') }}</td>
-                        <td class="py-2">Rp {{ number_format($item['sisa_anggaran'], 0, ',', '.') }}</td>
-                        <td class="py-2">Rp {{ number_format($item['total_distribusi'], 0, ',', '.') }}</td>
+                        <td class="py-2">{{ $item->nama_lengkap }}</td>
+                        <td class="py-2">Rp {{ number_format($item->total_anggaran, 0, ',', '.') }}</td>
+                        <td class="py-2">Rp {{ number_format($item->anggaran_terpakai, 0, ',', '.') }}</td>
+                        <td class="py-2">Rp {{ number_format($item->sisa_anggaran, 0, ',', '.') }}</td>
+                        <td class="py-2">Rp {{ number_format($item->total_distribusi, 0, ',', '.') }}</td>
                     </tr>
                 @empty
                     <tr>

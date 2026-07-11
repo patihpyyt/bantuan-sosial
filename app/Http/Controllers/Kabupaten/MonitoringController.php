@@ -14,50 +14,51 @@ class MonitoringController extends Controller
      * Monitoring ringkasan & tabel status anggaran seluruh Kecamatan.
      */
     public function index(Request $request)
-    {
-        $kabupatenId = auth()->id();
-        $tahun       = $request->input('tahun', now()->year);
+{
+    $kabupatenId = auth()->id();
+    $tahun       = $request->input('tahun', now()->year);
 
-        $kecamatanList = User::where('role', 'kecamatan')->get();
+    $kecamatanList = User::where('role', 'kecamatan')->get();
 
-        // Gabungkan data kecamatan dengan data anggarannya (jadi object, bukan array,
-        // supaya bisa dipanggil pakai -> di view)
-        $monitoring = $kecamatanList->map(function ($kecamatan) use ($tahun) {
+    $monitoring = $kecamatanList->map(function ($kecamatan) use ($tahun) {
 
-            $anggaran = AnggaranKecamatan::where('kecamatan_id', $kecamatan->id)
-                ->where('tahun', $tahun)
-                ->first();
+        $anggaran = AnggaranKecamatan::where('kecamatan_id', $kecamatan->id)
+            ->where('tahun', $tahun)
+            ->first();
 
-            return (object) [
-                'id'                => $kecamatan->id,
-                'nama_lengkap'      => $kecamatan->name,
-                'total_anggaran'    => $anggaran->total_anggaran ?? 0,
-                'anggaran_terpakai' => $anggaran->anggaran_terpakai ?? 0,
-                'sisa_anggaran'     => $anggaran->sisa_anggaran ?? 0,
-            ];
-        });
+        $totalDistribusi = DistribusiKecamatan::where('kecamatan_id', $kecamatan->id)
+            ->where('tahun', $tahun)
+            ->sum('jumlah');
 
-        // Ringkasan atas
-        $totalKecamatan = $kecamatanList->count();
-        $totalDana      = $monitoring->sum('total_anggaran');
-        $totalTerpakai  = $monitoring->sum('anggaran_terpakai');
-        $totalSisa      = $monitoring->sum('sisa_anggaran');
+        return (object) [
+            'id'                => $kecamatan->id,
+            'nama_lengkap'      => $kecamatan->nama_lengkap, // ✅ diperbaiki
+            'total_anggaran'    => $anggaran->total_anggaran ?? 0,
+            'anggaran_terpakai' => $anggaran->anggaran_terpakai ?? 0,
+            'sisa_anggaran'     => $anggaran->sisa_anggaran ?? 0,
+            'total_distribusi'  => $totalDistribusi, // ✅ ditambahkan
+        ];
+    });
 
-        // Data buat grafik (chart.js)
-        $chartLabel = $monitoring->pluck('nama_lengkap');
-        $chartData  = $monitoring->pluck('total_anggaran');
+    $totalKecamatan = $kecamatanList->count();
+    $totalDana      = $monitoring->sum('total_anggaran');
+    $totalTerpakai  = $monitoring->sum('anggaran_terpakai');
+    $totalSisa      = $monitoring->sum('sisa_anggaran');
 
-        return view('kabupaten.monitoring.index', [
-            'monitoring'     => $monitoring,
-            'totalKecamatan' => $totalKecamatan,
-            'totalDana'      => $totalDana,
-            'totalTerpakai'  => $totalTerpakai,
-            'totalSisa'      => $totalSisa,
-            'chartLabel'     => $chartLabel,
-            'chartData'      => $chartData,
-            'tahun'          => $tahun,
-        ]);
-    }
+    $chartLabel = $monitoring->pluck('nama_lengkap');
+    $chartData  = $monitoring->pluck('total_anggaran');
+
+    return view('kabupaten.monitoring.index', [
+        'monitoring'     => $monitoring,
+        'totalKecamatan' => $totalKecamatan,
+        'totalDana'      => $totalDana,
+        'totalTerpakai'  => $totalTerpakai,
+        'totalSisa'      => $totalSisa,
+        'chartLabel'     => $chartLabel,
+        'chartData'      => $chartData,
+        'tahun'          => $tahun,
+    ]);
+}
 
     /**
      * Detail monitoring untuk satu Kecamatan tertentu.
