@@ -1,15 +1,15 @@
 <?php
 
-use App\Http\Controllers\JenisBansosController;
-use App\Http\Controllers\PenerimaBansosController;
-use App\Http\Controllers\WargaController;
-use App\Http\Controllers\PenyaluranController;
+use App\Http\Controllers\Kelurahan\JenisBansosController;
+use App\Http\Controllers\Kelurahan\WargaController;
+use App\Http\Controllers\Kelurahan\PenerimaBansosController;
+use App\Http\Controllers\Kelurahan\PenyaluranController;
+use App\Http\Controllers\Kelurahan\LaporanSanggahanController;
 use App\Http\Controllers\LogAktivitasController;
-use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\Kelurahan\LaporanController;
 use App\Http\Controllers\PortalPublicController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\LaporanSanggahanController;
 use App\Http\Controllers\Provinsi\AnggaranController;
 use App\Http\Controllers\Provinsi\DashboardController as DashboardProvinsiController;
 use App\Http\Controllers\Provinsi\MonitoringController;

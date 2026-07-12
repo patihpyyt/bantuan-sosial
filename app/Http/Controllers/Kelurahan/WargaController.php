@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Kelurahan;
 
+use App\Http\Controllers\Controller;
 use App\Models\Warga;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -9,11 +10,11 @@ use Illuminate\Http\Request;
 class WargaController extends Controller
 {
     public function index()
-    {
-        $warga = Warga::all();
+{
+    $warga = Warga::where('kelurahan_id', auth()->id())->get();
 
-        return view('warga.index', compact('warga'));
-    }
+    return view('warga.index', compact('warga'));
+}
 
     public function create()
     {
@@ -35,7 +36,7 @@ class WargaController extends Controller
             'kabupaten'     => 'required|string',
             'kecamatan'     => 'required|string',
         ]);
-
+         $data['kelurahan_id'] = auth()->id();
         Warga::create($data);
 
         return redirect()

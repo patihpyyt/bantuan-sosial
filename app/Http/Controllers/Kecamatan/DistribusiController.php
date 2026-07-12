@@ -24,12 +24,13 @@ class DistribusiController extends Controller
     }
 
     public function create()
-    {
-        $kelurahan = User::where('role', 'kelurahan')->get();
+{
+    $kelurahan = User::where('role', 'kelurahan')
+        ->where('kecamatan_id', auth()->id())
+        ->get();
 
-        return view('kecamatan.distribusi.create', compact('kelurahan'));
-    }
-
+    return view('kecamatan.distribusi.create', compact('kelurahan'));
+}
     public function store(Request $request)
     {
         $request->validate([

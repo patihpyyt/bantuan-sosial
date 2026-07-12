@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Kelurahan;
 
+use App\Http\Controllers\Controller;
 use App\Models\PenerimaBansos;
+use App\Models\Penyaluran;
 use App\Models\Warga;
 use App\Models\JenisBansos;
 use Illuminate\Http\Request;
@@ -12,16 +14,17 @@ class PenerimaBansosController extends Controller
     /**
      * Menampilkan semua penerima bansos
      */
-    public function index()
-    {
-        $penerima = PenerimaBansos::with([
-            'warga',
-            'jenisBansos'
-        ])->get();
+    // PenyaluranController@index
+public function index()
+{
+    $penerima = PenerimaBansos::with(['warga', 'jenisBansos'])
+        ->whereHas('warga', function ($q) {
+            $q->where('kelurahan_id', auth()->id());
+        })
+        ->get();
 
-        return view('penerima-bansos.penerima', compact('penerima'));
-    }
-
+    return view('penerima-bansos.penerima', compact('penerima'));
+}
 
     /**
      * Form tambah penerima

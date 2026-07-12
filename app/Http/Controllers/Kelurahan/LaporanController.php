@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Kelurahan;
 
+use App\Http\Controllers\Controller;
 use App\Exports\LaporanBansosExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Penyaluran;

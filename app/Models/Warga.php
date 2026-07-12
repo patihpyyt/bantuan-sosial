@@ -9,10 +9,10 @@ class Warga extends Model
     protected $table = 'warga';
 
  protected $fillable = [
-    'nik', 'no_kk', 'nama_lengkap', 'jenis_kelamin',
-    'alamat', 'rt', 'rw', 'kabupaten', 'kecamatan',
+    'kelurahan_id', 'nik', 'no_kk', 'nama_lengkap', 'jenis_kelamin',
+    'tanggal_lahir', 'alamat', 'rt', 'rw', 'desa', 'kecamatan',
+    'kabupaten', 'pekerjaan', 'penghasilan',
 ];
-
     public function penerimaBansos()
 {
     return $this->hasMany(PenerimaBansos::class, 'warga_id');

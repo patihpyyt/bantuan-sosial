@@ -1,23 +1,25 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Kelurahan;
 
+use App\Http\Controllers\Controller;
 use App\Models\LaporanSanggahan;
 use Illuminate\Http\Request;
 
 class LaporanSanggahanController extends Controller
 {
-    public function index()
-    {
-        $laporan = LaporanSanggahan::with([
-            'pelapor',
-            'warga'
-        ])
+  // LaporanSanggahanController@index
+public function index()
+{
+    $laporan = LaporanSanggahan::with(['pelapor', 'warga'])
+        ->whereHas('warga', function ($q) {
+            $q->where('kelurahan_id', auth()->id());
+        })
         ->latest()
         ->get();
 
-        return view('laporan-sanggahan.index', compact('laporan'));
-    }
+    return view('laporan-sanggahan.index', compact('laporan'));
+}
 
     public function store(Request $request)
     {

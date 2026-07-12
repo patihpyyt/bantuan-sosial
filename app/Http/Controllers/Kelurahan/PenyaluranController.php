@@ -1,21 +1,26 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Kelurahan;
 
+use App\Http\Controllers\Controller;
 use App\Models\Penyaluran;
 use App\Models\PenerimaBansos;
 use Illuminate\Http\Request;
 
 class PenyaluranController extends Controller
 {
-    public function index()
-    {
-        $penyaluran = Penyaluran::with('penerima.warga')
-            ->latest('tanggal_salur')
-            ->get();
+    // PenyaluranController@index
+public function index()
+{
+    $penyaluran = Penyaluran::with('penerima.warga')
+        ->whereHas('penerima.warga', function ($q) {
+            $q->where('kelurahan_id', auth()->id());
+        })
+        ->latest('tanggal_salur')
+        ->get();
 
-        return view('penyaluran.index', compact('penyaluran'));
-    }
+    return view('penyaluran.index', compact('penyaluran'));
+}
 
     public function create()
     {
