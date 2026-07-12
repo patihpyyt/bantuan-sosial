@@ -115,12 +115,10 @@ Route::middleware('auth')->group(function () {
     });
 
 
-    // ================= KECAMATAN =================
+ // ================= KECAMATAN =================
 Route::middleware(['auth', 'role:kecamatan'])->prefix('kecamatan')->name('kecamatan.')->group(function () {
 
-    Route::get('/dashboard', function () {
-        return view('dashboard-kecamatan');
-    })->name('dashboard');
+    Route::get('/dashboard', [\App\Http\Controllers\Kecamatan\DashboardController::class, 'index'])->name('dashboard');
 
     // Menerima Dana dari Kabupaten
     Route::get('/dana', [\App\Http\Controllers\Kecamatan\DanaController::class, 'index'])->name('dana.index');
@@ -130,7 +128,6 @@ Route::middleware(['auth', 'role:kecamatan'])->prefix('kecamatan')->name('kecama
     Route::get('/monitoring', [\App\Http\Controllers\Kecamatan\MonitoringController::class, 'index'])->name('monitoring.index');
 
 });
-
 
     // ================= KABUPATEN (khusus role: kabupaten) =================
     Route::middleware('role:kabupaten')->group(function () {
