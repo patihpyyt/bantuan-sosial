@@ -58,7 +58,9 @@ class DistribusiController extends Controller
      */
     public function create()
 {
-    $kecamatan = User::where('role', 'kecamatan')->get();
+    $kecamatan = User::where('role', 'kecamatan')
+    ->where('kabupaten_id', auth()->id())
+    ->get();
     return view('kabupaten.distribusi.create', compact('kecamatan'));
 }
     /**

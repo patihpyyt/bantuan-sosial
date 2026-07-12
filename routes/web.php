@@ -63,7 +63,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         return match (auth()->user()->role) {
             'provinsi'  => redirect()->route('dashboard.provinsi'),
-            'kecamatan' => redirect()->route('dashboard.kecamatan'),
+             'kecamatan' => redirect()->route('kecamatan.dashboard'),
             'kabupaten' => redirect()->route('dashboard.kabupaten'),
             'kelurahan' => redirect()->route('dashboard.kelurahan'),
             default     => redirect()->route('dashboard.warga'),
@@ -116,9 +116,20 @@ Route::middleware('auth')->group(function () {
 
 
     // ================= KECAMATAN =================
-    Route::get('/dashboard/kecamatan', function () {
+Route::middleware(['auth', 'role:kecamatan'])->prefix('kecamatan')->name('kecamatan.')->group(function () {
+
+    Route::get('/dashboard', function () {
         return view('dashboard-kecamatan');
-    })->name('dashboard.kecamatan');
+    })->name('dashboard');
+
+    // Menerima Dana dari Kabupaten
+    Route::get('/dana', [\App\Http\Controllers\Kecamatan\DanaController::class, 'index'])->name('dana.index');
+    Route::get('/distribusi', [\App\Http\Controllers\Kecamatan\DistribusiController::class, 'index'])->name('distribusi.index');
+    Route::get('/distribusi/create', [\App\Http\Controllers\Kecamatan\DistribusiController::class, 'create'])->name('distribusi.create');
+    Route::post('/distribusi', [\App\Http\Controllers\Kecamatan\DistribusiController::class, 'store'])->name('distribusi.store');
+    Route::get('/monitoring', [\App\Http\Controllers\Kecamatan\MonitoringController::class, 'index'])->name('monitoring.index');
+
+});
 
 
     // ================= KABUPATEN (khusus role: kabupaten) =================
