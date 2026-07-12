@@ -121,23 +121,35 @@
                                 @endif
                             </td>
                             <td class="text-center">
-                                <a href="{{ route('provinsi.distribusi.edit', $d->id) }}"
-                                   class="btn btn-sm btn-outline-warning" title="Edit distribusi">
-                                    Edit
-                                </a>
-                                <a href="{{ route('provinsi.distribusi.show', $d->kabupaten_id) }}"
-                                   class="btn btn-sm btn-outline-primary" title="Lihat riwayat kabupaten ini">
-                                    Riwayat
-                                </a>
-                                @if($d->status === 'terkirim')
-                                <form action="{{ route('provinsi.distribusi.cancel', $d->id) }}" method="POST" class="d-inline"
-                                      onsubmit="return confirm('Yakin batalkan distribusi Rp {{ number_format($d->jumlah, 0, ',', '.') }} ke {{ $d->kabupaten->nama_lengkap ?? '' }}?')">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button class="btn btn-sm btn-outline-danger">Batalkan</button>
-                                </form>
-                                @endif
-                            </td>
+                           <td class="text-center">
+    <div class="d-flex justify-content-center gap-1 flex-wrap">
+        <a href="{{ route('provinsi.distribusi.edit', $d->id) }}"
+           class="btn btn-sm btn-outline-warning" title="Edit distribusi">
+            Edit
+        </a>
+
+        <a href="{{ route('provinsi.distribusi.show', $d->kabupaten_id) }}"
+           class="btn btn-sm btn-outline-primary" title="Lihat riwayat kabupaten ini">
+            Riwayat
+        </a>
+
+        @if($d->status === 'terkirim')
+        <form action="{{ route('provinsi.distribusi.cancel', $d->id) }}" method="POST" class="d-inline"
+              onsubmit="return confirm('Yakin batalkan distribusi Rp {{ number_format($d->jumlah, 0, ',', '.') }} ke {{ $d->kabupaten->nama_lengkap ?? '' }}?')">
+            @csrf
+            @method('PATCH')
+            <button class="btn btn-sm btn-outline-secondary">Batalkan</button>
+        </form>
+        @endif
+
+        <form action="{{ route('provinsi.distribusi.destroy', $d->id) }}" method="POST" class="d-inline"
+              onsubmit="return confirm('Hapus data ini secara PERMANEN? Tindakan ini tidak bisa dibatalkan.')">
+            @csrf
+            @method('DELETE')
+            <button class="btn btn-sm btn-outline-danger">Hapus</button>
+        </form>
+    </div>
+</td>
                         </tr>
                         @empty
                         <tr>

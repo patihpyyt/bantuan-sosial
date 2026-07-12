@@ -76,7 +76,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/dashboard/provinsi', [DashboardProvinsiController::class, 'index'])
             ->name('dashboard.provinsi');
-
+        
         Route::get('/dashboard/cari-warga', [DashboardProvinsiController::class, 'cariWarga'])
             ->name('dashboard.cari-warga');
 
@@ -94,7 +94,7 @@ Route::middleware('auth')->group(function () {
             Route::get('monitoring/{kabupatenId}', [MonitoringController::class, 'show'])
                 ->name('monitoring.show');
 
-            // Distribusi
+         // Distribusi
             Route::get('distribusi', [DistribusiController::class, 'index'])
                 ->name('distribusi.index');
             Route::get('distribusi/create', [DistribusiController::class, 'create'])
@@ -109,6 +109,8 @@ Route::middleware('auth')->group(function () {
                 ->name('distribusi.edit');
             Route::put('distribusi/{id}', [DistribusiController::class, 'update'])
                 ->name('distribusi.update');
+            Route::delete('distribusi/{id}', [DistribusiController::class, 'destroy'])
+                ->name('distribusi.destroy');
 
         });
 

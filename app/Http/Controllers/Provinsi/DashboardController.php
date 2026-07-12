@@ -2,19 +2,22 @@
 
 namespace App\Http\Controllers\Provinsi;
 
-use App\Http\Controllers\Controller;   // <-- TAMBAHKAN BARIS INI
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Warga;
 use App\Models\Anggaran;
 use App\Models\JenisBansos;
 use App\Models\PenerimaBansos;
 use App\Models\Penyaluran;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $tahun = $request->input('tahun', now()->year);
+
         $grafikPenyaluran = Penyaluran::select(
                 DB::raw('MONTH(tanggal_salur) as bulan'),
                 DB::raw('SUM(nominal) as total')
@@ -45,7 +48,12 @@ class DashboardController extends Controller
             ->orderByDesc('total_dana')
             ->get();
 
-      return view('provinsi.dashboard-provinsi', [
+        // Sumber kebenaran tunggal: tabel `anggaran` (alokasi per Kabupaten/Kota, tahun berjalan)
+        $totalAnggaranNilai = Anggaran::where('tahun', $tahun)->sum('total_anggaran');
+        $totalTerpakaiNilai = Anggaran::where('tahun', $tahun)->sum('anggaran_terpakai');
+        $totalSisaNilai     = $totalAnggaranNilai - $totalTerpakaiNilai;
+
+        return view('provinsi.dashboard-provinsi', [
             'totalKabupaten' => User::where('role', 'kabupaten')->count(),
             'totalKecamatan' => User::where('role', 'kecamatan')->count(),
             'totalKelurahan' => User::where('role', 'kelurahan')->count(),
@@ -53,14 +61,17 @@ class DashboardController extends Controller
             'totalWarga'     => Warga::count(),
             'totalPenerima'  => PenerimaBansos::count(),
             'totalProgram'   => JenisBansos::count(),
-            'totalAnggaran'  => Anggaran::sum('total_anggaran'),
-            'totalTerpakai'  => Anggaran::sum('anggaran_terpakai'),
-            'totalSisa'      => Anggaran::sum('sisa_anggaran'),
+
+            'totalAnggaran'  => $totalAnggaranNilai,
+            'totalTerpakai'  => $totalTerpakaiNilai,
+            'totalSisa'      => $totalSisaNilai,
 
             'totalDana'      => Penyaluran::sum('nominal'),
 
             'grafikPenyaluran'    => $grafikPenyaluran,
             'distribusiKabupaten' => $distribusiKabupaten,
+
+            'tahun' => $tahun,
         ]);
     }
 }

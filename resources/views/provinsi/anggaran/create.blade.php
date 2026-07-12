@@ -37,11 +37,11 @@
                             <select name="kabupaten_id" id="kabupaten_id"
                                     class="form-select @error('kabupaten_id') is-invalid @enderror" required>
                                 <option value="" disabled selected>-- Pilih Kabupaten/Kota --</option>
-                         @foreach($kabupaten as $kab)
-                            <option value="{{ $kab->id }}" {{ old('kabupaten_id') == $kab->id ? 'selected' : '' }}>
-                                {{ $kab->nama_lengkap }}
-                            </option>
-                        @endforeach
+                                @foreach($kabupaten as $kab)
+                                    <option value="{{ $kab->id }}" {{ old('kabupaten_id') == $kab->id ? 'selected' : '' }}>
+                                        {{ $kab->nama_lengkap }}
+                                    </option>
+                                @endforeach
                             </select>
                             @error('kabupaten_id')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -59,13 +59,16 @@
                         </div>
 
                         <div class="col-md-6">
-                            <label for="total_anggaran" class="form-label">Jumlah Anggaran (Rp)</label>
-                            <input type="number" name="total_anggaran" id="total_anggaran"
+                            <label for="total_anggaran_display" class="form-label">Jumlah Anggaran (Rp)</label>
+                            <input type="text" id="total_anggaran_display"
                                    class="form-control @error('total_anggaran') is-invalid @enderror"
-                                   value="{{ old('total_anggaran') }}" min="1" step="1" required
-                                   placeholder="Contoh: 50000000">
+                                   value="{{ old('total_anggaran') ? number_format(old('total_anggaran'), 0, ',', '.') : '' }}"
+                                   placeholder="Contoh: 234.000.000"
+                                   inputmode="numeric" autocomplete="off" required>
+                            <input type="hidden" name="total_anggaran" id="total_anggaran" value="{{ old('total_anggaran') }}">
+                            <small class="text-muted">Titik otomatis menyesuaikan saat mengetik.</small>
                             @error('total_anggaran')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
                         </div>
 
@@ -79,4 +82,17 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const display = document.getElementById('total_anggaran_display');
+            const hidden  = document.getElementById('total_anggaran');
+
+            display.addEventListener('input', function () {
+                let angka = display.value.replace(/\D/g, '');
+                hidden.value = angka;
+                display.value = angka ? new Intl.NumberFormat('id-ID').format(angka) : '';
+            });
+        });
+    </script>
 </x-app-layout>

@@ -50,8 +50,11 @@
 
                     <div class="mb-3">
                         <label class="form-label">Jumlah Dana (Rp)</label>
-                        <input type="number" name="jumlah" class="form-control" step="0.01"
-                               value="{{ old('jumlah', $distribusi->jumlah) }}" required>
+                        <input type="text" id="jumlah_display" class="form-control"
+                               value="{{ number_format(old('jumlah', $distribusi->jumlah), 0, ',', '.') }}"
+                               placeholder="Contoh: 50.000.000" inputmode="numeric" autocomplete="off" required>
+                        <input type="hidden" name="jumlah" id="jumlah" value="{{ old('jumlah', $distribusi->jumlah) }}">
+                        <small class="text-muted">Cek jumlah nolnya sebelum simpan.</small>
                     </div>
 
                     <div class="mb-3">
@@ -80,4 +83,17 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const display = document.getElementById('jumlah_display');
+            const hidden  = document.getElementById('jumlah');
+
+            display.addEventListener('input', function () {
+                let angka = display.value.replace(/\D/g, '');
+                hidden.value = angka;
+                display.value = angka ? new Intl.NumberFormat('id-ID').format(angka) : '';
+            });
+        });
+    </script>
 </x-app-layout>
