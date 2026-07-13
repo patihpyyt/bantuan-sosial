@@ -91,4 +91,43 @@ class DistribusiController extends Controller
             ->route('kecamatan.distribusi.index')
             ->with('success', 'Dana berhasil didistribusikan ke Kelurahan.');
     }
+
+    public function destroy($id)
+{
+    $distribusi = DistribusiKelurahan::findOrFail($id);
+
+    DB::transaction(function () use ($distribusi) {
+
+        // Kembalikan efek ke AnggaranKelurahan (kalau ada & belum terlanjur dipakai kelurahan)
+        $anggaranKelurahan = AnggaranKelurahan::where('kelurahan_id', $distribusi->kelurahan_id)
+            ->where('tahun', $distribusi->tahun)
+            ->first();
+
+        if ($anggaranKelurahan) {
+            if ($distribusi->jumlah > $anggaranKelurahan->sisa_anggaran) {
+                abort(back()->with('error', 'Distribusi tidak bisa dihapus karena dana sudah terpakai sebagian oleh Kelurahan.')->getStatusCode());
+            }
+
+            $anggaranKelurahan->total_anggaran -= $distribusi->jumlah;
+            $anggaranKelurahan->sisa_anggaran  -= $distribusi->jumlah;
+            $anggaranKelurahan->save();
+        }
+
+        // Kembalikan sisa anggaran ke Kecamatan
+        $anggaranKecamatan = AnggaranKecamatan::where('kecamatan_id', $distribusi->kecamatan_id)
+            ->where('tahun', $distribusi->tahun)
+            ->first();
+
+        if ($anggaranKecamatan) {
+            $anggaranKecamatan->sisa_anggaran += $distribusi->jumlah;
+            $anggaranKecamatan->save();
+        }
+
+        $distribusi->delete();
+    });
+
+    return redirect()
+        ->route('kecamatan.distribusi.index')
+        ->with('success', 'Distribusi berhasil dihapus.');
+}
 }

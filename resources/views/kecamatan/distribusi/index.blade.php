@@ -33,6 +33,7 @@
                             <th>Tanggal Distribusi</th>
                             <th>Status</th>
                             <th>Keterangan</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -49,10 +50,22 @@
                                     </span>
                                 </td>
                                 <td>{{ $item->keterangan ?? '-' }}</td>
+                                <td>
+                                    <form action="{{ route('kecamatan.distribusi.destroy', $item->id) }}"
+                                          method="POST"
+                                          onsubmit="return confirm('Yakin ingin menghapus distribusi ini?');"
+                                          class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                            Hapus
+                                        </button>
+                                    </form>
+                                </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center text-gray-400">Belum ada data distribusi.</td>
+                                <td colspan="8" class="text-center text-gray-400">Belum ada data distribusi.</td>
                             </tr>
                         @endforelse
                     </tbody>
