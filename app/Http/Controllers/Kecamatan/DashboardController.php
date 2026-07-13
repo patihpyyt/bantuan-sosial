@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Kecamatan;
 
 use App\Http\Controllers\Controller;
 use App\Models\AnggaranKecamatan;
+use App\Models\DistribusiAnggaran;
 use App\Models\DistribusiKelurahan;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -26,6 +27,21 @@ class DashboardController extends Controller
 
         $totalKelurahan = User::where('role', 'kelurahan')->count();
 
+        // Dana yang DITERIMA kecamatan ini dari Kabupaten
+        // (disimpan Kabupaten di kolom kabupaten_id = ID kecamatan penerima)
+        $riwayatDiterima = DistribusiAnggaran::where('kabupaten_id', $kecamatanId)
+            ->where('tahun', $tahun)
+            ->where('status', 'terkirim')
+            ->orderByDesc('tanggal_distribusi')
+            ->get();
+
+        $totalDanaDiterima = $riwayatDiterima->sum('jumlah');
+        $totalTransaksiDiterima = $riwayatDiterima->count();
+        $transaksiBulanIni = $riwayatDiterima
+            ->where('tanggal_distribusi', '>=', now()->startOfMonth())
+            ->count();
+
+        // Dana yang DIKELUARKAN kecamatan ini ke Kelurahan
         $totalDistribusi = DistribusiKelurahan::where('kecamatan_id', $kecamatanId)
             ->where('tahun', $tahun)
             ->sum('jumlah');
@@ -49,13 +65,17 @@ class DashboardController extends Controller
             });
 
         return view('kecamatan.dashboard-kecamatan', [
-            'totalAnggaran'       => $totalAnggaran,
-            'totalTerpakai'       => $totalTerpakai,
-            'totalSisa'           => $totalSisa,
-            'totalKelurahan'      => $totalKelurahan,
-            'totalDistribusi'     => $totalDistribusi,
-            'distribusiKelurahan' => $distribusiKelurahan,
-            'tahun'               => $tahun,
+            'totalAnggaran'          => $totalAnggaran,
+            'totalTerpakai'          => $totalTerpakai,
+            'totalSisa'              => $totalSisa,
+            'totalKelurahan'         => $totalKelurahan,
+            'totalDistribusi'        => $totalDistribusi,
+            'distribusiKelurahan'    => $distribusiKelurahan,
+            'riwayatDiterima'        => $riwayatDiterima,
+            'totalDanaDiterima'      => $totalDanaDiterima,
+            'totalTransaksiDiterima' => $totalTransaksiDiterima,
+            'transaksiBulanIni'      => $transaksiBulanIni,
+            'tahun'                  => $tahun,
         ]);
     }
 }
