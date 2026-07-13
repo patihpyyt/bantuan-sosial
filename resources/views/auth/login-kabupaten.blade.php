@@ -1,9 +1,7 @@
 <x-guest-layout>
-    {{-- HEADER PORTAL LOGIN (Logo bawaan sudah bersih total) --}}
+    {{-- HEADER PORTAL LOGIN --}}
     <div class="mb-6 border-b border-slate-100 pb-4">
-        <h2 class="text-xl font-extrabold text-slate-900 tracking-tight">
-    Portal Login Kabupaten
-</h2>
+        <h2 class="text-xl font-extrabold text-slate-900 tracking-tight">Portal Login Kabupaten</h2>
         <p class="text-xs text-slate-400 mt-0.5">Sistem Informasi Jaring Pengaman Sosial Desa</p>
     </div>
 
@@ -16,6 +14,7 @@
     <form method="POST" action="{{ route('login') }}" class="space-y-5">
         @csrf
 
+        {{-- USERNAME --}}
         <div>
             <label for="username" class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">
                 Username
@@ -28,6 +27,7 @@
             @enderror
         </div>
 
+        {{-- PASSWORD --}}
         <div>
             <label for="password" class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">
                 Password
@@ -47,6 +47,7 @@
             @enderror
         </div>
 
+        {{-- REMEMBER ME & LUPA PASSWORD --}}
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-1">
             <label for="remember_me" class="inline-flex items-center cursor-pointer select-none">
                 <input id="remember_me" type="checkbox" name="remember" 
@@ -56,56 +57,58 @@
             <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 bg-slate-50 border border-slate-200/60 px-2.5 py-1 rounded-lg self-start sm:self-auto">
                 Lupa password? Hubungi admin
             </span>
-                <div class="border-t border-slate-200 pt-5 mt-5">
-
-    <p class="text-center text-xs font-bold text-slate-500 uppercase tracking-wider mb-4">
-        Portal Login
-    </p>
-
-    <div class="grid grid-cols-2 gap-3">
-
-        <a href="{{ route('login') }}"
-            class="text-center py-2 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-sm font-semibold transition">
-            🏛 Provinsi
-        </a>
-
-        <a href="{{ route('login') }}"
-            class="text-center py-2 rounded-lg bg-cyan-50 hover:bg-cyan-100 text-cyan-700 text-sm font-semibold transition">
-            🏙 Kabupaten / Kota
-        </a>
-
-        <a href="{{ route('login') }}"
-            class="text-center py-2 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-700 text-sm font-semibold transition">
-            🏢 Kecamatan
-        </a>
-
-        <a href="{{ route('login') }}"
-            class="text-center py-2 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-sm font-semibold transition">
-            🏠 Kelurahan
-        </a>
-
-    </div>
-
-    <div class="mt-4">
-
-        <a href="{{ route('login.warga') }}"
-            class="block w-full text-center py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold transition">
-
-            👤 Login Warga
-
-        </a>
-
-    </div>
-
-</div>
         </div>
 
+        {{-- TOMBOL UTAMA SUBMIT (Biru Solid) --}}
         <div class="pt-2">
             <button type="submit" 
                 class="w-full flex justify-center items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm px-5 py-3 rounded-xl shadow-lg shadow-blue-500/20 transition duration-200 cursor-pointer">
                 Masuk ke Dashboard
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
             </button>
+        </div>
+
+        {{-- SEPARATOR PORTAL LAIN --}}
+        <div class="border-t border-slate-200 pt-5 mt-5">
+            <p class="text-center text-xs font-bold text-slate-500 uppercase tracking-wider mb-4">
+                Portal Login Lainnya
+            </p>
+
+            {{-- GRID LINKS (Ikon Garis Tanpa Background Warna Blok) --}}
+            <div class="grid grid-cols-2 gap-3">
+                <a href="{{ route('login') }}"
+                    class="flex items-center justify-center gap-2 text-center py-2.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold transition shadow-sm">
+                    <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5m0 0V11m0 10V11m0 0h4"/></svg>
+                    Provinsi
+                </a>
+
+                <a href="{{ route('login') }}"
+                    class="flex items-center justify-center gap-2 text-center py-2.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold transition shadow-sm">
+                    <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5m0 0V11m0 10V11m0 0h4M4 9h4m-4 4h4m12-4h4m-4 4h4"/></svg>
+                    Kabupaten / Kota
+                </a>
+
+                <a href="{{ route('login') }}"
+                    class="flex items-center justify-center gap-2 text-center py-2.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold transition shadow-sm">
+                    <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5m0 0V11m0 10V11m0 0h4"/></svg>
+                    Kecamatan
+                </a>
+
+                <a href="{{ route('login') }}"
+                    class="flex items-center justify-center gap-2 text-center py-2.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold transition shadow-sm">
+                    <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                    Kelurahan
+                </a>
+            </div>
+
+            {{-- TOMBOL LOGIN WARGA --}}
+            <div class="mt-4">
+                <a href="{{ route('login.warga') }}"
+                    class="flex items-center justify-center gap-2 block w-full text-center py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold transition shadow-md">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                    Login Warga
+                </a>
+            </div>
         </div>
     </form>
 
