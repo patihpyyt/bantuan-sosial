@@ -10,17 +10,25 @@ use App\Http\Controllers\Kelurahan\DanaController;
 use App\Http\Controllers\Kelurahan\LaporanController;
 use App\Http\Controllers\PortalPublicController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DonasiPublicController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Provinsi\AnggaranController;
 use App\Http\Controllers\Provinsi\DashboardController as DashboardProvinsiController;
 use App\Http\Controllers\Provinsi\MonitoringController;
 use App\Http\Controllers\Provinsi\DistribusiController;
+use App\Http\Controllers\Provinsi\DonasiController as DonasiProvinsiController;
 use App\Http\Controllers\Kabupaten\PenerimaanDanaController;
 use App\Http\Controllers\Kabupaten\MonitoringController as MonitoringKabupatenController;
 use App\Http\Controllers\Kabupaten\DashboardController as DashboardKabupatenController;
 use App\Http\Controllers\Kabupaten\DistribusiController as DistribusiKabupatenController;
 use App\Models\Warga;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/donasi', [DonasiPublicController::class, 'create'])->name('donasi.create');
+Route::post('/donasi', [DonasiPublicController::class, 'store'])->name('donasi.store');
+Route::get('/donasi/{kode}/instruksi', [DonasiPublicController::class, 'instruksi'])->name('donasi.instruksi');
+Route::patch('/donasi/{kode}/konfirmasi', [DonasiPublicController::class, 'konfirmasi'])->name('donasi.konfirmasi');
+Route::get('/cek-donasi', [DonasiPublicController::class, 'cekStatus'])->name('donasi.cek-status');
 
 Route::get('/', function () {
     return view('bansos', [
@@ -57,20 +65,18 @@ Route::get('/login-kelurahan', function () {
 Route::get('/cek-bansos', [PortalPublicController::class, 'index'])->name('portal.index');
 Route::post('/cek-bansos', [PortalPublicController::class, 'cek'])->name('portal.cek');
 
-
 Route::middleware('auth')->group(function () {
 
     // ================= DASHBOARD REDIRECTOR =================
     Route::get('/dashboard', function () {
         return match (auth()->user()->role) {
             'provinsi'  => redirect()->route('dashboard.provinsi'),
-             'kecamatan' => redirect()->route('kecamatan.dashboard'),
+            'kecamatan' => redirect()->route('kecamatan.dashboard'),
             'kabupaten' => redirect()->route('dashboard.kabupaten'),
             'kelurahan' => redirect()->route('dashboard.kelurahan'),
             default     => redirect()->route('dashboard.warga'),
         };
     })->name('dashboard');
-
 
     // ================= PROVINSI (khusus role: provinsi) =================
     Route::middleware('role:provinsi')->group(function () {
@@ -113,25 +119,32 @@ Route::middleware('auth')->group(function () {
             Route::delete('distribusi/{id}', [DistribusiController::class, 'destroy'])
                 ->name('distribusi.destroy');
 
+            // Donasi
+            Route::get('donasi', [DonasiProvinsiController::class, 'index'])
+                ->name('donasi.index');
+            Route::patch('donasi/{id}/verifikasi', [DonasiProvinsiController::class, 'verifikasi'])
+                ->name('donasi.verifikasi');
+            Route::patch('donasi/{id}/tolak', [DonasiProvinsiController::class, 'tolak'])
+                ->name('donasi.tolak');
+
         });
 
     });
 
+    // ================= KECAMATAN =================
+    Route::middleware(['role:kecamatan'])->prefix('kecamatan')->name('kecamatan.')->group(function () {
 
-   // ================= KECAMATAN =================
-Route::middleware(['auth', 'role:kecamatan'])->prefix('kecamatan')->name('kecamatan.')->group(function () {
+        Route::get('/dashboard', [\App\Http\Controllers\Kecamatan\DashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('/dashboard', [\App\Http\Controllers\Kecamatan\DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/dana', [\App\Http\Controllers\Kecamatan\DanaController::class, 'index'])->name('dana.index');
+        Route::get('/distribusi', [\App\Http\Controllers\Kecamatan\DistribusiController::class, 'index'])->name('distribusi.index');
+        Route::get('/distribusi/create', [\App\Http\Controllers\Kecamatan\DistribusiController::class, 'create'])->name('distribusi.create');
+        Route::post('/distribusi', [\App\Http\Controllers\Kecamatan\DistribusiController::class, 'store'])->name('distribusi.store');
+        Route::delete('/distribusi/{id}', [\App\Http\Controllers\Kecamatan\DistribusiController::class, 'destroy'])->name('distribusi.destroy');
+        Route::get('/monitoring', [\App\Http\Controllers\Kecamatan\MonitoringController::class, 'index'])->name('monitoring.index');
 
-    // Menerima Dana dari Kabupaten
-    Route::get('/dana', [\App\Http\Controllers\Kecamatan\DanaController::class, 'index'])->name('dana.index');
-    Route::get('/distribusi', [\App\Http\Controllers\Kecamatan\DistribusiController::class, 'index'])->name('distribusi.index');
-    Route::get('/distribusi/create', [\App\Http\Controllers\Kecamatan\DistribusiController::class, 'create'])->name('distribusi.create');
-    Route::post('/distribusi', [\App\Http\Controllers\Kecamatan\DistribusiController::class, 'store'])->name('distribusi.store');
-    Route::delete('/distribusi/{id}', [\App\Http\Controllers\Kecamatan\DistribusiController::class, 'destroy'])->name('distribusi.destroy');
-    Route::get('/monitoring', [\App\Http\Controllers\Kecamatan\MonitoringController::class, 'index'])->name('monitoring.index');
+    });
 
-});
     // ================= KABUPATEN (khusus role: kabupaten) =================
     Route::middleware('role:kabupaten')->group(function () {
 
@@ -141,7 +154,6 @@ Route::middleware(['auth', 'role:kecamatan'])->prefix('kecamatan')->name('kecama
         Route::get('/dashboard/kabupaten/distribusi/{id}', [DashboardKabupatenController::class, 'show'])
             ->name('dashboard.kabupaten.distribusi.show');
 
-        // SEMUA route "kabupaten.xxx" WAJIB ada DI DALAM prefix ini
         Route::prefix('kabupaten')->name('kabupaten.')->group(function () {
 
             Route::get('dana', [PenerimaanDanaController::class, 'index'])
@@ -177,14 +189,12 @@ Route::middleware(['auth', 'role:kecamatan'])->prefix('kecamatan')->name('kecama
 
     });
 
+    // ================= KELURAHAN =================
+    Route::get('/dashboard/kelurahan', function () {
+        return view('dashboard-kelurahan');
+    })->name('dashboard.kelurahan');
 
-        // ================= KELURAHAN =================
-Route::get('/dashboard/kelurahan', function () {
-    return view('dashboard-kelurahan');
-})->name('dashboard.kelurahan');
-
-Route::get('/dana-kelurahan', [DanaController::class, 'index'])->name('dana-kelurahan.index');
-
+    Route::get('/dana-kelurahan', [DanaController::class, 'index'])->name('dana-kelurahan.index');
 
     // ================= WARGA =================
     Route::get('/dashboard/warga', function () {
@@ -199,7 +209,6 @@ Route::get('/dana-kelurahan', [DanaController::class, 'index'])->name('dana-kelu
             'warga'          => $warga,
         ]);
     })->name('dashboard.warga');
-
 
     // ================= RESOURCE ROUTES (dipakai lintas role, sesuaikan nanti) =================
     Route::resource('warga', WargaController::class);
@@ -237,6 +246,7 @@ Route::get('/dana-kelurahan', [DanaController::class, 'index'])->name('dana-kelu
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
 });
 
 require __DIR__.'/auth.php';
