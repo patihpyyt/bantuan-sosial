@@ -41,7 +41,7 @@ class DistribusiController extends Controller
             ->orderByDesc('tahun')
             ->pluck('tahun');
 
-        return view('provinsi.distribusi.index', [
+        return view('kabupaten.distribusi.index', [
             'distribusi'      => $distribusi,
             'kabupatenList'   => $kabupatenList,
             'tahun'           => $tahun,
@@ -53,12 +53,12 @@ class DistribusiController extends Controller
     /**
      * Form input distribusi baru.
      */
-    public function create()
-    {
-        $kabupatenList = User::where('role', 'kabupaten')->get();
+  public function create()
+{
+    $kecamatan = User::where('role', 'kecamatan')->get();
 
-        return view('provinsi.distribusi.create', compact('kabupatenList'));
-    }
+    return view('kabupaten.distribusi.create', compact('kecamatan'));
+}
 
     /**
      * Simpan distribusi baru.
@@ -68,7 +68,7 @@ class DistribusiController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'kabupaten_id'       => 'required|exists:users,id',
+            'kecamatan_id' => 'required|exists:users,id',
             'tahun'              => 'required|digits:4',
             'jumlah'             => 'required|numeric|min:1',
             'tanggal_distribusi' => 'required|date',
@@ -76,9 +76,9 @@ class DistribusiController extends Controller
             'status'             => 'nullable|in:terkirim,dibatalkan',
         ]);
 
-        $anggaran = Anggaran::where('kabupaten_id', $request->kabupaten_id)
-            ->where('tahun', $request->tahun)
-            ->first();
+       $anggaran = Anggaran::where('kabupaten_id', auth()->id())
+    ->where('tahun', $request->tahun)
+    ->first();
 
         if (!$anggaran) {
             return back()->withInput()->with('error', 'Kabupaten ini belum punya alokasi anggaran untuk tahun tersebut. Alokasikan dulu di menu Kelola Anggaran.');
@@ -91,7 +91,7 @@ class DistribusiController extends Controller
         DB::transaction(function () use ($request, $anggaran) {
 
             DistribusiAnggaran::create([
-                'kabupaten_id'       => $request->kabupaten_id,
+                'kabupaten_id'       => $request->kecamatan_id,
                 'tahun'              => $request->tahun,
                 'jumlah'             => $request->jumlah,
                 'tanggal_distribusi' => $request->tanggal_distribusi,
@@ -106,7 +106,7 @@ class DistribusiController extends Controller
         });
 
         return redirect()
-            ->route('provinsi.distribusi.index', ['tahun' => $request->tahun])
+            ->route('kabupaten.distribusi.index', ['tahun' => $request->tahun])
             ->with('success', 'Dana berhasil didistribusikan ke Kabupaten/Kota.');
     }
 
@@ -127,7 +127,7 @@ class DistribusiController extends Controller
             ->where('tahun', $tahun)
             ->first();
 
-        return view('provinsi.distribusi.show', compact(
+        return view('kabupaten.distribusi.show', compact(
             'kabupaten', 'riwayat', 'anggaran', 'tahun'
         ));
     }
@@ -164,13 +164,17 @@ class DistribusiController extends Controller
         return back()->with('success', 'Distribusi berhasil dibatalkan.');
     }
 
-    public function edit($id)
-    {
-        $distribusi    = DistribusiAnggaran::findOrFail($id);
-        $kabupatenList = User::where('role', 'kabupaten')->get();
+  public function edit($id)
+{
+    $distribusi = DistribusiAnggaran::findOrFail($id);
 
-        return view('provinsi.distribusi.edit', compact('distribusi', 'kabupatenList'));
-    }
+    $kecamatan = User::where('role', 'kecamatan')->get();
+
+    return view('kabupaten.distribusi.edit', compact(
+        'distribusi',
+        'kecamatan'
+    ));
+}
 
     /**
      * Update transaksi distribusi.
@@ -181,14 +185,14 @@ class DistribusiController extends Controller
     {
         $distribusi = DistribusiAnggaran::findOrFail($id);
 
-        $request->validate([
-            'kabupaten_id'       => 'required|exists:users,id',
-            'tahun'              => 'required|digits:4',
-            'jumlah'             => 'required|numeric|min:1',
-            'tanggal_distribusi' => 'required|date',
-            'keterangan'         => 'nullable|string|max:255',
-            'status'             => 'required|in:terkirim,dibatalkan',
-        ]);
+       $request->validate([
+    'kecamatan_id' => 'required|exists:users,id',
+    'tahun' => 'required|digits:4',
+    'jumlah' => 'required|numeric|min:1',
+    'tanggal_distribusi' => 'required|date',
+    'keterangan' => 'nullable|string|max:255',
+    'status' => 'required|in:terkirim,dibatalkan',
+]);
 
         DB::transaction(function () use ($request, $distribusi) {
 
@@ -212,7 +216,7 @@ class DistribusiController extends Controller
 
             // Update data distribusi
             $distribusi->update([
-                'kabupaten_id'       => $request->kabupaten_id,
+                'kabupaten_id'       => $request->kecamatan_id,
                 'tahun'              => $request->tahun,
                 'jumlah'             => $request->jumlah,
                 'tanggal_distribusi' => $request->tanggal_distribusi,
@@ -222,7 +226,7 @@ class DistribusiController extends Controller
 
             // Terapkan efek baru (kalau statusnya terkirim)
             if ($request->status !== 'dibatalkan') {
-                $anggaranBaru = Anggaran::where('kabupaten_id', $request->kabupaten_id)
+                $anggaranBaru = Anggaran::where('kabupaten_id', $request->kecamatan_id)
                     ->where('tahun', $request->tahun)
                     ->first();
 
@@ -235,7 +239,7 @@ class DistribusiController extends Controller
         });
 
         return redirect()
-            ->route('provinsi.distribusi.index', ['tahun' => $request->tahun])
+            ->route('kabupaten.distribusi.index', ['tahun' => $request->tahun])
             ->with('success', 'Distribusi berhasil diperbarui.');
     }
 
@@ -262,7 +266,7 @@ class DistribusiController extends Controller
         $distribusi->delete();
 
         return redirect()
-            ->route('provinsi.distribusi.index')
+            ->route('kabupaten.distribusi.index')
             ->with('success', 'Data distribusi berhasil dihapus permanen.');
     }
 }

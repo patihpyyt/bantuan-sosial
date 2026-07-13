@@ -30,6 +30,10 @@
                     @csrf
                     @method('PUT')
 
+                    {{-- Status tidak diedit lewat form ini (ada tombol Batalkan terpisah),
+                         jadi kirim ulang value status yang sudah ada supaya validasi lolos --}}
+                    <input type="hidden" name="status" value="{{ $distribusi->status }}">
+
                     <div class="row">
 
                         <div class="col-md-6 mb-3">
@@ -42,7 +46,7 @@
 
                                     <option
                                         value="{{ $item->id }}"
-                                        {{ $distribusi->kecamatan_id==$item->id ? 'selected':'' }}>
+                                        {{ $distribusi->kabupaten_id==$item->id ? 'selected':'' }}>
 
                                         {{ $item->nama_lengkap }}
 

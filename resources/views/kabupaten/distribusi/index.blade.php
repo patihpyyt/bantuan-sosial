@@ -16,10 +16,9 @@
         <div class="d-flex justify-content-between mb-3">
             <h5>Daftar Distribusi</h5>
 
-            <a href="{{ route('kabupaten.distribusi.create') }}"
-               class="btn btn-primary">
-                + Tambah Distribusi
-            </a>
+         <a href="{{ route('kabupaten.distribusi.create') }}">
+            + Distribusi Baru
+        </a>
         </div>
 
         <div class="card shadow-sm">
@@ -44,7 +43,7 @@
                         @forelse($distribusi as $item)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $item->kecamatan->nama_lengkap ?? '-' }}</td>
+                                <td>{{ $item->kabupaten->nama_lengkap ?? '-' }}</td>
                                 <td>{{ $item->tahun }}</td>
                                 <td class="text-end">
                                     Rp {{ number_format($item->jumlah,0,',','.') }}
@@ -61,28 +60,39 @@
                                         <span class="badge bg-danger">Dibatalkan</span>
                                     @endif
                                 </td>
-                                <td>
-                                    <a href="{{ route('kabupaten.distribusi.show',$item->id) }}"
-                                       class="btn btn-info btn-sm">
-                                        Detail
-                                    </a>
+                                        <td>
+    <a href="{{ route('kabupaten.distribusi.show',$item->id) }}"
+       class="btn btn-info btn-sm">
+        Detail
+    </a>
 
-                                    <a href="{{ route('kabupaten.distribusi.edit',$item->id) }}"
-                                       class="btn btn-warning btn-sm">
-                                        Edit
-                                    </a>
+    <a href="{{ route('kabupaten.distribusi.edit',$item->id) }}"
+       class="btn btn-warning btn-sm">
+        Edit
+    </a>
 
-                                    <form
-                                        action="{{ route('kabupaten.distribusi.cancel',$item->id) }}"
-                                        method="POST"
-                                        class="d-inline">
-                                        @csrf
-                                        @method('PATCH')
-                                        <button
-                                            class="btn btn-danger btn-sm"
-                                            onclick="return confirm('Batalkan distribusi ini?')">
-                                            Batalkan
-                                        </button>
+    <form action="{{ route('kabupaten.distribusi.cancel',$item->id) }}"
+          method="POST"
+          class="d-inline">
+        @csrf
+        @method('PATCH')
+        <button class="btn btn-danger btn-sm"
+                onclick="return confirm('Batalkan distribusi ini?')">
+            Batalkan
+        </button>
+    </form>
+
+    <form action="{{ route('kabupaten.distribusi.destroy',$item->id) }}"
+          method="POST"
+          class="d-inline"
+          onsubmit="return confirm('Yakin ingin menghapus distribusi ini?')">
+        @csrf
+        @method('DELETE')
+        <button class="btn btn-secondary btn-sm">
+            Hapus
+        </button>
+    </form>
+</td>
                                     </form>
                                 </td>
                             </tr>
