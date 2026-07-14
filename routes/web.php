@@ -24,7 +24,7 @@ use App\Http\Controllers\Kabupaten\DistribusiController as DistribusiKabupatenCo
 use App\Models\Warga;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/donasi', [DonasiPublicController::class, 'create'])->name('donasi.create');
+// Route::get('/donasi', [DonasiPublicController::class, 'create'])->name('donasi.create');
 Route::post('/donasi', [DonasiPublicController::class, 'store'])->name('donasi.store');
 Route::get('/donasi/{kode}/instruksi', [DonasiPublicController::class, 'instruksi'])->name('donasi.instruksi');
 Route::patch('/donasi/{kode}/konfirmasi', [DonasiPublicController::class, 'konfirmasi'])->name('donasi.konfirmasi');

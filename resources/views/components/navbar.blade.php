@@ -23,6 +23,10 @@
                     Cek Bantuan
                     <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
                 </a>
+                    <a href="/#donasi" class="hover:text-blue-600 transition-all duration-200 relative group py-2">
+                        Donasi
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
+                    </a>
                 <a href="#komitmen" class="hover:text-blue-600 transition-all duration-200 relative group py-2">
                      Transparansi Desa
                     <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
