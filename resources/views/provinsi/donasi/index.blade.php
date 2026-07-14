@@ -50,6 +50,10 @@
                         class="text-xs font-semibold px-4 py-2 rounded-xl transition {{ $status === 'terverifikasi' ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50' }}">
                         Terverifikasi
                     </a>
+                    <a href="{{ route('provinsi.donasi.index', ['status' => 'tersalurkan']) }}"
+                        class="text-xs font-semibold px-4 py-2 rounded-xl transition {{ $status === 'tersalurkan' ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50' }}">
+                        Tersalurkan
+                    </a>
                     <a href="{{ route('provinsi.donasi.index', ['status' => 'menunggu_pembayaran']) }}"
                         class="text-xs font-semibold px-4 py-2 rounded-xl transition {{ $status === 'menunggu_pembayaran' ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-500 hover:bg-slate-50' }}">
                         Menunggu Bayar
@@ -101,6 +105,8 @@
                                             <span class="inline-flex text-[11px] bg-amber-50 text-amber-700 font-semibold px-2.5 py-1 rounded-full border border-amber-200/40">Menunggu Verifikasi</span>
                                         @elseif($d->status === 'terverifikasi')
                                             <span class="inline-flex text-[11px] bg-emerald-50 text-emerald-700 font-semibold px-2.5 py-1 rounded-full border border-emerald-200/40">Terverifikasi</span>
+                                        @elseif($d->status === 'tersalurkan')
+                                            <span class="inline-flex text-[11px] bg-blue-50 text-blue-700 font-semibold px-2.5 py-1 rounded-full border border-blue-200/40">Tersalurkan</span>
                                         @else
                                             <span class="inline-flex text-[11px] bg-red-50 text-red-700 font-semibold px-2.5 py-1 rounded-full border border-red-200/40">Ditolak</span>
                                         @endif
@@ -125,6 +131,12 @@
                                                     </button>
                                                 </form>
                                             </div>
+                                        @elseif($d->status === 'terverifikasi')
+                                            <a href="{{ route('provinsi.dana.create', $d->id) }}"
+                                                class="inline-flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition shadow-sm">
+                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+                                                Salurkan
+                                            </a>
                                         @else
                                             <span class="text-slate-300 text-xs">-</span>
                                         @endif

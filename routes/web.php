@@ -17,6 +17,7 @@ use App\Http\Controllers\Provinsi\DashboardController as DashboardProvinsiContro
 use App\Http\Controllers\Provinsi\MonitoringController;
 use App\Http\Controllers\Provinsi\DistribusiController;
 use App\Http\Controllers\Provinsi\DonasiController as DonasiProvinsiController;
+use App\Http\Controllers\Provinsi\DanaController as DanaProvinsiController;
 use App\Http\Controllers\Kabupaten\PenerimaanDanaController;
 use App\Http\Controllers\Kabupaten\MonitoringController as MonitoringKabupatenController;
 use App\Http\Controllers\Kabupaten\DashboardController as DashboardKabupatenController;
@@ -80,7 +81,6 @@ Route::middleware('auth')->group(function () {
 
     // ================= PROVINSI (khusus role: provinsi) =================
     Route::middleware('role:provinsi')->group(function () {
-
         Route::get('/dashboard/provinsi', [DashboardProvinsiController::class, 'index'])
             ->name('dashboard.provinsi');
 
@@ -126,6 +126,12 @@ Route::middleware('auth')->group(function () {
                 ->name('donasi.verifikasi');
             Route::patch('donasi/{id}/tolak', [DonasiProvinsiController::class, 'tolak'])
                 ->name('donasi.tolak');
+
+            // Salurkan Dana
+            Route::get('donasi/{id}/salurkan', [DanaProvinsiController::class, 'create'])
+                ->name('dana.create');
+            Route::post('donasi/{id}/salurkan', [DanaProvinsiController::class, 'store'])
+                ->name('dana.store');
 
         });
 
