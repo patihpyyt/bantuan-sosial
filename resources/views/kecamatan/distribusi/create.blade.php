@@ -43,13 +43,14 @@
                         <input type="number" name="tahun" class="form-control"
                                value="{{ old('tahun', now()->year) }}" required>
                     </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Jumlah (Rp)</label>
-                        <input type="number" name="jumlah" class="form-control"
-                               value="{{ old('jumlah') }}" min="1" required>
-                    </div>
-
+<div class="mb-3">
+    <label class="form-label">Jumlah (Rp)</label>
+    <input type="text" id="jumlah_display" class="form-control"
+           inputmode="numeric" autocomplete="off"
+           value="{{ old('jumlah') ? number_format(old('jumlah'), 0, ',', '.') : '' }}"
+           placeholder="Masukkan nominal" required>
+    <input type="hidden" name="jumlah" id="jumlah_asli" value="{{ old('jumlah') }}">
+</div>
                     <div class="mb-3">
                         <label class="form-label">Tanggal Distribusi</label>
                         <input type="date" name="tanggal_distribusi" class="form-control"
@@ -78,4 +79,21 @@
 
         </div>
     </div>
+    <script>
+    const inputDisplay = document.getElementById('jumlah_display');
+    const inputAsli = document.getElementById('jumlah_asli');
+
+    inputDisplay.addEventListener('input', function (e) {
+        let angka = e.target.value.replace(/\D/g, '');
+        inputAsli.value = angka;
+        e.target.value = angka
+            ? new Intl.NumberFormat('id-ID').format(angka)
+            : '';
+    });
+
+    document.querySelector('form').addEventListener('submit', function () {
+        let angka = inputDisplay.value.replace(/\D/g, '');
+        inputAsli.value = angka;
+    });
+</script>
 </x-app-layout>

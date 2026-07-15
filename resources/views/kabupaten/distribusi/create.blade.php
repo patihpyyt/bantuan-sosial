@@ -82,20 +82,24 @@
 
                     <div class="row">
 
-                        <div class="col-md-6 mb-3">
+                       <div class="col-md-6 mb-3">
 
-                            <label class="form-label">
-                                Jumlah Dana
-                            </label>
+    <label class="form-label">
+        Jumlah Dana
+    </label>
 
-                            <input
-                                type="number"
-                                name="jumlah"
-                                class="form-control"
-                                placeholder="Masukkan nominal"
-                                required>
+    <input
+        type="text"
+        id="jumlah_display"
+        class="form-control"
+        placeholder="Masukkan nominal"
+        inputmode="numeric"
+        autocomplete="off"
+        required>
 
-                        </div>
+    <input type="hidden" name="jumlah" id="jumlah_asli">
+
+</div>
 
                         <div class="col-md-6 mb-3">
 
@@ -153,5 +157,27 @@
         </div>
 
     </div>
+<script>
+    const inputDisplay = document.getElementById('jumlah_display');
+    const inputAsli = document.getElementById('jumlah_asli');
 
+    inputDisplay.addEventListener('input', function (e) {
+        // Ambil cuma angka doang, buang titik/karakter lain
+        let angka = e.target.value.replace(/\D/g, '');
+
+     
+        inputAsli.value = angka;
+
+        // Format tampilan dengan titik ribuan
+        e.target.value = angka
+            ? new Intl.NumberFormat('id-ID').format(angka)
+            : '';
+    });
+
+ 
+    document.querySelector('form').addEventListener('submit', function () {
+        let angka = inputDisplay.value.replace(/\D/g, '');
+        inputAsli.value = angka;
+    });
+</script>
 </x-app-layout>

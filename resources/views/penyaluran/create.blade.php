@@ -67,10 +67,14 @@
 
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Nominal (Rp)</label>
-                            <input type="number"
-                                   name="nominal"
-                                   value="{{ old('nominal') }}"
+                            <input type="text"
+                                   id="nominal_display"
+                                   inputmode="numeric"
+                                   autocomplete="off"
+                                   value="{{ old('nominal') ? number_format(old('nominal'), 0, ',', '.') : '' }}"
+                                   placeholder="Masukkan nominal"
                                    class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-400 @error('nominal') border-red-400 @enderror">
+                            <input type="hidden" name="nominal" id="nominal_asli" value="{{ old('nominal') }}">
                             @error('nominal') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                         </div>
 
@@ -144,5 +148,23 @@
 
         </div>
     </div>
+
+    <script>
+        const nominalDisplay = document.getElementById('nominal_display');
+        const nominalAsli = document.getElementById('nominal_asli');
+
+        nominalDisplay.addEventListener('input', function (e) {
+            let angka = e.target.value.replace(/\D/g, '');
+            nominalAsli.value = angka;
+            e.target.value = angka
+                ? new Intl.NumberFormat('id-ID').format(angka)
+                : '';
+        });
+
+        document.querySelector('form').addEventListener('submit', function () {
+            let angka = nominalDisplay.value.replace(/\D/g, '');
+            nominalAsli.value = angka;
+        });
+    </script>
 
 </x-app-layout>

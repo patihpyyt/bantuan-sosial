@@ -165,7 +165,7 @@
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             </span>
                             <div>
-                                <h3 class="text-base font-extrabold text-white">Data Penerima Bansos Ditemukan</h3>
+                                <h3 class="text-base font-extrabold text-black">Data Penerima Bansos Ditemukan</h3>
                                 <p class="text-[11px] text-slate-500 font-semibold tracking-wide">Hasil pencarian untuk NIK: {{ $nik }}</p>
                             </div>
                         </div>

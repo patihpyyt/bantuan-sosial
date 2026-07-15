@@ -22,12 +22,16 @@ public function index()
     return view('penyaluran.index', compact('penyaluran'));
 }
 
-    public function create()
-    {
-        $penerima = PenerimaBansos::with('warga')->get();
+  public function create()
+{
+    $penerima = PenerimaBansos::with('warga')
+        ->whereHas('warga', function ($q) {
+            $q->where('kelurahan_id', auth()->id());
+        })
+        ->get();
 
-        return view('penyaluran.create', compact('penerima'));
-    }
+    return view('penyaluran.create', compact('penerima'));
+}
 
    public function store(Request $request)
 {

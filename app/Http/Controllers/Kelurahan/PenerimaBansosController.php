@@ -29,17 +29,17 @@ public function index()
     /**
      * Form tambah penerima
      */
-    public function create()
-    {
-        $warga = Warga::all();
+ public function create()
+{
+    $warga = Warga::where('kelurahan_id', auth()->id())->get();
 
-        $jenisBansos = JenisBansos::all();
+    $jenisBansos = JenisBansos::all();
 
-        return view('penerima-bansos.create', compact(
-            'warga',
-            'jenisBansos'
-        ));
-    }
+    return view('penerima-bansos.create', compact(
+        'warga',
+        'jenisBansos'
+    ));
+}
 
 
     /**
