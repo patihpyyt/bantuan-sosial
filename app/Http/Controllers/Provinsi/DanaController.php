@@ -34,26 +34,23 @@ class DanaController extends Controller
     }
 
   
-    public function store(Request $request, $id)
-    {
-        $donasi = Donasi::findOrFail($id);
+   public function store(Request $request, $id)
+{
+    // 1. Cari data donasi yang mau disalurkan berdasarkan ID
+    $donasi = \App\Models\Donasi::findOrFail($id);
 
-        if ($donasi->status !== 'terverifikasi') {
-            return redirect()
-                ->route('provinsi.donasi.index')
-                ->with('error', 'Donasi ini belum terverifikasi.');
-        }
+    // 2. Validasi input dari form salurkan (pastikan admin memilih kabupaten tujuan)
+    $request->validate([
+        'kabupaten_id' => 'required', // Nama input form disesuaikan dengan select box milikmu
+    ]);
 
-        $validated = $request->validate([
-            'kabupaten_id'       => 'required|exists:users,id',
-            'program_id'         => 'required',
-            'jumlah_dana'        => 'required|numeric|min:1|max:' . $donasi->jumlah,
-            'tanggal_penyaluran' => 'required|date',
-            'keterangan'         => 'nullable|string|max:1000',
-        ]);
+    // 3. Ganti status donasi menjadi 'tersalurkan' dan catat kabupaten tujuannya
+    $donasi->update([
+        'status' => 'tersalurkan',
+        'kabupaten_id' => $request->kabupaten_id
+    ]);
 
-        return redirect()
-            ->route('provinsi.donasi.index')
-            ->with('success', 'Dana berhasil disalurkan ke kabupaten/kota tujuan.');
-    }
+    // 4. Redirect kembali ke halaman kelola donasi dengan pesan sukses
+    return redirect()->route('provinsi.donasi.index')->with('success', 'Dana donasi berhasil disalurkan ke Kabupaten tujuan.');
+}
 }

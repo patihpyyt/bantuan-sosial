@@ -82,6 +82,11 @@
                         </thead>
                         <tbody class="divide-y divide-slate-100">
                             @forelse($donasi as $d)
+                                {{-- MODIFIKASI KUNCI: Sembunyikan data donasi yang sudah berstatus 'tersalurkan' dari filter 'Semua' --}}
+                                @if(!$status && $d->status === 'tersalurkan')
+                                    @continue
+                                @endif
+
                                 <tr class="hover:bg-slate-50/60 transition">
                                     <td class="px-5 py-4 font-semibold text-slate-800">{{ $d->kode_referensi }}</td>
                                     <td class="px-5 py-4 text-slate-700">

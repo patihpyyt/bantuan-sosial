@@ -6,8 +6,10 @@ use App\Http\Controllers\Kelurahan\PenerimaBansosController;
 use App\Http\Controllers\Kelurahan\PenyaluranController;
 use App\Http\Controllers\Kelurahan\LaporanSanggahanController;
 use App\Http\Controllers\LogAktivitasController;
+use App\Http\Controllers\Kabupaten\DonasiController;
 use App\Http\Controllers\Kelurahan\DanaController;
 use App\Http\Controllers\Kelurahan\LaporanController;
+use App\Http\Controllers\Kelurahan\PenerimaDonasiController;
 use App\Http\Controllers\PortalPublicController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DonasiPublicController;
@@ -191,6 +193,7 @@ Route::middleware('auth')->group(function () {
             Route::delete('distribusi/{id}', [DistribusiKabupatenController::class, 'destroy'])
                 ->name('distribusi.destroy');
 
+          Route::get('donasi', [DonasiController::class, 'index'])->name('donasi.index');
         });
 
     });

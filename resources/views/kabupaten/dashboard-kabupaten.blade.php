@@ -45,10 +45,10 @@
             <div class="bg-white rounded-2xl border border-slate-200/60 p-6 shadow-sm shadow-slate-100/50">
                 <div class="flex items-center justify-between mb-6">
                     <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Akses Kontrol Utama</h2>
-                    <span class="text-[11px] bg-slate-100 text-slate-500 px-2.5 py-0.5 rounded-full font-bold">3 Modul Aktif</span>
+                    <span class="text-[11px] bg-slate-100 text-slate-500 px-2.5 py-0.5 rounded-full font-bold">4 Modul Aktif</span>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     {{-- DANA MASUK --}}
                     <a href="{{ route('kabupaten.dana.index') }}"
                        class="group flex items-center gap-4 border border-slate-100 rounded-2xl p-4 hover:bg-slate-50/80 hover:border-slate-200 transition-all duration-200 shadow-sm">
@@ -61,6 +61,21 @@
                         <div>
                             <span class="block font-bold text-slate-800 text-sm group-hover:text-blue-600 transition">Menerima Dana</span>
                             <span class="text-xs text-slate-400 font-medium">Log alokasi dari Provinsi</span>
+                        </div>
+                    </a>
+
+                    {{-- MENERIMA DONASI --}}
+                    <a href="{{ route('kabupaten.donasi.index') }}"
+                       class="group flex items-center gap-4 border border-slate-100 rounded-2xl p-4 hover:bg-slate-50/80 hover:border-slate-200 transition-all duration-200 shadow-sm">
+                        <div class="w-12 h-12 bg-white border border-slate-200 rounded-xl flex items-center justify-center text-slate-900 shadow-sm transition-all duration-200 group-hover:scale-105 group-hover:border-slate-900">
+                            {{-- Ikon Hati / Donasi --}}
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="block font-bold text-slate-800 text-sm group-hover:text-blue-600 transition">Menerima Donasi</span>
+                            <span class="text-xs text-slate-400 font-medium">Log donasi non-Provinsi</span>
                         </div>
                     </a>
 
