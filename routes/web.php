@@ -6,6 +6,7 @@ use App\Http\Controllers\Kelurahan\PenerimaBansosController;
 use App\Http\Controllers\Kelurahan\PenyaluranController;
 use App\Http\Controllers\Kelurahan\LaporanSanggahanController;
 use App\Http\Controllers\LogAktivitasController;
+use App\Http\Controllers\Kelurahan\DashboardController as DashboardKelurahanController;
 use App\Http\Controllers\Kabupaten\DonasiController;
 use App\Http\Controllers\Kelurahan\DanaController;
 use App\Http\Controllers\Kelurahan\LaporanController;
@@ -203,7 +204,9 @@ Route::middleware('auth')->group(function () {
         return view('dashboard-kelurahan');
     })->name('dashboard.kelurahan');
 
-    Route::get('/dana-kelurahan', [DanaController::class, 'index'])->name('dana-kelurahan.index');
+   // ================= KELURAHAN =================
+Route::get('/dashboard/kelurahan', [DashboardKelurahanController::class, 'index'])
+    ->name('dashboard.kelurahan');
 
     // ================= WARGA =================
     Route::get('/dashboard/warga', function () {

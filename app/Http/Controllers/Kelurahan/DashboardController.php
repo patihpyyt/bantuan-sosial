@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Kelurahan;
 
+
+use App\Http\Controllers\Controller; 
 use App\Models\Warga;
 use App\Models\JenisBansos;
 use App\Models\PenerimaBansos;
@@ -12,17 +14,51 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-    public function index(Request $request)
-    {
-        $user = Auth::user();
+   public function index(Request $request)
+{
+    $user = Auth::user();
 
-        // Role warga punya alur data sendiri (tetangga satu RT/RW)
-        if ($user->role === 'warga') {
-            return $this->dashboardWarga($request);
-        }
+    // Role warga punya alur data sendiri (tetangga satu RT/RW)
+    if ($user->role === 'warga') {
+        return $this->dashboardWarga($request);
+    }
 
-    
-        // Data agregat untuk role petugas/admin (provinsi, kabupaten, kecamatan, kelurahan)
+    // Kalau kelurahan, data warga & penerima difilter khusus kelurahan yang login
+    if ($user->role === 'kelurahan') {
+        $data = [
+            'totalWarga'        => Warga::where('kelurahan_id', $user->id)->count(),
+            'totalJenisBansos'  => JenisBansos::count(),
+            'totalPenerima'     => PenerimaBansos::whereHas('warga', function ($q) use ($user) {
+                                        $q->where('kelurahan_id', $user->id);
+                                    })->count(),
+            'totalPenyaluran'   => Penyaluran::whereHas('penerima.warga', function ($q) use ($user) {
+                                        $q->where('kelurahan_id', $user->id);
+                                    })
+                                    ->whereMonth('created_at', now()->month)
+                                    ->whereYear('created_at', now()->year)
+                                    ->count(),
+            'tersalur'          => Penyaluran::whereHas('penerima.warga', function ($q) use ($user) {
+                                        $q->where('kelurahan_id', $user->id);
+                                    })->where('status', 'tersalur')->count(),
+            'penyaluranTerbaru' => Penyaluran::whereHas('penerima.warga', function ($q) use ($user) {
+                                        $q->where('kelurahan_id', $user->id);
+                                    })
+                                    ->with(['penerima.warga', 'penerima.jenisBansos'])
+                                    ->latest()
+                                    ->take(5)
+                                    ->get(),
+            'realisasiPKH'      => $this->hitungRealisasi(1),
+            'realisasiBLT'      => $this->hitungRealisasi(2),
+            'realisasiBPNT'     => $this->hitungRealisasi(4),
+            'belumTersalur'     => Penyaluran::whereHas('penerima.warga', function ($q) use ($user) {
+                                        $q->where('kelurahan_id', $user->id);
+                                    })->whereIn('status', ['belum', 'proses'])->count(),
+            'gagal'             => Penyaluran::whereHas('penerima.warga', function ($q) use ($user) {
+                                        $q->where('kelurahan_id', $user->id);
+                                    })->where('status', 'gagal')->count(),
+        ];
+    } else {
+        // Data agregat global untuk role provinsi, kabupaten, kecamatan
         $data = [
             'totalWarga'        => Warga::count(),
             'totalJenisBansos'  => JenisBansos::count(),
@@ -41,21 +77,21 @@ class DashboardController extends Controller
             'belumTersalur'     => Penyaluran::whereIn('status', ['belum', 'proses'])->count(),
             'gagal'             => Penyaluran::where('status', 'gagal')->count(),
         ];
-            
-        $data['realisasiTotal'] = round((
-            $data['realisasiPKH'] + $data['realisasiBLT'] + $data['realisasiBPNT']
-        ) / 3);
-
-        // Tentukan view sesuai role user yang sedang login
-        return match ($user->role) {
-            'provinsi'  => view('dashboard-provinsi', $data),
-            'kabupaten' => view('dashboard-kabupaten', $data),
-            'kecamatan' => view('dashboard-kecamatan', $data),
-            'kelurahan' => view('dashboard-kelurahan', $data),
-            default     => abort(403, 'Role tidak dikenali.'),
-        };
     }
 
+    $data['realisasiTotal'] = round((
+        $data['realisasiPKH'] + $data['realisasiBLT'] + $data['realisasiBPNT']
+    ) / 3);
+
+    // Tentukan view sesuai role user yang sedang login
+    return match ($user->role) {
+        'provinsi'  => view('dashboard-provinsi', $data),
+        'kabupaten' => view('dashboard-kabupaten', $data),
+        'kecamatan' => view('dashboard-kecamatan', $data),
+        'kelurahan' => view('dashboard-kelurahan', $data),
+        default     => abort(403, 'Role tidak dikenali.'),
+    };
+}
     /**
      * Dashboard warga: otomatis tampilkan tetangga satu RT/RW,
      * plus search bar untuk mempersempit hasil.
