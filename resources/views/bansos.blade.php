@@ -27,7 +27,7 @@
             {{-- Lencana Selamat Datang --}}
             <span class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold bg-white text-blue-700 tracking-wide uppercase mb-6 shadow-lg">
                 <span class="w-1.5 h-1.5 bg-blue-600 rounded-full animate-pulse"></span>
-                Layanan Cek Mandiri Warga Desa
+                Layanan Cek Mandiri Warga okto
             </span>
 
             {{-- Judul Utama --}}
