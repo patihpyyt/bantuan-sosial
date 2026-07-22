@@ -12,7 +12,7 @@ class KabupatenSeeder extends Seeder
     public function run(): void
     {
         $kabupaten = [
-            // Bangka Belitung (sudah ada)
+            
             'Kabupaten Bangka',
             'Kabupaten Bangka Barat',
             'Kabupaten Bangka Tengah',
@@ -21,7 +21,7 @@ class KabupatenSeeder extends Seeder
             'Kabupaten Belitung Timur',
             'Kota Pangkalpinang',
 
-            // Papua Pegunungan & Papua Tengah — daerah kemiskinan tertinggi nasional
+           
             'Kabupaten Nduga',
             'Kabupaten Puncak Jaya',
             'Kabupaten Puncak',
@@ -35,18 +35,18 @@ class KabupatenSeeder extends Seeder
             'Kabupaten Paniai',
             'Kabupaten Dogiyai',
 
-            // Nusa Tenggara Timur
+           
             'Kabupaten Sumba Tengah',
             'Kabupaten Sumba Barat Daya',
             'Kabupaten Sumba Timur',
             'Kabupaten Timor Tengah Selatan',
             'Kabupaten Manggarai Timur',
 
-            // Maluku
+            
             'Kabupaten Maluku Tenggara Barat',
             'Kabupaten Kepulauan Aru',
 
-            // Aceh
+         
             'Kabupaten Gayo Lues',
             'Kabupaten Aceh Singkil',
         ];
