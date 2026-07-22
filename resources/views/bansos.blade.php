@@ -1,6 +1,6 @@
 <x-app-layout>
     {{-- 1. HERO & SEARCH SECTION (Fokus Utama Warga Langsung di Atas) --}}
-    <section class="relative overflow-hidden min-h-screen sm:min-h-[80vh] flex items-center pt-16 pb-32">
+    <section class="relative overflow-hidden min-h-[95vh] sm:min-h-[80vh] flex items-center pt-24 pb-20 sm:pt-16 sm:pb-32">
 
    {{-- Layer Gambar Background --}}
 <div class="absolute inset-0 z-0 overflow-hidden bg-slate-950">
@@ -31,7 +31,7 @@
             </span>
 
             {{-- Judul Utama --}}
-            <h1 class="mb-6 text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight drop-shadow-lg">
+            <h1 class="mb-6 text-2xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight drop-shadow-lg">
                 Pencarian Status Penerima <br>
                 <span class="text-blue-400 drop-shadow-md">
                     Bantuan Sosial Desa
@@ -171,7 +171,7 @@
                         </div>
 
                         {{-- Profil Singkat --}}
-                        <div class="grid grid-cols-2 gap-3 bg-slate-50 rounded-xl p-3.5 text-xs font-bold text-slate-600 shadow-[0_2px_20px_rgba(0,0,0,0.04)]">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-50 rounded-xl p-3.5 text-xs font-bold text-slate-600 shadow-[0_2px_20px_rgba(0,0,0,0.04)]">
                             <div>
                                 <span class="text-[10px] text-slate-500 font-medium block mb-0.5">NAMA PENERIMA</span>
                                 <span class="text-slate-900 font-black tracking-wide">{{ $warga->nama_lengkap }}</span>
@@ -187,11 +187,11 @@
                         {{-- Looping Jenis BANSOS --}}
                         @foreach($warga->penerimaBansos as $penerima)
                             <div class="rounded-xl p-4 bg-slate-50/40 shadow-[0_2px_20px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_25px_rgba(0,0,0,0.08)] transition">
-                                <div class="rounded-xl overflow-hidden border border-slate-200 bg-white mt-4">
-    <table class="w-full text-sm">
+                                <div class="rounded-xl border border-slate-200 bg-white mt-4 overflow-x-auto">
+    <table class="w-full text-sm min-w-[420px]">
         <tbody class="divide-y divide-slate-200">
             <tr>
-                <td class="w-52 bg-slate-50 px-4 py-3 font-semibold text-slate-600">
+                <td class="min-w-[140px] bg-slate-50 px-4 py-3 font-semibold text-slate-600">
                     Jenis Bantuan
                 </td>
                 <td class="px-4 py-3 font-bold text-blue-600">
@@ -200,7 +200,7 @@
             </tr>
 
             <tr>
-                <td class="bg-slate-50 px-4 py-3 font-semibold text-slate-600">
+                <td class="min-w-[140px] bg-slate-50 px-4 py-3 font-semibold text-slate-600">
                     Status Kelayakan
                 </td>
                 <td class="px-4 py-3">
@@ -221,7 +221,7 @@
             </tr>
 
             <tr>
-                <td class="bg-slate-50 px-4 py-3 font-semibold text-slate-600">
+                <td class="min-w-[140px] bg-slate-50 px-4 py-3 font-semibold text-slate-600">
                     Besaran Dana
                 </td>
                 <td class="px-4 py-3 font-bold">
@@ -230,7 +230,7 @@
             </tr>
 
             <tr>
-                <td class="bg-slate-50 px-4 py-3 font-semibold text-slate-600">
+                <td class="min-w-[140px] bg-slate-50 px-4 py-3 font-semibold text-slate-600">
                     Periode Distribusi
                 </td>
                 <td class="px-4 py-3">
@@ -251,8 +251,8 @@
                                 @if($penerima->penyaluran->isEmpty())
                                     <p class="text-white text-xs text-slate-500 italic font-medium">Belum ada catatan log riwayat penyaluran untuk tahun ini.</p>
                                 @else
-                                    <div class="rounded-xl overflow-hidden bg-white text-[11px] shadow-[0_2px_20px_rgba(0,0,0,0.06)]">
-                                        <table class="w-full text-left border-collapse">
+                                    <div class="rounded-xl bg-white text-[11px] shadow-[0_2px_20px_rgba(0,0,0,0.06)] overflow-x-auto">
+                                        <table class="w-full text-left border-collapse min-w-[380px]">
                                             <thead class="bg-slate-50 text-slate-500 font-bold shadow-[0_1px_0_0_rgba(0,0,0,0.05)]">
                                                 <tr>
                                                     <th class="p-2.5 font-bold">Periode Distribusi</th>
@@ -554,7 +554,7 @@
                             @foreach([25000, 50000, 100000, 250000] as $nominal)
                                 <button type="button"
                                     onclick="setNominalDonasi({{ $nominal }})"
-                                    class="px-3 py-1.5 text-xs font-bold rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 transition">
+                                    class="flex-1 min-w-[70px] px-2 py-2 text-xs font-bold rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 transition text-center">
                                     {{ number_format($nominal, 0, ',', '.') }}
                                 </button>
                             @endforeach
@@ -565,22 +565,22 @@
                         <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
                             Metode Pembayaran
                         </label>
-                        <div class="grid grid-cols-3 gap-2">
+                        <div class="grid grid-cols-3 gap-1.5 sm:gap-2">
                             <label class="cursor-pointer">
                                 <input type="radio" name="metode_pembayaran" value="transfer_bank" class="peer sr-only" checked>
-                                <div class="text-center py-3 rounded-xl border-2 border-slate-200 peer-checked:border-blue-600 peer-checked:bg-blue-50 text-xs font-bold text-slate-600 peer-checked:text-blue-700 transition">
+                                <div class="text-center py-2.5 px-1 rounded-xl border-2 border-slate-200 peer-checked:border-blue-600 peer-checked:bg-blue-50 text-[11px] sm:text-xs font-bold text-slate-600 peer-checked:text-blue-700 transition">
                                     Transfer Bank
                                 </div>
                             </label>
                             <label class="cursor-pointer">
                                 <input type="radio" name="metode_pembayaran" value="qris" class="peer sr-only">
-                                <div class="text-center py-3 rounded-xl border-2 border-slate-200 peer-checked:border-blue-600 peer-checked:bg-blue-50 text-xs font-bold text-slate-600 peer-checked:text-blue-700 transition">
+                                <div class="text-center py-2.5 px-1 rounded-xl border-2 border-slate-200 peer-checked:border-blue-600 peer-checked:bg-blue-50 text-[11px] sm:text-xs font-bold text-slate-600 peer-checked:text-blue-700 transition">
                                     QRIS
                                 </div>
                             </label>
                             <label class="cursor-pointer">
                                 <input type="radio" name="metode_pembayaran" value="ewallet" class="peer sr-only">
-                                <div class="text-center py-3 rounded-xl border-2 border-slate-200 peer-checked:border-blue-600 peer-checked:bg-blue-50 text-xs font-bold text-slate-600 peer-checked:text-blue-700 transition">
+                                <div class="text-center py-2.5 px-1 rounded-xl border-2 border-slate-200 peer-checked:border-blue-600 peer-checked:bg-blue-50 text-[11px] sm:text-xs font-bold text-slate-600 peer-checked:text-blue-700 transition">
                                     E-Wallet
                                 </div>
                             </label>
