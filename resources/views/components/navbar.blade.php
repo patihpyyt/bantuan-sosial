@@ -5,7 +5,7 @@
       {{-- Sisi Kiri: Identitas Aplikasi / Brand Logo Modern --}}
       <div class="flex items-center gap-3 pl-0 ml-0">
          <div class="rounded-2xl w-20 h-20 flex items-center justify-center rounded-xl overflow-hidden">
-        <img src="/img/bansos.png" alt="Logo Bansos Desa" class="w-full h-full object-contain">
+        <img src="/img/b2.png" alt="Logo Bansos Desa" class="w-full h-full object-contain">
     </div>
           <div>
               <h1 class="text-base font-bold text-slate-900 tracking-tight leading-tight">

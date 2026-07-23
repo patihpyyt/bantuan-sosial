@@ -199,30 +199,45 @@ Route::middleware('auth')->group(function () {
 
     });
 
-    // ================= KELURAHAN =================
-    Route::get('/dashboard/kelurahan', function () {
-        return view('dashboard-kelurahan');
-    })->name('dashboard.kelurahan');
+Route::get('/dashboard/kelurahan', function () {
+    return view('dashboard-kelurahan');
+})->name('dashboard.kelurahan');
 
-   // ================= KELURAHAN =================
+
 Route::get('/dashboard/kelurahan', [DashboardKelurahanController::class, 'index'])
     ->name('dashboard.kelurahan');
 
-    // ================= WARGA =================
-    Route::get('/dashboard/warga', function () {
-        $user = auth()->user();
 
-        $warga = Warga::where('nik', $user->nik)->first();
+ Route::get('/dashboard/warga', function () {
+    $user = auth()->user();
 
-        $belumTerdaftar = is_null($warga);
+    $warga = Warga::where('nik', $user->nik)->first();
 
-        return view('dashboard-warga', [
-            'belumTerdaftar' => $belumTerdaftar,
-            'warga'          => $warga,
-        ]);
-    })->name('dashboard.warga');
+    $belumTerdaftar = is_null($warga);
 
-    // ================= RESOURCE ROUTES (dipakai lintas role, sesuaikan nanti) =================
+    $keyword = request('keyword');
+
+    $tetangga = collect();
+
+    if (!$belumTerdaftar) {
+        $tetangga = Warga::where('rt', $warga->rt)
+                          ->where('rw', $warga->rw)
+                          ->where('nik', '!=', $warga->nik)
+                          ->when($keyword, function ($query, $keyword) {
+                              $query->where('nama', 'like', '%' . $keyword . '%');
+                          })
+                          ->get();
+    }
+
+    return view('dashboard-warga', [
+        'belumTerdaftar' => $belumTerdaftar,
+        'dataDiri'       => $warga,
+        'tetangga'       => $tetangga,
+        'keyword'        => $keyword,
+    ]);
+})->name('dashboard.warga');
+
+    
     Route::resource('warga', WargaController::class);
 
     Route::resource('penerima-bansos', PenerimaBansosController::class)
