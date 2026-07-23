@@ -17,10 +17,12 @@ class DistribusiController extends Controller
         $kabupaten = $request->input('kabupaten_id');
         $status    = $request->input('status');
 
-        $query = DistribusiAnggaran::with('kabupaten')
-            ->where('tahun', $tahun)
-            ->latest('tanggal_distribusi');
+       $query = DistribusiAnggaran::with('kabupaten')
+    ->where('tahun', $tahun)
+    ->where('created_by', auth()->id())
+    ->latest('tanggal_distribusi');
 
+    
         if ($kabupaten) {
             $query->where('kabupaten_id', $kabupaten);
         }

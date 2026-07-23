@@ -43,11 +43,14 @@
 
             {{-- TOTAL PENYALURAN --}}
             <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-cyan-600">
-                <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Total Penyaluran</p>
-                <p class="text-2xl font-black text-slate-900">
-                    {{ number_format($summary['total_penyaluran'] ?? 0, 0, ',', '.') }} <span class="text-xs font-bold text-slate-400 uppercase">kali salur</span>
-                </p>
-            </div>
+    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Total Penyaluran</p>
+    <p class="text-2xl font-black text-slate-900">
+        Rp {{ number_format($summary['total_penyaluran'] ?? 0, 0, ',', '.') }}
+    </p>
+    <p class="text-xs font-semibold text-slate-400 mt-1">
+        {{ number_format($summary['total_transaksi'] ?? 0, 0, ',', '.') }} kali salur
+    </p>
+</div>
         </div>
 
         {{-- ================= FILTER TAHUN ANGGARAN ================= --}}
@@ -94,7 +97,7 @@
                                 </td>
                                 {{-- TOTAL PENYALURAN --}}
                                 <td class="px-6 py-4 text-right font-semibold text-blue-600">
-                                    {{ number_format($m['total_penyaluran'] ?? 0, 0, ',', '.') }}
+                                    Rp {{ number_format($m['total_penyaluran'] ?? 0, 0, ',', '.') }}
                                 </td>
                                 {{-- LINK AKSIONAL --}}
                                 <td class="px-6 py-4">

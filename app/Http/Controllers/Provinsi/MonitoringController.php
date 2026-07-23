@@ -28,14 +28,15 @@ class MonitoringController extends Controller
             return $this->hitungDataKabupaten($kab, $tahun);
         });
 
-        $summary = [
-            'total_anggaran'   => $monitoring->sum('total_anggaran'),
-            'total_terpakai'   => $monitoring->sum('anggaran_terpakai'),
-            'total_sisa'       => $monitoring->sum('sisa_anggaran'),
-            'total_warga'      => $monitoring->sum('total_warga'),
-            'total_penerima'   => $monitoring->sum('total_penerima'),
-            'total_penyaluran' => $monitoring->sum('total_penyaluran'),
-        ];
+       $summary = [
+    'total_anggaran'    => $monitoring->sum('total_anggaran'),
+    'total_terpakai'    => $monitoring->sum('anggaran_terpakai'),
+    'total_sisa'        => $monitoring->sum('sisa_anggaran'),
+    'total_warga'       => $monitoring->sum('total_warga'),
+    'total_penerima'    => $monitoring->sum('total_penerima'),
+    'total_penyaluran'  => $monitoring->sum('total_penyaluran'),   // ini nominal Rupiah
+    'total_transaksi'   => $monitoring->sum('jumlah_penyaluran'),  // ini jumlah kali salur
+];
 
         return view('provinsi.monitoring.index', [
             'monitoring'     => $monitoring,
