@@ -198,15 +198,12 @@ Route::middleware('auth')->group(function () {
         });
 
     });
-
-Route::get('/dashboard/kelurahan', function () {
-    return view('dashboard-kelurahan');
-})->name('dashboard.kelurahan');
-
-
 Route::get('/dashboard/kelurahan', [DashboardKelurahanController::class, 'index'])
     ->name('dashboard.kelurahan');
 
+// Tambahkan ini:
+Route::get('/dana-kelurahan', [DanaController::class, 'index'])
+    ->name('dana-kelurahan');
 
  Route::get('/dashboard/warga', function () {
     $user = auth()->user();

@@ -15,42 +15,42 @@ class DistribusiController extends Controller
     /**
      * Daftar seluruh riwayat distribusi dana ke Kecamatan.
      */
-    public function index(Request $request)
-    {
-        $tahun     = $request->input('tahun', now()->year);
-        $kabupaten = $request->input('kabupaten_id');
-        $status    = $request->input('status');
+  public function index(Request $request)
+{
+    $tahun     = $request->input('tahun', now()->year);
+    $kabupaten = $request->input('kabupaten_id');
+    $status    = $request->input('status');
 
-        $query = DistribusiAnggaran::with('kabupaten')
-            ->where('tahun', $tahun)
-            ->latest('tanggal_distribusi');
+    $query = DistribusiAnggaran::with('kabupaten')
+        ->where('tahun', $tahun)
+        ->where('created_by', auth()->id())
+        ->latest('tanggal_distribusi');
 
-        if ($kabupaten) {
-            $query->where('kabupaten_id', $kabupaten);
-        }
-
-        if ($status) {
-            $query->where('status', $status);
-        }
-
-        $distribusi = $query->get();
-
-        $kabupatenList = User::where('role', 'kecamatan')->get();
-
-        $tahunTersedia = DistribusiAnggaran::select('tahun')
-            ->distinct()
-            ->orderByDesc('tahun')
-            ->pluck('tahun');
-
-        return view('kabupaten.distribusi.index', [
-            'distribusi'      => $distribusi,
-            'kabupatenList'   => $kabupatenList,
-            'tahun'           => $tahun,
-            'tahunTersedia'   => $tahunTersedia,
-            'filterKabupaten' => $kabupaten,
-        ]);
+    if ($kabupaten) {
+        $query->where('kabupaten_id', $kabupaten);
     }
 
+    if ($status) {
+        $query->where('status', $status);
+    }
+
+    $distribusi = $query->get();
+
+    $kabupatenList = User::where('role', 'kecamatan')->get();
+
+    $tahunTersedia = DistribusiAnggaran::select('tahun')
+        ->distinct()
+        ->orderByDesc('tahun')
+        ->pluck('tahun');
+
+    return view('kabupaten.distribusi.index', [
+        'distribusi'      => $distribusi,
+        'kabupatenList'   => $kabupatenList,
+        'tahun'           => $tahun,
+        'tahunTersedia'   => $tahunTersedia,
+        'filterKabupaten' => $kabupaten,
+    ]);
+}
     /**
      * Form input distribusi baru.
      */

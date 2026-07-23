@@ -40,7 +40,7 @@
                             <span class="text-[11px] text-slate-400 font-medium">5 Modul Tersedia</span>
                         </div>
 
-                        <a href="/dana-kelurahan" class="group flex items-center gap-4 border border-slate-100 rounded-xl p-4 hover:bg-slate-50 hover:border-slate-300/80 active:scale-[0.98] transition-all duration-200">
+                        <a href="{{ route('dana-kelurahan') }}" class="group flex items-center gap-4 border border-slate-100 rounded-xl p-4 hover:bg-slate-50 hover:border-slate-300/80 active:scale-[0.98] transition-all duration-200">
     <div class="w-10 h-10 bg-slate-50 text-slate-700 rounded-lg flex items-center justify-center group-hover:bg-green-600 group-hover:text-white transition duration-200 shrink-0 shadow-sm border border-slate-100">
         <svg class="w-5 h-5 stroke-[1.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182 1.106-.879 2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
     </div>
