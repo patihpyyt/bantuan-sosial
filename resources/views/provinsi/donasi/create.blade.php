@@ -88,13 +88,14 @@
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <div>
-                        <label for="jumlah_dana" class="block text-xs font-semibold text-slate-700 mb-1.5">Jumlah Dana Disalurkan (Rp)</label>
-                        <input type="number" name="jumlah_dana" id="jumlah_dana" min="1" max="{{ $donasi->jumlah }}"
-                            value="{{ old('jumlah_dana', $donasi->jumlah) }}" required
-                            class="w-full text-sm border border-slate-200 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition">
-                        <p class="text-[11px] text-slate-400 mt-1.5">Maksimal Rp {{ number_format($donasi->jumlah, 0, ',', '.') }}</p>
-                    </div>
+                 <div>
+    <label for="jumlah_dana_display" class="block text-xs font-semibold text-slate-700 mb-1.5">Jumlah Dana Disalurkan (Rp)</label>
+    <input type="text" inputmode="numeric" id="jumlah_dana_display"
+        value="{{ number_format(old('jumlah_dana', $donasi->jumlah), 0, ',', '.') }}"
+        class="w-full text-sm border border-slate-200 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition">
+    <input type="hidden" name="jumlah_dana" id="jumlah_dana" value="{{ old('jumlah_dana', $donasi->jumlah) }}">
+    <p class="text-[11px] text-slate-400 mt-1.5">Maksimal Rp {{ number_format($donasi->jumlah, 0, ',', '.') }}</p>
+</div>
                     <div>
                         <label for="tanggal_penyaluran" class="block text-xs font-semibold text-slate-700 mb-1.5">Tanggal Penyaluran</label>
                         <input type="date" name="tanggal_penyaluran" id="tanggal_penyaluran"
@@ -125,4 +126,43 @@
 
         </div>
     </div>
+
+    <script>
+    const displayInput = document.getElementById('jumlah_dana_display');
+    const hiddenInput = document.getElementById('jumlah_dana');
+    const maxJumlah = {{ $donasi->jumlah }};
+
+    function formatRupiah(angka) {
+        angka = angka.replace(/\D/g, ''); // buang semua karakter non-digit
+        return angka.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+
+    displayInput.addEventListener('input', function (e) {
+        let rawValue = e.target.value.replace(/\D/g, '');
+
+        if (rawValue !== '') {
+            let numericValue = parseInt(rawValue, 10);
+            if (numericValue > maxJumlah) {
+                numericValue = maxJumlah;
+                rawValue = String(maxJumlah);
+            }
+            e.target.value = formatRupiah(rawValue);
+            hiddenInput.value = numericValue;
+        } else {
+            e.target.value = '';
+            hiddenInput.value = '';
+        }
+    });
+
+    // pastikan hidden input terisi angka murni sebelum submit
+    document.querySelector('form').addEventListener('submit', function (e) {
+        const raw = displayInput.value.replace(/\D/g, '');
+        if (!raw || parseInt(raw, 10) < 1) {
+            e.preventDefault();
+            alert('Jumlah dana harus diisi dan lebih dari 0.');
+            return;
+        }
+        hiddenInput.value = raw;
+    });
+</script>
 </x-app-layout>

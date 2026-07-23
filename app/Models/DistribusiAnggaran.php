@@ -33,4 +33,9 @@ class DistribusiAnggaran extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
+
+    public function kecamatan()
+{
+    return $this->belongsTo(User::class, 'kabupaten_id');
+}
 }

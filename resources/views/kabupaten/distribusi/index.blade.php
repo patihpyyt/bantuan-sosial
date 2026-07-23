@@ -53,7 +53,7 @@
                                     {{ $loop->iteration }}
                                 </td>
                                 <td class="px-5 py-4 font-semibold text-slate-900">
-                                    {{ $item->kabupaten->nama_lengkap ?? '-' }}
+                                    {{ $item->kecamatan->nama_lengkap ?? '-' }}
                                 </td>
                                 <td class="px-5 py-4 text-center font-medium text-slate-600">
                                     {{ $item->tahun }}

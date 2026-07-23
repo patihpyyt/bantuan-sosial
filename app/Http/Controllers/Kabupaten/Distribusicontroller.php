@@ -8,11 +8,12 @@ use App\Models\Anggaran;
 use App\Models\DistribusiAnggaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class DistribusiController extends Controller
 {
     /**
-     * Daftar seluruh riwayat distribusi dana ke Kabupaten/Kota.
+     * Daftar seluruh riwayat distribusi dana ke Kecamatan.
      */
     public function index(Request $request)
     {
@@ -34,7 +35,7 @@ class DistribusiController extends Controller
 
         $distribusi = $query->get();
 
-        $kabupatenList = User::where('role', 'kabupaten')->get();
+        $kabupatenList = User::where('role', 'kecamatan')->get();
 
         $tahunTersedia = DistribusiAnggaran::select('tahun')
             ->distinct()
@@ -53,22 +54,20 @@ class DistribusiController extends Controller
     /**
      * Form input distribusi baru.
      */
-  public function create()
-{
-    $kecamatan = User::where('role', 'kecamatan')->get();
+    public function create()
+    {
+        $kecamatan = User::where('role', 'kecamatan')->get();
 
-    return view('kabupaten.distribusi.create', compact('kecamatan'));
-}
+        return view('kabupaten.distribusi.create', compact('kecamatan'));
+    }
 
     /**
      * Simpan distribusi baru.
-     * Kabupaten WAJIB sudah punya alokasi (Anggaran) untuk tahun tsb sebelum bisa didistribusikan.
-     * Distribusi menambah anggaran_terpakai & mengurangi sisa_anggaran — total_anggaran TIDAK berubah.
      */
     public function store(Request $request)
     {
         $request->validate([
-            'kecamatan_id' => 'required|exists:users,id',
+            'kecamatan_id'       => ['required', Rule::exists('users', 'id')->where('role', 'kecamatan')],
             'tahun'              => 'required|digits:4',
             'jumlah'             => 'required|numeric|min:1',
             'tanggal_distribusi' => 'required|date',
@@ -76,9 +75,9 @@ class DistribusiController extends Controller
             'status'             => 'nullable|in:terkirim,dibatalkan',
         ]);
 
-       $anggaran = Anggaran::where('kabupaten_id', auth()->id())
-    ->where('tahun', $request->tahun)
-    ->first();
+        $anggaran = Anggaran::where('kabupaten_id', auth()->id())
+            ->where('tahun', $request->tahun)
+            ->first();
 
         if (!$anggaran) {
             return back()->withInput()->with('error', 'Kabupaten ini belum punya alokasi anggaran untuk tahun tersebut. Alokasikan dulu di menu Kelola Anggaran.');
@@ -107,16 +106,16 @@ class DistribusiController extends Controller
 
         return redirect()
             ->route('kabupaten.distribusi.index', ['tahun' => $request->tahun])
-            ->with('success', 'Dana berhasil didistribusikan ke Kabupaten/Kota.');
+            ->with('success', 'Dana berhasil didistribusikan ke Kecamatan.');
     }
 
     /**
-     * Detail riwayat distribusi untuk satu Kabupaten/Kota tertentu.
+     * Detail riwayat distribusi untuk satu Kecamatan tertentu.
      */
     public function show($kabupatenId, Request $request)
     {
         $tahun     = $request->input('tahun', now()->year);
-        $kabupaten = User::where('role', 'kabupaten')->findOrFail($kabupatenId);
+        $kabupaten = User::where('role', 'kecamatan')->findOrFail($kabupatenId);
 
         $riwayat = DistribusiAnggaran::where('kabupaten_id', $kabupatenId)
             ->where('tahun', $tahun)
@@ -134,7 +133,6 @@ class DistribusiController extends Controller
 
     /**
      * Batalkan satu transaksi distribusi (soft cancel, bukan hapus).
-     * Mengembalikan anggaran_terpakai & sisa_anggaran — total_anggaran TIDAK berubah.
      */
     public function cancel($id)
     {
@@ -144,7 +142,7 @@ class DistribusiController extends Controller
             return back()->with('error', 'Distribusi ini sudah dibatalkan sebelumnya.');
         }
 
-        $anggaran = Anggaran::where('kabupaten_id', $distribusi->kabupaten_id)
+        $anggaran = Anggaran::where('kabupaten_id', auth()->id())
             ->where('tahun', $distribusi->tahun)
             ->first();
 
@@ -164,46 +162,42 @@ class DistribusiController extends Controller
         return back()->with('success', 'Distribusi berhasil dibatalkan.');
     }
 
-  public function edit($id)
-{
-    $distribusi = DistribusiAnggaran::findOrFail($id);
+    public function edit($id)
+    {
+        $distribusi = DistribusiAnggaran::findOrFail($id);
 
-    $kecamatan = User::where('role', 'kecamatan')->get();
+        $kecamatan = User::where('role', 'kecamatan')->get();
 
-    return view('kabupaten.distribusi.edit', compact(
-        'distribusi',
-        'kecamatan'
-    ));
-}
+        return view('kabupaten.distribusi.edit', compact(
+            'distribusi',
+            'kecamatan'
+        ));
+    }
 
     /**
      * Update transaksi distribusi.
-     * Mengembalikan anggaran_terpakai/sisa_anggaran lama, lalu terapkan ulang dengan nilai baru.
-     * total_anggaran TIDAK pernah disentuh di sini.
      */
     public function update(Request $request, $id)
     {
         $distribusi = DistribusiAnggaran::findOrFail($id);
 
-       $request->validate([
-    'kecamatan_id' => 'required|exists:users,id',
-    'tahun' => 'required|digits:4',
-    'jumlah' => 'required|numeric|min:1',
-    'tanggal_distribusi' => 'required|date',
-    'keterangan' => 'nullable|string|max:255',
-    'status' => 'required|in:terkirim,dibatalkan',
-]);
+        $request->validate([
+            'kecamatan_id'       => ['required', Rule::exists('users', 'id')->where('role', 'kecamatan')],
+            'tahun'              => 'required|digits:4',
+            'jumlah'             => 'required|numeric|min:1',
+            'tanggal_distribusi' => 'required|date',
+            'keterangan'         => 'nullable|string|max:255',
+            'status'             => 'required|in:terkirim,dibatalkan',
+        ]);
 
         DB::transaction(function () use ($request, $distribusi) {
 
-            $jumlahLama      = $distribusi->jumlah;
-            $kabupatenIdLama = $distribusi->kabupaten_id;
-            $tahunLama       = $distribusi->tahun;
-            $statusLama      = $distribusi->status;
+            $jumlahLama = $distribusi->jumlah;
+            $tahunLama  = $distribusi->tahun;
+            $statusLama = $distribusi->status;
 
-            // Kembalikan efek transaksi lama (kalau sebelumnya berstatus terkirim)
             if ($statusLama !== 'dibatalkan') {
-                $anggaranLama = Anggaran::where('kabupaten_id', $kabupatenIdLama)
+                $anggaranLama = Anggaran::where('kabupaten_id', auth()->id())
                     ->where('tahun', $tahunLama)
                     ->first();
 
@@ -214,7 +208,6 @@ class DistribusiController extends Controller
                 }
             }
 
-            // Update data distribusi
             $distribusi->update([
                 'kabupaten_id'       => $request->kecamatan_id,
                 'tahun'              => $request->tahun,
@@ -224,9 +217,8 @@ class DistribusiController extends Controller
                 'status'             => $request->status,
             ]);
 
-            // Terapkan efek baru (kalau statusnya terkirim)
             if ($request->status !== 'dibatalkan') {
-                $anggaranBaru = Anggaran::where('kabupaten_id', $request->kecamatan_id)
+                $anggaranBaru = Anggaran::where('kabupaten_id', auth()->id())
                     ->where('tahun', $request->tahun)
                     ->first();
 
@@ -245,14 +237,13 @@ class DistribusiController extends Controller
 
     /**
      * Hapus permanen transaksi distribusi.
-     * Mengembalikan anggaran_terpakai/sisa_anggaran kalau transaksi sebelumnya masih aktif (bukan dibatalkan).
      */
     public function destroy($id)
     {
         $distribusi = DistribusiAnggaran::findOrFail($id);
 
         if ($distribusi->status !== 'dibatalkan') {
-            $anggaran = Anggaran::where('kabupaten_id', $distribusi->kabupaten_id)
+            $anggaran = Anggaran::where('kabupaten_id', auth()->id())
                 ->where('tahun', $distribusi->tahun)
                 ->first();
 
