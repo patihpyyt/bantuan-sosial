@@ -87,22 +87,39 @@ class DistribusiController extends Controller
             return back()->withInput()->with('error', 'Jumlah distribusi melebihi sisa anggaran kabupaten ini. Sisa saat ini: Rp ' . number_format($anggaran->sisa_anggaran, 0, ',', '.'));
         }
 
-        DB::transaction(function () use ($request, $anggaran) {
+       DB::transaction(function () use ($request, $anggaran) {
 
-            DistribusiAnggaran::create([
-                'kabupaten_id'       => $request->kecamatan_id,
-                'tahun'              => $request->tahun,
-                'jumlah'             => $request->jumlah,
-                'tanggal_distribusi' => $request->tanggal_distribusi,
-                'keterangan'         => $request->keterangan,
-                'status'             => $request->status ?? 'terkirim',
-                'created_by'         => auth()->id(),
-            ]);
+    DistribusiAnggaran::create([
+        'kabupaten_id'       => $request->kecamatan_id,
+        'tahun'              => $request->tahun,
+        'jumlah'             => $request->jumlah,
+        'tanggal_distribusi' => $request->tanggal_distribusi,
+        'keterangan'         => $request->keterangan,
+        'status'             => $request->status ?? 'terkirim',
+        'created_by'         => auth()->id(),
+    ]);
 
-            $anggaran->anggaran_terpakai += $request->jumlah;
-            $anggaran->sisa_anggaran     -= $request->jumlah;
-            $anggaran->save();
-        });
+    // TAMBAHIN INI: catat/update AnggaranKecamatan biar kecamatan bisa lanjut salurkan ke kelurahan
+    $anggaranKecamatan = \App\Models\AnggaranKecamatan::firstOrNew([
+        'kecamatan_id' => $request->kecamatan_id,
+        'tahun'        => $request->tahun,
+    ]);
+
+    if (!$anggaranKecamatan->exists) {
+        $anggaranKecamatan->kabupaten_id      = auth()->id();
+        $anggaranKecamatan->anggaran_terpakai = 0;
+        $anggaranKecamatan->total_anggaran    = 0;
+        $anggaranKecamatan->sisa_anggaran     = 0;
+    }
+
+    $anggaranKecamatan->total_anggaran += $request->jumlah;
+    $anggaranKecamatan->sisa_anggaran  += $request->jumlah;
+    $anggaranKecamatan->save();
+
+    $anggaran->anggaran_terpakai += $request->jumlah;
+    $anggaran->sisa_anggaran     -= $request->jumlah;
+    $anggaran->save();
+});
 
         return redirect()
             ->route('kabupaten.distribusi.index', ['tahun' => $request->tahun])
