@@ -58,59 +58,50 @@ class MonitoringController extends Controller
             ->where('kabupaten_id', $kabupaten->id)
             ->get();
 
-        $monitoringKecamatan = $kecamatanList->map(function ($kec) use ($kabupaten, $tahun) {
+            $monitoringKecamatan = $kecamatanList->map(function ($kec) use ($kabupaten, $tahun) {
 
-            $totalWarga = Warga::where('kabupaten', $kabupaten->nama_lengkap)
-                ->where('kecamatan', $kec->nama_lengkap)
-                ->count();
+    // ===== GANTI: cari warga lewat kelurahan_id, bukan teks =====
+    $kelurahanIds = User::where('role', 'kelurahan')
+        ->where('kecamatan_id', $kec->id)
+        ->pluck('id');
 
-            $totalPenerima = PenerimaBansos::whereHas('warga', function ($q) use ($kabupaten, $kec) {
-                $q->where('kabupaten', $kabupaten->nama_lengkap)
-                  ->where('kecamatan', $kec->nama_lengkap);
-            })->count();
+    $totalWarga = Warga::whereIn('kelurahan_id', $kelurahanIds)->count();
 
-            $totalPenyaluran = Penyaluran::whereHas('penerima.warga', function ($q) use ($kabupaten, $kec) {
-                $q->where('kabupaten', $kabupaten->nama_lengkap)
-                  ->where('kecamatan', $kec->nama_lengkap);
-            })->sum('nominal');
+    $totalPenerima = PenerimaBansos::whereHas('warga', function ($q) use ($kelurahanIds) {
+        $q->whereIn('kelurahan_id', $kelurahanIds);
+    })->count();
 
-            // Aliran dana berjenjang kabupaten -> kecamatan
-            $diterima = DistribusiAnggaran::where('kabupaten_id', $kec->id)
-                ->where('tahun', $tahun)
-                ->where('status', 'terkirim')
-                ->sum('jumlah');
+    $totalPenyaluran = Penyaluran::whereHas('penerima.warga', function ($q) use ($kelurahanIds) {
+        $q->whereIn('kelurahan_id', $kelurahanIds);
+    })->sum('nominal');
+    // ===== SELESAI GANTI =====
 
-                    
-$diteruskan = DB::table('distribusi_kelurahan') 
-    ->where('kecamatan_id', $kec->id)
-    ->where('tahun', $tahun)
-    ->where('status', 'terkirim')
-    ->sum('jumlah');
-            $sisa = $diterima - $diteruskan;
+    $diterima = DistribusiAnggaran::where('kabupaten_id', $kec->id)
+        ->where('tahun', $tahun)
+        ->where('status', 'terkirim')
+        ->sum('jumlah');
 
-            if ($diterima == 0) {
-                $statusAliran = 'belum_ada_dana';
-            } elseif ($sisa <= 0) {
-                $statusAliran = 'tersalur_penuh';
-            } elseif ($sisa == $diterima) {
-                $statusAliran = 'mengendap';
-            } else {
-                $statusAliran = 'sebagian';
-            }
+    $diteruskan = DB::table('distribusi_kelurahan')
+        ->where('kecamatan_id', $kec->id)
+        ->where('tahun', $tahun)
+        ->where('status', 'terkirim')
+        ->sum('jumlah');
 
-            return [
-                'kecamatan_id'     => $kec->id,
-                'kecamatan'        => $kec->nama_lengkap,
-                'total_warga'      => $totalWarga,
-                'total_penerima'   => $totalPenerima,
-                'total_penyaluran' => $totalPenyaluran,
-                'diterima'         => $diterima,
-                'diteruskan'       => $diteruskan,
-                'sisa'             => $sisa,
-                'status_aliran'    => $statusAliran,
-            ];
-        });
+    $sisa = $diterima - $diteruskan;
+    $statusAliran = $this->tentukanStatusAliran($diterima, $sisa);
 
+    return [
+        'kecamatan_id'      => $kec->id,
+        'kecamatan'         => $kec->nama_lengkap,
+        'total_warga'       => $totalWarga,
+        'total_penerima'    => $totalPenerima,
+        'total_penyaluran'  => $totalPenyaluran,
+        'diterima'          => $diterima,
+        'diteruskan'        => $diteruskan,
+        'sisa'              => $sisa,
+        'status_aliran'     => $statusAliran,
+    ];
+});
         return view('provinsi.monitoring.show', [
             'kabupaten'           => $kabupaten,
             'dataKabupaten'       => $dataKabupaten,
@@ -183,84 +174,85 @@ $diteruskan = DB::table('distribusi_kelurahan')
     }
 
     private function hitungDataKabupaten(User $kab, $tahun)
-    {
-        $anggaran = Anggaran::where('kabupaten_id', $kab->id)
-            ->where('tahun', $tahun)
-            ->first();
+{
+    $anggaran = Anggaran::where('kabupaten_id', $kab->id)
+        ->where('tahun', $tahun)
+        ->first();
 
-        $totalAnggaran = $anggaran->total_anggaran ?? 0;
-        $terpakai      = $anggaran->anggaran_terpakai ?? 0;
-        $sisa          = $anggaran->sisa_anggaran ?? 0;
+    $totalAnggaran = $anggaran->total_anggaran ?? 0;
+    $terpakai      = $anggaran->anggaran_terpakai ?? 0;
+    $sisa          = $anggaran->sisa_anggaran ?? 0;
 
-        $persentaseSerapan = $totalAnggaran > 0
-            ? round(($terpakai / $totalAnggaran) * 100, 1)
-            : 0;
+    $persentaseSerapan = $totalAnggaran > 0
+        ? round(($terpakai / $totalAnggaran) * 100, 1)
+        : 0;
 
-        $totalWarga = Warga::where('kabupaten', $kab->nama_lengkap)->count();
+    // ===== GANTI: cari warga lewat rantai ID, bukan cocokin teks =====
+    $kecamatanIds = User::where('role', 'kecamatan')
+        ->where('kabupaten_id', $kab->id)
+        ->pluck('id');
 
-        $totalPenerima = PenerimaBansos::whereHas('warga', function ($q) use ($kab) {
-            $q->where('kabupaten', $kab->nama_lengkap);
-        })->count();
+    $kelurahanIds = User::where('role', 'kelurahan')
+        ->whereIn('kecamatan_id', $kecamatanIds)
+        ->pluck('id');
 
-        $totalPenyaluran = Penyaluran::whereHas('penerima.warga', function ($q) use ($kab) {
-            $q->where('kabupaten', $kab->nama_lengkap);
-        })->sum('nominal');
+    $totalWarga = Warga::whereIn('kelurahan_id', $kelurahanIds)->count();
 
-        $jumlahPenyaluran = Penyaluran::whereHas('penerima.warga', function ($q) use ($kab) {
-            $q->where('kabupaten', $kab->nama_lengkap);
-        })->count();
+    $totalPenerima = PenerimaBansos::whereHas('warga', function ($q) use ($kelurahanIds) {
+        $q->whereIn('kelurahan_id', $kelurahanIds);
+    })->count();
 
-        if ($totalAnggaran == 0) {
-            $status = 'belum_ada_anggaran';
-        } elseif ($persentaseSerapan >= 90) {
-            $status = 'hampir_habis';
-        } elseif ($persentaseSerapan >= 50) {
-            $status = 'normal';
-        } else {
-            $status = 'rendah';
-        }
+    $totalPenyaluran = Penyaluran::whereHas('penerima.warga', function ($q) use ($kelurahanIds) {
+        $q->whereIn('kelurahan_id', $kelurahanIds);
+    })->sum('nominal');
 
-        // Hitung aliran dana berjenjang
-        $diterimaDariProvinsi = DistribusiAnggaran::where('kabupaten_id', $kab->id)
-            ->where('tahun', $tahun)
-            ->where('status', 'terkirim')
-            ->sum('jumlah');
+    $jumlahPenyaluran = Penyaluran::whereHas('penerima.warga', function ($q) use ($kelurahanIds) {
+        $q->whereIn('kelurahan_id', $kelurahanIds);
+    })->count();
+    // ===== SELESAI GANTI =====
 
-        $diteruskanKeKecamatan = DistribusiAnggaran::where('created_by', $kab->id)
-            ->where('tahun', $tahun)
-            ->where('status', 'terkirim')
-            ->sum('jumlah');
-
-        $sisaMengendap = $diterimaDariProvinsi - $diteruskanKeKecamatan;
-
-        if ($diterimaDariProvinsi == 0) {
-            $statusAliran = 'belum_ada_dana';
-        } elseif ($sisaMengendap <= 0) {
-            $statusAliran = 'tersalur_penuh';
-        } elseif ($sisaMengendap == $diterimaDariProvinsi) {
-            $statusAliran = 'mengendap';
-        } else {
-            $statusAliran = 'sebagian';
-        }
-
-        return [
-            'kabupaten_id'            => $kab->id,
-            'nama_kabupaten'          => $kab->nama_lengkap,
-            'total_anggaran'          => $totalAnggaran,
-            'anggaran_terpakai'       => $terpakai,
-            'sisa_anggaran'           => $sisa,
-            'persentase_serapan'      => $persentaseSerapan,
-            'total_warga'             => $totalWarga,
-            'total_penerima'          => $totalPenerima,
-            'total_penyaluran'        => $totalPenyaluran,
-            'jumlah_penyaluran'       => $jumlahPenyaluran,
-            'status'                  => $status,
-            'diterima_dari_provinsi'  => $diterimaDariProvinsi,
-            'diteruskan_ke_kecamatan' => $diteruskanKeKecamatan,
-            'sisa_mengendap'          => $sisaMengendap,
-            'status_aliran'           => $statusAliran,
-        ];
+    if ($totalAnggaran == 0) {
+        $status = 'belum_ada_anggaran';
+    } elseif ($persentaseSerapan >= 90) {
+        $status = 'hampir_habis';
+    } elseif ($persentaseSerapan >= 50) {
+        $status = 'normal';
+    } else {
+        $status = 'rendah';
     }
+
+    $diterimaDariProvinsi = DistribusiAnggaran::where('kabupaten_id', $kab->id)
+        ->where('tahun', $tahun)
+        ->where('status', 'terkirim')
+        ->sum('jumlah');
+
+    $diteruskanKeKecamatan = DistribusiAnggaran::where('created_by', $kab->id)
+        ->where('tahun', $tahun)
+        ->where('status', 'terkirim')
+        ->sum('jumlah');
+
+    $sisaMengendap = $diterimaDariProvinsi - $diteruskanKeKecamatan;
+
+    $statusAliran = $this->tentukanStatusAliran($diterimaDariProvinsi, $sisaMengendap);
+
+    return [
+        'kabupaten_id'       => $kab->id,
+        'nama_kabupaten'     => $kab->nama_lengkap,
+        'total_anggaran'     => $totalAnggaran,
+        'anggaran_terpakai'  => $terpakai,
+        'sisa_anggaran'      => $sisa,
+        'persentase_serapan' => $persentaseSerapan,
+        'total_warga'        => $totalWarga,
+        'total_penerima'     => $totalPenerima,
+        'total_penyaluran'   => $totalPenyaluran,
+        'jumlah_penyaluran'  => $jumlahPenyaluran,
+        'status'             => $status,
+        'diterima_dari_provinsi'  => $diterimaDariProvinsi,
+        'diteruskan_ke_kecamatan' => $diteruskanKeKecamatan,
+        'sisa_mengendap'          => $sisaMengendap,
+        'status_aliran'           => $statusAliran,
+    ];
+}
 
     public function showKelurahan(Request $request, $kabupatenId, $kecamatanId)
 {
@@ -308,5 +300,18 @@ $diteruskan = DB::table('distribusi_kelurahan')
         'monitoringKelurahan' => $monitoringKelurahan,
         'tahun'               => $tahun,
     ]);
+}
+
+private function tentukanStatusAliran($diterima, $sisa)
+{
+    if ($diterima == 0) {
+        return 'belum_ada_dana';
+    } elseif ($sisa <= 0) {
+        return 'tersalur_penuh';
+    } elseif ($sisa == $diterima) {
+        return 'mengendap';
+    } else {
+        return 'sebagian';
+    }
 }
 }
