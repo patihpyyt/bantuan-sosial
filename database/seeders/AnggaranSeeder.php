@@ -10,24 +10,21 @@ class AnggaranSeeder extends Seeder
 {
     public function run(): void
     {
-        $kabupaten = User::where('role','kabupaten')->get();
+        $kabupaten = User::where('role', 'kabupaten')->get();
 
-        foreach($kabupaten as $item){
+        foreach ($kabupaten as $item) {
 
-            Anggaran::create([
-
-                'kabupaten_id'=>$item->id,
-
-                'tahun'=>date('Y'),
-
-                'total_anggaran'=>5000000000,
-
-                'anggaran_terpakai'=>0,
-
-                'sisa_anggaran'=>5000000000
-
-            ]);
-
+            Anggaran::updateOrCreate(
+                [
+                    'kabupaten_id' => $item->id,
+                    'tahun'        => date('Y'),
+                ],
+                [
+                    'total_anggaran'    => 5000000000,
+                    'anggaran_terpakai' => 0,
+                    'sisa_anggaran'     => 5000000000,
+                ]
+            );
         }
     }
 }
