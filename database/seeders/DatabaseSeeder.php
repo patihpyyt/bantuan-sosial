@@ -18,14 +18,12 @@ class DatabaseSeeder extends Seeder
     {
       $this->call([
     ProvinsiSeeder::class,
-    AnggaranSeeder::class,
     KabupatenTambahanSeeder::class,
     KecamatanSeeder::class,
     KelurahanSeeder::class,
     AdminSeeder::class,
     JenisBansosSeeder::class,
     UserSeeder::class,
-   
 ]);
     }
 }
