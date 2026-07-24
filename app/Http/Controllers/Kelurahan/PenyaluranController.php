@@ -33,12 +33,10 @@ public function index()
     return view('penyaluran.create', compact('penerima'));
 }
 
-   public function store(Request $request)
+public function store(Request $request)
 {
     $request->validate([
         'penerima_id'   => 'required|exists:penerima_bansos,id',
-        'periode_bulan' => 'required|integer|min:1|max:12',
-        'periode_tahun' => 'required|digits:4',
         'nominal'       => 'required|numeric|min:1',
         'tanggal_salur' => 'required|date',
         'status'        => 'required|in:tersalur,tertunda,gagal',
@@ -47,18 +45,19 @@ public function index()
         'catatan'       => 'nullable|string|max:255',
     ]);
 
-  $tanggalSalur = \Carbon\Carbon::parse($request->tanggal_salur);
+    $tanggalSalur = \Carbon\Carbon::parse($request->tanggal_salur);
 
-Penyaluran::create([
-    'penerima_id'   => $request->penerima_id,
-    'periode_bulan' => $tanggalSalur->month,   
-    'periode_tahun' => $tanggalSalur->year,   
-    'tanggal_salur' => $request->tanggal_salur,
-    'status'        => $request->status,
-    'metode'        => $request->metode,
-    'no_referensi'  => $request->no_referensi,
-    'catatan'       => $request->catatan,
-]);
+    Penyaluran::create([
+        'penerima_id'   => $request->penerima_id,
+        'periode_bulan' => $tanggalSalur->month,
+        'periode_tahun' => $tanggalSalur->year,
+        'nominal'       => $request->nominal,
+        'tanggal_salur' => $request->tanggal_salur,
+        'status'        => $request->status,
+        'metode'        => $request->metode,
+        'no_referensi'  => $request->no_referensi,
+        'catatan'       => $request->catatan,
+    ]);
 
     return redirect()
         ->route('penyaluran.index')
@@ -71,8 +70,6 @@ public function update(Request $request, $id)
 
     $request->validate([
         'penerima_id'   => 'required|exists:penerima_bansos,id',
-        'periode_bulan' => 'required|integer|min:1|max:12',
-        'periode_tahun' => 'required|digits:4',
         'nominal'       => 'required|numeric|min:1',
         'tanggal_salur' => 'required|date',
         'status'        => 'required|in:tersalur,tertunda,gagal',
@@ -81,15 +78,27 @@ public function update(Request $request, $id)
         'catatan'       => 'nullable|string|max:255',
     ]);
 
-    $penyaluran->update($request->only([
-        'penerima_id', 'periode_bulan', 'periode_tahun', 'nominal',
-        'tanggal_salur', 'status', 'metode', 'no_referensi', 'catatan',
-    ]));
+    $tanggalSalur = \Carbon\Carbon::parse($request->tanggal_salur);
+
+    $penyaluran->update([
+        'penerima_id'   => $request->penerima_id,
+        'periode_bulan' => $tanggalSalur->month,
+        'periode_tahun' => $tanggalSalur->year,
+        'nominal'       => $request->nominal,
+        'tanggal_salur' => $request->tanggal_salur,
+        'status'        => $request->status,
+        'metode'        => $request->metode,
+        'no_referensi'  => $request->no_referensi,
+        'catatan'       => $request->catatan,
+    ]);
 
     return redirect()
         ->route('penyaluran.index')
         ->with('success', 'Data penyaluran berhasil diubah.');
-}
+} 
+
+
+
     public function edit($id)
     {
         $penyaluran = Penyaluran::findOrFail($id);
