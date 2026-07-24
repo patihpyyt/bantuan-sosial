@@ -2,18 +2,18 @@
    <div class="max-w-7xl mx-auto pl-0 pr-4 sm:pr-6 lg:pr-8">
     <div class="flex justify-between h-20 items-center">
         
-      {{-- Sisi Kiri: Identitas Aplikasi / Brand Logo Modern --}}
-      <div class="flex items-center gap-3 pl-0 ml-0">
-         <div class="rounded-2xl w-60 h-20 flex items-center justify-center rounded-xl overflow-hidden">
-        <img src="/img/ba.png" alt="Logo Bansos Desa" class=" w-full h-full object-contain">
+    {{-- Sisi Kiri: Identitas Aplikasi / Brand Logo Modern --}}
+<div class="flex items-center gap-2 sm:gap-3 pl-0 ml-0">
+    <div class="w-36 h-30 sm:w-35 sm:h-36 md:w-36 md:h-35 flex items-center justify-center overflow-hidden shrink-0">
+        <img src="/img/ba.png" alt="Logo Bansos Desa" class="w-full h-full object-contain">
     </div>
-          <div>
-              <h1 class="text-base font-bold text-slate-900 tracking-tight leading-tight">
-                  Sistem <span class="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent font-extrabold">Bansos Desa</span>
-              </h1>
-              <p class="text-[11px] text-slate-400 font-medium hidden sm:block">Pendataan & Monitoring Transparan</p>
-          </div>
-      </div>
+    <div>
+        <h1 class="text-sm sm:text-base font-bold text-slate-900 tracking-tight leading-tight">
+            Sistem <span class="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent font-extrabold">Bansos Desa</span>
+        </h1>
+        <p class="text-[11px] text-slate-400 font-medium hidden sm:block">Pendataan & Monitoring Transparan</p>
+    </div>
+</div>
 
             {{-- Menu Desktop (disembunyikan di HP) --}}
             <div class="hidden lg:flex items-center gap-8 text-sm font-semibold text-slate-600">
