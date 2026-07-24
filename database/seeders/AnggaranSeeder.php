@@ -13,7 +13,6 @@ class AnggaranSeeder extends Seeder
         $kabupaten = User::where('role', 'kabupaten')->get();
 
         foreach ($kabupaten as $item) {
-
             Anggaran::updateOrCreate(
                 [
                     'kabupaten_id' => $item->id,
