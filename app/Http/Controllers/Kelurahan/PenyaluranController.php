@@ -47,10 +47,18 @@ public function index()
         'catatan'       => 'nullable|string|max:255',
     ]);
 
-    Penyaluran::create($request->only([
-        'penerima_id', 'periode_bulan', 'periode_tahun', 'nominal',
-        'tanggal_salur', 'status', 'metode', 'no_referensi', 'catatan',
-    ]));
+  $tanggalSalur = \Carbon\Carbon::parse($request->tanggal_salur);
+
+Penyaluran::create([
+    'penerima_id'   => $request->penerima_id,
+    'periode_bulan' => $tanggalSalur->month,   
+    'periode_tahun' => $tanggalSalur->year,   
+    'tanggal_salur' => $request->tanggal_salur,
+    'status'        => $request->status,
+    'metode'        => $request->metode,
+    'no_referensi'  => $request->no_referensi,
+    'catatan'       => $request->catatan,
+]);
 
     return redirect()
         ->route('penyaluran.index')

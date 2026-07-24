@@ -220,12 +220,12 @@
                 </td>
             </tr>
 
-            <tr>
+                    <tr>
                 <td class="min-w-[140px] bg-slate-50 px-4 py-3 font-semibold text-slate-600">
-                    Besaran Dana
+                    Besaran Dana Terakhir
                 </td>
                 <td class="px-4 py-3 font-bold">
-                    Rp {{ number_format($penerima->jenisBansos->jumlah_bantuan ?? 0, 0, ',', '.') }}
+                    Rp {{ number_format($penerima->penyaluran->first()->nominal ?? 0, 0, ',', '.') }}
                 </td>
             </tr>
 
@@ -264,7 +264,7 @@
                                                 @foreach($penerima->penyaluran as $log)
                                                 <tr class="shadow-[0_1px_0_0_rgba(0,0,0,0.04)]">
                                                     <td class="p-2.5 text-slate-800">{{ $log->periode_bulan }} {{ $log->periode_tahun }}</td>
-                                                    <td class="p-2.5 text-right font-bold text-slate-900">Rp {{ number_format($penerima->jenisBansos->jumlah_bantuan, 0, ',', '.') }}</td>
+                                                   <td class="p-2.5 text-right font-bold text-slate-900">Rp {{ number_format($log->nominal, 0, ',', '.') }}</td>
                                                     <td class="p-2.5 text-center">
                                                         <span class="inline-block px-2 py-0.5 bg-blue-50 text-blue-700 font-bold rounded-full text-[10px]">Tersalurkan</span>
                                                     </td>

@@ -28,8 +28,8 @@ class PenerimaBansos extends Model
         return $this->belongsTo(JenisBansos::class);
     }
 
-    public function penyaluran()
+ public function penyaluran()
 {
-    return $this->hasMany(Penyaluran::class, 'penerima_id');
+    return $this->hasMany(Penyaluran::class, 'penerima_id')->latest('tanggal_salur');
 }
 }

@@ -103,6 +103,8 @@ Route::middleware('auth')->group(function () {
                 ->name('monitoring.grafik');
             Route::get('monitoring/{kabupatenId}', [MonitoringController::class, 'show'])
                 ->name('monitoring.show');
+                Route::get('monitoring/{kabupatenId}/kecamatan/{kecamatanId}', [MonitoringController::class, 'showKelurahan'])
+                ->name('monitoring.show-kelurahan');
 
             // Distribusi
             Route::get('distribusi', [DistribusiController::class, 'index'])
