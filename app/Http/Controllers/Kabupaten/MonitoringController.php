@@ -18,7 +18,9 @@ class MonitoringController extends Controller
     $kabupatenId = auth()->id();
     $tahun       = $request->input('tahun', now()->year);
 
-    $kecamatanList = User::where('role', 'kecamatan')->get();
+    $kecamatanList = User::where('role', 'kecamatan')
+    ->where('kabupaten_id', $kabupatenId)
+    ->get();
 
     $monitoring = $kecamatanList->map(function ($kecamatan) use ($tahun) {
 
