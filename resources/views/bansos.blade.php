@@ -1,3 +1,4 @@
+<link rel="icon" href="{{ asset('img/logo.ico') }}">
 <x-app-layout>
     {{-- 1. HERO & SEARCH SECTION (Fokus Utama Warga Langsung di Atas) --}}
     <section class="relative overflow-hidden min-h-[95vh] sm:min-h-[80vh] flex items-center pt-24 pb-20 sm:pt-16 sm:pb-32">

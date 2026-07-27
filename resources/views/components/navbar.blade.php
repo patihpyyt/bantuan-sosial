@@ -2,16 +2,16 @@
    <div class="max-w-7xl mx-auto pl-0 pr-4 sm:pr-6 lg:pr-8">
     <div class="flex justify-between h-20 items-center">
         
-    {{-- Sisi Kiri: Identitas Aplikasi / Brand Logo Modern --}}
-<div class="flex items-center gap-2 sm:gap-3 pl-0 ml-0">
-    <div class="w-36 h-30 sm:w-35 sm:h-36 md:w-36 md:h-35 flex items-center justify-center overflow-hidden shrink-0">
+   {{-- Sisi Kiri: Identitas Aplikasi / Brand Logo Modern --}}
+<div class="flex items-center gap-2 sm:gap-3 pl-0 ml-0 mr-6 shrink-0">
+    <div class="w-20 h-21 sm:w-30 sm:h-27 md:w-30 md:h-30 flex items-center justify-center overflow-hidden shrink-0">
         <img src="/img/ba.png" alt="Logo Bansos Desa" class="w-full h-full object-contain">
     </div>
-    <div>
-        <h1 class="text-sm sm:text-base font-bold text-slate-900 tracking-tight leading-tight">
+    <div class="whitespace-nowrap">
+        <h1 class="text-sm sm:text-base font-bold text-slate-900 tracking-tight leading-tight whitespace-nowrap">
             Sistem <span class="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent font-extrabold">Bansos Desa</span>
         </h1>
-        <p class="text-[11px] text-slate-400 font-medium hidden sm:block">Pendataan & Monitoring Transparan</p>
+        <p class="text-[11px] text-slate-400 font-medium hidden sm:block whitespace-nowrap">Pendataan & Monitoring Transparan</p>
     </div>
 </div>
 
